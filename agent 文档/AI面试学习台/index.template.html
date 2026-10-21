@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="本地离线 AI 大模型题库，按分类阅读、搜索与复习。">
+  <title>AI 学习台 · 本地题库</title>
+  <style>__APP_STYLE__</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到题目</a>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5.5C9 3.8 5.5 3.5 3 4v15c3-.5 6.5-.2 9 1.5M12 5.5c3-1.7 6.5-2 9-1.5v15c-3-.5-6.5-.2-9 1.5V5.5Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m6 12 4 4 8-8"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 3.5-2 5-5m3-4c1.5-2 2.5-3 4-3h3m-4-4 4 4-4 4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 15V3m-5 5 5-5 5 5M4 17v4h16v-4"/></symbol>
+  </svg>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark"><svg class="icon"><use href="#i-book"/></svg></span><div><strong>AI 学习台</strong><span class="brand-sub">LEARN · CONNECT · ANSWER</span></div></div>
+    <div class="top-actions"><span class="offline-pill"><span></span>本地 · 离线可用</span><button class="text-button" id="theme-toggle" aria-label="切换为深色模式"><svg class="icon"><use href="#i-moon"/></svg><span id="theme-label">深色</span></button><button class="icon-button mobile-menu" id="menu-toggle" aria-label="打开分类目录" aria-expanded="false" aria-controls="sidebar"><svg class="icon"><use href="#i-menu"/></svg></button></div>
+  </header>
+  <div id="nav-backdrop" class="nav-backdrop" hidden></div>
+  <div class="app-layout">
+    <aside id="sidebar" class="sidebar" aria-label="学习导航">
+      <div class="sidebar-top"><span class="eyebrow">学习目录</span><button id="menu-close" class="icon-button mobile-menu" aria-label="关闭分类目录"><svg class="icon"><use href="#i-close"/></svg></button></div>
+      <div class="difficulty-tabs" id="difficulty-tabs" role="group" aria-label="选择题目难度"></div>
+      <div class="sidebar-category-label eyebrow">专题目录</div>
+      <nav id="category-nav" aria-label="所选难度的题目分类"></nav>
+      <div class="sidebar-bottom">
+        <div class="progress-heading"><strong>我的复习进度</strong><span id="progress-percent">0%</span></div>
+        <progress id="learning-progress" max="370" value="0" aria-label="已掌握的有答案题目"></progress>
+        <p id="progress-text">0 / 370 道已掌握</p>
+        <div class="backup-actions"><button class="text-button" id="export-progress"><svg class="icon"><use href="#i-down"/></svg>导出进度</button><button class="text-button" id="import-progress"><svg class="icon"><use href="#i-up"/></svg>导入</button></div>
+        <input type="file" id="progress-file" accept="application/json,.json" hidden>
+        <p class="local-note">收藏和进度只保存在当前浏览器。<br>换浏览器前，建议导出备份。</p>
+      </div>
+    </aside>
+    <main id="main" class="main" tabindex="-1">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy"><span class="eyebrow">YOUR AI STUDY NOTEBOOK</span><h1 id="page-title">把知识串起来，<br>把问题答清楚。</h1><p>从基础概念到工程实践，按专题理解，按自己的节奏复习。</p><div class="hero-stats"><div><strong id="total-stat">370</strong><span>收录题目</span></div><div><strong id="answer-stat">370</strong><span>完整答案</span></div><div><strong id="category-stat">9</strong><span>简单题专题</span></div></div></div>
+        <div class="study-illustration" aria-hidden="true"><div class="note-card note-back"><span>03 / 避坑</span><i></i><i></i></div><div class="note-card note-mid"><span>02 / 表达</span><i></i><i></i></div><div class="note-card note-front"><svg class="icon"><use href="#i-book"/></svg><span>01 / 理解</span><strong>学会一个概念，<br>连起一组知识。</strong><div class="note-dots"><b></b><b></b><b></b></div></div><span class="illustration-caption">一题三读 · 理解 / 口述 / 易错点</span></div>
+      </section>
+      <section class="workspace" aria-label="题目浏览">
+        <div class="search-row"><div class="search-field"><svg class="icon"><use href="#i-search"/></svg><label for="search-input" class="sr-only">搜索当前难度的题目与答案</label><input id="search-input" type="search" placeholder="搜索题目、知识点或答案内容…" autocomplete="off"><kbd aria-hidden="true">/</kbd></div><button class="secondary-button" id="random-question"><svg class="icon"><use href="#i-shuffle"/></svg><span>随机一题</span></button></div>
+        <div class="filter-row"><div class="filter-left"><label for="status-filter" class="sr-only">筛选复习状态</label><select id="status-filter"><option value="all">全部题目</option><option value="favorites">我的收藏</option><option value="unmastered">未掌握</option><option value="mastered">已掌握</option></select><label class="checkbox-label"><input type="checkbox" id="fulltext-search" checked>搜索答案全文</label></div><div class="view-switch" role="group" aria-label="答案阅读方式"><button data-view="full" aria-pressed="true">完整答案</button><button data-view="brief" aria-pressed="false">速记</button></div></div>
+        <div class="results-heading"><div><span class="eyebrow" id="results-kicker">知识专题</span><h2 id="results-title" tabindex="-1">全部简单题</h2><p id="results-summary" aria-live="polite"></p></div><button class="text-button" id="reset-filters" hidden>清除筛选</button></div>
+        <div class="pending-banner" id="pending-banner" hidden>所选题目中有答案待补充。</div>
+        <div id="question-list" class="question-list"></div>
+        <div class="empty-state" id="empty-state" hidden><svg class="icon"><use href="#i-search"/></svg><h3>暂时没有匹配的题目</h3><p>试试更短的关键词，或清除分类和状态筛选。</p><button class="secondary-button" id="empty-reset">重置筛选</button></div>
+        <div class="pagination" id="pagination"><span id="page-range"></span><div><button class="secondary-button" id="previous-page">上一页</button><span id="page-number"></span><button class="secondary-button" id="next-page">下一页</button></div></div>
+      </section>
+      <footer class="page-footer"><span>本地学习，不上传你的题库与复习记录。</span><span id="updated-note">资料更新时间 2026-10-10</span><p>答案为重新编写的参考内容，不是原网站付费答案。框架版本和产品能力可能变化，作答前请核对官方资料。</p></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <noscript><div class="noscript">请启用浏览器 JavaScript 以查看题库。网页无需联网。</div></noscript>
+  <script id="question-data" type="application/json">__APP_DATA__</script>
+  <script>__APP_SCRIPT__</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# 依赖与构建产物
+node_modules/
+.next/
+dist/
+build/
+out/
+.turbo/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 环境变量与密钥
+.env
+.env.*
+!.env.example
+
+# 日志
+*.log
+npm-debug.log*
