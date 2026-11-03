@@ -1,0 +1,1025 @@
+{
+  "topicId": "topic-8",
+  "name": "Transformer 与 NLP",
+  "description": "注意力、序列模型和词表示",
+  "count": 59,
+  "questions": [
+    {
+      "id": "easy-134",
+      "index": 1,
+      "title": "使用 Transformer 解决了 RNN 面临的一些什么问题？",
+      "difficulty": "easy",
+      "tags": [
+        "Transformer",
+        "RNN"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "RNN 按序列位置逐步更新隐藏状态，后一个位置依赖前一个位置，训练难以在时间维度充分并行。距离很远的信息还要经过多次状态传递，普通 RNN 容易出现梯度消失或爆炸，长距离关系较难学习。\n\nTransformer 使用自注意力，让一个位置直接聚合其他位置的信息，并通过矩阵运算提高训练并行度。这是 [Attention Is All You Need](https://arxiv.org/abs/1706.03762) 的核心架构变化。\n\n例如，分析一段很长的描述时，末尾代词可以直接关注前面相关实体，减少仅靠逐步状态传递的负担。但注意力是否正确仍需通过训练获得，不能理解成所有位置都能完美互相理解。典型稠密自注意力对长度具有平方级的注意力计算开销，长序列仍然昂贵；稀疏或其他变体可能采用不同复杂度。\n\n训练时已知目标序列，因果遮罩允许并行计算各位置的损失；自回归生成时，下一个 Token 依赖刚生成的内容，仍通常逐步解码。两种阶段需要区分。",
+        "oral": "Transformer 主要改善了 RNN 的序列并行训练和长距离信息交互问题。自注意力让远处位置直接联系，训练更适合矩阵计算。但长序列注意力仍有成本，自回归生成也仍存在逐 Token 的依赖。",
+        "pitfalls": "- “训练可并行”不等于自回归输出可以一次全部生成。\n- 平方复杂度描述典型稠密注意力，不能套用到所有变体和实现。"
+      }
+    },
+    {
+      "id": "easy-135",
+      "index": 2,
+      "title": "self attention 中的 K 和 Q 是用来做什么的？",
+      "difficulty": "easy",
+      "tags": [
+        "Transformer",
+        "自注意力机制"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "Q（Query）表示当前位置想寻找什么信息，K（Key）表示各位置可供匹配的信息特征。二者点积形成注意力分数，经过缩放、遮罩和归一化后，用作对 V（Value）的加权系数。\n\n对输入矩阵 X，通常先学习三组投影：\n\n`Q = XW_Q，K = XW_K，V = XW_V`\n\n缩放点积注意力可以写为：\n\n`Attention(Q, K, V) = softmax(QKᵀ / √d_k + Mask)V`\n\n其中 `d_k` 是 Key 的维度，缩放用于控制分数的数值尺度。公式源于 [Attention Is All You Need](https://arxiv.org/abs/1706.03762)。在因果语言模型中，Mask 禁止当前位置读取后续位置，避免训练时泄漏未来信息。\n\n例如，“它已经售罄”中的“它”可以通过 Q 与前面商品位置的 K 匹配，再聚合相应 V。这个比喻只帮助理解，实际表示是训练得到的向量，不是人工写入的语义标签。Q、K 来自同一输入但使用不同投影，可以分别学习“查找需求”和“可匹配属性”；交叉注意力中二者还可能来自不同序列。",
+        "oral": "Q 用来发起匹配，K 用来被匹配，Q 与 K 的分数决定从哪些位置取信息；真正聚合的是 V。自注意力中三者由输入经过不同线性投影得到，并结合遮罩控制允许关注的位置。",
+        "pitfalls": "- 注意力输出不是 K，而是根据权重聚合的 V。\n- 注意力权重可以用于分析，但不能直接当成完整、可靠的因果解释。"
+      }
+    },
+    {
+      "id": "easy-136",
+      "index": 3,
+      "title": "Transformer 的位置编码是怎样的？",
+      "difficulty": "easy",
+      "tags": [
+        "Transformer",
+        "位置编码"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "标准自注意力的内容匹配本身缺少明确的顺序信息，需要注入位置表示，区分“甲喜欢乙”和“乙喜欢甲”这样的顺序差异。\n\n常见方法包括固定正弦余弦编码、可学习绝对位置嵌入、相对位置表示和旋转位置编码。原始 Transformer 将固定位置编码加到 Token 表示中，经典公式是：\n\n`PE(pos, 2i) = sin(pos / 10000^(2i/d_model))`\n\n`PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))`\n\n可学习位置嵌入直接训练每个位置的向量；相对位置方法强调两个位置的距离。RoPE 对 Q、K 按位置进行旋转，使匹配中包含相对位置信息，见 [RoFormer 原论文](https://arxiv.org/abs/2104.09864)。\n\n例如，同一句话改变词序后，位置表示会改变注意力关系，从而帮助模型区分语义。不同方法的计算方式和长度泛化能力不同；公式可以在更远位置计算，不代表模型一定能可靠处理训练之外的长度。扩展窗口通常还需要模型训练、位置处理与效果评测配合。",
+        "oral": "位置编码让注意力知道顺序。原始 Transformer 用正弦余弦编码，其他模型可以使用学习式、相对位置或 RoPE。选型不仅看能否计算长位置，还要验证模型在长距离上的实际效果。",
+        "pitfalls": "- RoPE 通常作用在 Q、K 上，不是把所有位置向量直接加到输入中。\n- 位置编码支持计算更长位置，不等于上下文可无限延长。"
+      }
+    },
+    {
+      "id": "easy-137",
+      "index": 4,
+      "title": "Transformer 和 LLM 有哪些区别",
+      "difficulty": "easy",
+      "tags": [
+        "Transformer",
+        "LLM"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "Transformer 是一种神经网络架构，LLM 是大规模语言模型这一模型类别。一个描述网络如何计算，另一个描述模型的规模、训练对象和能力定位，两者不是同一层级的概念。\n\nTransformer 可以采用编码器、解码器或编码器—解码器结构，用于文本、图像、语音和多模态任务。LLM 通常通过大规模语言数据预训练，再做指令微调与对齐；目前许多生成式 LLM 基于 Transformer 解码器，但语言模型并不被概念上限定为这一种架构。\n\n例如，一个小型 Transformer 文本分类器并不因为使用了注意力就自动成为通用 LLM；大型生成式模型则还需要训练数据、语言建模目标、Token 化、规模和后训练共同形成能力。实际应用中，模型调用还依赖推理服务、上下文管理和工具集成，这些也不是 Transformer 架构本身提供的。\n\n因此面试时应分别讨论“架构选择”和“模型能力”：前者关注注意力、位置编码及计算成本，后者关注训练、任务表现、幻觉和部署要求。",
+        "oral": "Transformer 是网络架构，LLM 是大规模语言模型类别。很多 LLM 使用 Transformer，但 Transformer 也能做视觉、语音或小规模任务。模型能力来自架构、规模、数据和训练的共同作用。",
+        "pitfalls": "- 使用 Transformer 不等于一定是 LLM，更不等于具备 Agent 能力。\n- LLM 没有一个适用于所有场景的硬性参数量分界。"
+      }
+    },
+    {
+      "id": "easy-138",
+      "index": 5,
+      "title": "说说 LSTM 的基本原理。",
+      "difficulty": "easy",
+      "tags": [
+        "自然语言处理（NLP）",
+        "LSTM"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "LSTM 是一种带门控和细胞状态的循环网络，用于缓解普通 RNN 学习长距离依赖时的梯度问题。常用版本同时维护细胞状态 `c_t` 和隐藏状态 `h_t`，用门控制信息保留、写入和输出。\n\n- **遗忘门**决定上一时刻的哪些信息继续保留。\n- **输入门**控制候选信息写入多少。\n- **输出门**控制细胞状态中哪些信息形成当前输出。\n\n典型更新形式为：\n\n`c_t = f_t ⊙ c_(t-1) + i_t ⊙ g_t`\n\n`h_t = o_t ⊙ tanh(c_t)`\n\n加法状态路径有利于信息和梯度沿时间传播，但门值与训练条件仍会影响记忆长度。原始 LSTM 与后来加入遗忘门的工作分别见 [1997 年论文](https://www.bioinf.jku.at/publications/older/2604.pdf) 和 [Learning to Forget](https://doi.org/10.1162/089976600300015015)。\n\n例如，情感分类时可以保留句子开头的否定信息，避免只依据末尾积极词判断。它仍需依次处理状态，长序列训练效率和记忆能力有边界，并未彻底解决所有梯度消失、爆炸和信息遗忘问题。",
+        "oral": "LSTM 通过细胞状态和门控选择保留、写入及输出的信息，加法路径帮助缓解长距离梯度问题。它比普通 RNN 更容易学习长期依赖，但仍是循环结构，训练并行和记忆长度仍有限。",
+        "pitfalls": "- 隐藏状态与细胞状态不同，不能将两者混为同一个变量。\n- LSTM 缓解梯度问题，并不是数学上保证永不消失或爆炸。"
+      }
+    },
+    {
+      "id": "easy-139",
+      "index": 6,
+      "title": "如何比较文本的相似度？",
+      "difficulty": "easy",
+      "tags": [
+        "自然语言处理（NLP）",
+        "文本分类"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "首先确定要比较哪种相似性：字符接近、词语重合、主题相同还是语义等价。不同目标对应不同表示和度量。\n\n字符层面可以用编辑距离，适合错别字和名称近似；词语层面可以用 Jaccard、词袋或 TF-IDF 余弦相似度；语义层面可以用句向量的余弦或点积；需要精细判断时，可以让交叉编码器联合读取两段文本进行评分。Sentence-BERT 展示了通过句向量做语义相似度比较的方法，见 [原论文](https://aclanthology.org/D19-1410/)。\n\n例如，“怎样办理退款”和“商品退钱的流程”词面不同但语义接近；“允许退款”和“不允许退款”词面很像，含义却相反。检索可以先用高效的词法或向量召回，再精排候选；合同条款等场景还应检查否定、金额和时间条件。\n\n评估时用业务标注样本确定阈值，关注误判和漏判，并检查不同语言、长度及领域。相似度分数通常不是概率，不同模型、表示和数据集的分数不能直接横向比较。",
+        "oral": "我会先明确比较目标：字面近似用编辑距离或词法方法，语义相似用句向量，精细判断再做交叉编码器评分。实际阈值要用业务样本验证，尤其检查否定词、数字和条件变化。",
+        "pitfalls": "- 语义接近不一定事实相同，也不一定能互相替代。\n- 余弦分数不是天然的置信概率，不能统一使用一个固定阈值。"
+      }
+    },
+    {
+      "id": "easy-140",
+      "index": 7,
+      "title": "支持向量机可以用于文本分类任务吗？若可以，请说明。",
+      "difficulty": "easy",
+      "tags": [
+        "自然语言处理（NLP）",
+        "文本分类",
+        "支持向量机"
+      ],
+      "originalCategory": "easy-8",
+      "originalCategoryName": "Transformer 与 NLP 基础",
+      "answer": {
+        "core": "可以。SVM 通过学习决策边界区分文本类别，是经典文本分类方法。文本的词袋或 TF-IDF 特征通常高维且稀疏，线性 SVM 在这类表示上经常是值得尝试的基线；相关原始研究见 [Joachims 的文本分类论文](https://www.cs.cornell.edu/~tj/publications/joachims_98a.pdf)。\n\n流程是收集标注文本，划分训练与验证数据，做分词或字符 n-gram，基于训练集建立词表和特征权重，再训练分类器。SVM 寻找较大间隔的边界，并通过正则化参数控制拟合与间隔的权衡；多分类可使用一对多或一对一策略。\n\n例如，垃圾邮件分类可以用字符和词 n-gram 表示邮件，训练线性分类器，再检查精确率、召回率和类别不平衡。类别权重和决策阈值应依据业务损失调整。它的训练及部署通常较轻，但词袋表示对同义词、复杂语义和新领域变化的理解有限；大数据或复杂任务应与其他模型做实际对比。",
+        "oral": "SVM 可以用于文本分类，常见方案是 TF-IDF 加线性 SVM。高维稀疏特征适合构建便宜、可靠的基线。关键是避免数据泄漏、调节正则化并按业务需求评估，复杂语义任务则需要与更强表示比较。",
+        "pitfalls": "- 词表和 TF-IDF 权重应在训练集拟合，不能提前利用测试集。\n- SVM 的决策分数不天然等于概率，多分类也需要具体组合策略。"
+      }
+    },
+    {
+      "id": "medium-124",
+      "index": 8,
+      "title": "讲一下你对 Transformer 的 Encoder 模块的理解。",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "Encoder"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "Encoder 把输入 Token 嵌入并加入位置信息，经过多层双向自注意力和逐位置前馈网络，每个子层带残差与归一化，输出融合上下文的表示。双向注意力让每个位置可依赖其他可见位置；可用 padding mask 忽略填充。原始 Encoder-Decoder Transformer 的 Decoder 通过交叉注意力读取 Encoder 输出，而 BERT 类模型可直接用 Encoder 做理解任务。",
+        "oral": "Encoder 通过多层双向自注意力和前馈网络，把每个 Token 变成上下文化表示。",
+        "pitfalls": "Encoder 不直接负责逐 Token 自回归生成。"
+      }
+    },
+    {
+      "id": "medium-125",
+      "index": 9,
+      "title": "K 和 Q 可以使用同一个值通过对自身进行点乘得到吗？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "数学上可设 `Q=K` 并计算 `QKᵀ`，对角项和相似度都有定义；但标准自注意力让 Q、K 分别由输入经不同可训练投影得到，以便学习“查询什么”和“如何被匹配”的不同空间。强制共享会降低表达自由度，尤其跨注意力中 Q 和 K 来自不同序列，更不能简单等同。若指单个向量对自身点乘，那只得标量范数平方，无法表示序列各位置间关系。",
+        "oral": "可以在数学上共享 Q/K，但会损失灵活性；自注意力真正需要的是所有 Token 两两匹配矩阵。",
+        "pitfalls": "别把“Q 和 K 都源自同一输入 X”误解成“投影矩阵必须相同”。"
+      }
+    },
+    {
+      "id": "medium-126",
+      "index": 10,
+      "title": "在进行多头注意力的时候需要对每个 head 进行降维吗？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "多头注意力机制"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "通常总隐藏维度为 `d_model`，有 `h` 个头时每头维度取 `d_k≈d_model/h`，使拼接后的规模接近原维度、计算成本可控。实现上常先用一次大线性投影生成 Q/K/V，再 reshape 成多头，不必真的创建 h 个独立“降维层”。维度分配不是数学硬要求，但若每头都保留全维，参数和计算显著增加。",
+        "oral": "工程上通常把总维度分给各头，拼接后再投影；这样多头表达不会让成本按头数爆炸。",
+        "pitfalls": "“每头降维”是常见设计，不代表所有变体都必须完全均分。"
+      }
+    },
+    {
+      "id": "medium-127",
+      "index": 11,
+      "title": "Transformer 中的\"残差连接\"可以缓解梯度消失问题吗？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "残差连接",
+        "梯度消失"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "可以。残差把输入直接加到子层输出，形成较短的梯度传播路径，使深层网络更易训练；与 LayerNorm、合理初始化和学习率策略共同改善稳定性。但残差不保证彻底消除梯度消失/爆炸，尤其非常深或训练配置不当时仍可能出问题。Pre-LN 与 Post-LN 的梯度行为也不同。",
+        "oral": "残差提供梯度“捷径”，缓解深层训练困难，但还需归一化和优化策略配合。",
+        "pitfalls": "不能把残差理解成“梯度恒等于 1”。"
+      }
+    },
+    {
+      "id": "medium-128",
+      "index": 12,
+      "title": "Transformer 中的注意力遮蔽（Attention Masking）的工作原理是什么？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "注意力遮蔽"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "在 Softmax 前的注意力分数矩阵中，把不可见位置加上负无穷或足够小的值，使其归一化后权重接近 0。Padding Mask 避免关注填充 Token；Causal Mask 让位置 t 只能看见不晚于 t 的位置，防止训练时偷看未来；还可用块状/权限 Mask 限制局部或跨段可见性。实现要正确处理广播维度与全遮蔽行。",
+        "oral": "Mask 在 Softmax 前封掉不该看的位置，常见用途是忽略 padding 和阻止自回归模型看未来。",
+        "pitfalls": "Mask 不是把输入 Token 直接删除；它控制注意力可见性。"
+      }
+    },
+    {
+      "id": "medium-129",
+      "index": 13,
+      "title": "了解 ViT（Vision Transformer） 吗？",
+      "difficulty": "medium",
+      "tags": [
+        "Vision Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "ViT 把图像切成固定大小 patch，线性映射为 Token，加位置编码后交给 Transformer Encoder，使用分类 Token 或池化结果做图像分类。它把视觉问题转成序列建模；优势是可扩展和全局关系建模，但对数据规模、分辨率和计算资源较敏感。注意图像 patch 数随分辨率增大，标准自注意力成本大致随 Token 数平方增长。",
+        "oral": "ViT 把图片切块当 Token，交给 Transformer 编码，再用聚合表示分类。",
+        "pitfalls": "ViT 不是先用 CNN 抽全部区域特征的架构；原始 ViT 直接用 patch 投影。"
+      }
+    },
+    {
+      "id": "medium-130",
+      "index": 14,
+      "title": "ViLT 模型是如何将 Transformer 应用于图像识别任务的",
+      "difficulty": "medium",
+      "tags": [
+        "ViLT",
+        "图像识别"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "题目表述不够准确：ViLT 是视觉—语言预训练模型，主要面向图文匹配、视觉问答等跨模态任务，不是单纯图像分类模型。它将图像切成 patch、文本分成 Token，一起送入 Transformer 做跨模态交互，尽量省去昂贵的预训练视觉区域检测器。训练可用图文匹配、掩码语言建模及词—图块对齐等目标。",
+        "oral": "ViLT 把图像 patch 与文本 Token 共同输入 Transformer，重点是图文融合，而非传统单图识别。",
+        "pitfalls": "不要把 ViLT 与 ViT 混淆；前者是图文模型，后者主要是视觉编码器。"
+      }
+    },
+    {
+      "id": "medium-131",
+      "index": 15,
+      "title": "为什么 Transformer 采用多头注意力机制？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "自注意力机制",
+        "多头注意力机制"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "多头让模型在不同投影子空间并行关注不同位置和关系，例如局部语法、长距离指代和主题关联；拼接后再投影融合信息。它提高表达能力，但“每个头都学到明确独立语义”不是保证，部分头可能冗余。头数过多会降低单头维度、增加管理开销，需与模型宽度和硬件效率协调。",
+        "oral": "多头让注意力从不同表示子空间同时看序列，增强关系建模，而不是只做一张注意力图。",
+        "pitfalls": "头数越多不一定越好，还要考虑单头维度、冗余和硬件效率。"
+      }
+    },
+    {
+      "id": "medium-132",
+      "index": 16,
+      "title": "Transformer 中如何实现序列到序列的映射？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "编解码器"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "在原始 Encoder-Decoder 架构中，Encoder 将输入序列变成上下文化表示；Decoder 用因果自注意力读取已生成前缀，用交叉注意力读取 Encoder 输出，预测下一个 Token，重复直到结束符。训练通常用目标序列右移后的 Teacher Forcing 并行计算位置损失；推理必须按 Token 自回归生成。现代纯 Decoder LLM 可把输入和输出拼成同一序列完成类似任务。",
+        "oral": "Encoder 编码输入，Decoder 边看已有输出边通过交叉注意力读取输入，逐步生成目标序列。",
+        "pitfalls": "训练并行计算目标位置，不代表推理能一次得到全部未来 Token。"
+      }
+    },
+    {
+      "id": "medium-133",
+      "index": 17,
+      "title": "Transformer 中，如何处理大型数据集？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "从数据侧做去重、质量筛选、分片流式读取、混合采样和数据并行；训练侧用混合精度、梯度累积、分布式数据/张量/流水线并行、激活检查点和高效注意力，减少显存与通信。对长序列做长度分桶或 packing，提高有效 Token 利用率。持续监测吞吐、损失异常和数据污染，定期保存可恢复检查点。",
+        "oral": "大数据训练靠高质量数据流水线加分布式、混合精度和显存优化，不是简单“加更多 GPU”。",
+        "pitfalls": "数据规模大但重复、污染严重，可能降低泛化能力。"
+      }
+    },
+    {
+      "id": "medium-134",
+      "index": 18,
+      "title": "chatGLM 和 GPT 在结构上有什么区别？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "语言模型"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "必须指定版本。经典 GPT 是因果掩码的 Decoder-only 自回归语言模型；早期 ChatGLM 基于 GLM/Prefix LM 思路，输入部分可使用双向信息，生成部分保持单向自回归，训练目标也不同。后续 ChatGLM/GLM 系列架构持续演进，不能把早期版本特征机械套到所有型号。比较时应给出具体模型版本、注意力 Mask、位置编码和训练目标。",
+        "oral": "经典 GPT 是纯因果生成；早期 ChatGLM/GLM 使用前缀式双向理解加自回归生成，但系列版本要分别看。",
+        "pitfalls": "不要笼统说“ChatGLM 是 Encoder-Decoder”，具体实现常不是原始 Transformer 双塔结构。"
+      }
+    },
+    {
+      "id": "medium-135",
+      "index": 19,
+      "title": "了解 LLaMA 中的旋转位置编码吗？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "大语言模型",
+        "旋转位置编码"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "RoPE 将位置相关的旋转施加到注意力中的 Q、K 成对维度上，使两位置的点积自然携带相对位置信息。它不需要把绝对位置向量直接加到 Token 表示中，适合自回归 Transformer；不同 LLaMA 版本可能调整频率、缩放和上下文策略。RoPE 有利于建模相对位置，但超出训练长度的外推质量仍需实测。",
+        "oral": "RoPE 通过旋转 Q/K 编码位置，使注意力分数感知相对距离。",
+        "pitfalls": "RoPE 不是让模型天然支持无限长度上下文。"
+      }
+    },
+    {
+      "id": "medium-136",
+      "index": 20,
+      "title": "了解 Transformer 模型训练中的梯度裁剪（Gradient Clipping）吗？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "梯度裁剪"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "梯度裁剪在参数更新前限制梯度大小，常用按全局范数缩放：若范数超过阈值，将全部梯度按比例缩小，以抑制偶发梯度爆炸和训练不稳定。混合精度训练中通常先反缩放梯度再裁剪；分布式训练需确认统计的是全局梯度。阈值过小会长期压制学习，需监控梯度范数与裁剪比例。",
+        "oral": "梯度裁剪是更新前给异常大梯度设上限，主要防止爆炸，不是解决所有训练问题。",
+        "pitfalls": "裁剪不会自动修复错误数据、过大学习率或模型架构问题。"
+      }
+    },
+    {
+      "id": "medium-137",
+      "index": 21,
+      "title": "在不考虑计算量的情况下，head 能否无限增多？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "多头注意力机制"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "不能。若模型总维度 `d_model` 固定，每头至少需正的维度，头数不可能无限增加；头数过多会使每头维度太小、表示能力受限。即使同时放大总维度，参数、训练数据需求与优化难度也上升，注意力头可能冗余，没有无限收益。实际还需满足矩阵形状、硬件向量化和 KV Cache 成本。",
+        "oral": "固定隐藏维度下头数受单头维度约束；无限加头既不可能，也不保证效果。",
+        "pitfalls": "“不考虑算力”也不能忽略模型维度和表达瓶颈。"
+      }
+    },
+    {
+      "id": "medium-138",
+      "index": 22,
+      "title": "Transformer 为什么采用 Layer Normalization 而不是 Batch Normalization",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "normalization"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "LayerNorm 在单个样本的特征维度上归一化，不依赖同一批次其他样本，适合长度变化、Mask、自回归推理和小批量/在线生成。BatchNorm 依赖批统计，训练与推理行为不同，序列长度和分布变化时较麻烦。LayerNorm 与残差共同改善深层训练稳定性；部分现代模型采用 RMSNorm 等变体，不能说所有 Transformer 都只用 LayerNorm。",
+        "oral": "LayerNorm 不依赖 batch 统计，更适合变长序列和逐 Token 推理。",
+        "pitfalls": "不要把 LayerNorm 说成“沿序列长度归一化”；通常是沿每个 Token 的隐藏特征维度。"
+      }
+    },
+    {
+      "id": "medium-139",
+      "index": 23,
+      "title": "什么是注意力机制？它是如何改善 NLP 模型性能的？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "注意力机制"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "注意力根据 Query 与 Key 的匹配程度分配权重，再对 Value 加权求和，让模型按当前需求聚焦输入的不同位置。相比把整个句子压成单一固定向量，它改善长距离依赖和信息选择；自注意力还便于并行编码。缺点是标准全注意力在长序列上的计算/显存成本高，权重也不一定可直接解释为因果依据。",
+        "oral": "注意力让模型按问题动态选取相关词的信息，缓解固定向量瓶颈并建模远距离关系。",
+        "pitfalls": "高注意力权重不等于该词必然是模型决策的因果解释。"
+      }
+    },
+    {
+      "id": "medium-140",
+      "index": 24,
+      "title": "简述 LLaMA（Large Language Model Meta AI）的基本原理。",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "大语言模型"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "LLaMA 是 Meta 的自回归语言模型系列，核心是 Decoder-only Transformer，通过前缀预测下一个 Token；训练后可再经指令微调与对齐用于对话。系列模型常采用 RoPE、RMSNorm 等设计，具体注意力结构和上下文长度随版本变化，例如部分版本用 GQA 改善推理效率。其能力来自模型架构、数据和训练配方共同作用，并非单一模块。",
+        "oral": "LLaMA 以 Decoder-only Transformer 做自回归预测，后训练使其更适合指令和对话；具体配置要看版本。",
+        "pitfalls": "不要把整个系列说成完全相同架构，也不要把开放权重等同于无限制开源许可。"
+      }
+    },
+    {
+      "id": "medium-141",
+      "index": 25,
+      "title": "聊一聊 Transformer 的架构和基本原理。",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "原始 Transformer 由 Encoder 和 Decoder 堆叠而成，核心子层是缩放点积多头注意力和逐位置前馈网络，辅以位置编码、残差连接与归一化。注意力计算可写为 `softmax(QKᵀ/√d_k)V`。Encoder 使用双向自注意力，Decoder 用因果自注意力和对 Encoder 的交叉注意力。现代模型可只保留 Encoder（理解）、Decoder（生成）或完整编解码结构。",
+        "oral": "Transformer 用注意力替代循环来建模序列，靠位置编码保留顺序，并用残差/归一化稳定深层训练。",
+        "pitfalls": "Transformer 不是只有“注意力”；前馈网络、Mask 和位置处理同样关键。"
+      }
+    },
+    {
+      "id": "medium-142",
+      "index": 26,
+      "title": "什么是自回归属性（autoregressive property）？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "自回归属性"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "自回归指当前输出依赖此前已知或已生成的内容，语言模型通常分解为 `P(x₁,…,xₙ)=∏ₜP(xₜ|x₍<t₎)`。训练时可用因果 Mask 同时计算各位置的预测损失；推理时必须按顺序生成下一个 Token，并把它追加到上下文。KV Cache 能避免重复计算已有前缀，但不能让未来 Token 在未生成前被读取。",
+        "oral": "自回归模型按“前文预测下一个 Token”的条件概率链生成文本。",
+        "pitfalls": "Teacher Forcing 下训练可并行，不表示推理非自回归。"
+      }
+    },
+    {
+      "id": "medium-143",
+      "index": 27,
+      "title": "Transformer 模型的性能瓶颈在哪？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "随场景变化：长序列训练中标准自注意力的二次计算/显存、激活与梯度存储、GPU 间通信可能主导；推理 Prefill 更偏计算密集，Decode 往往受内存带宽、KV Cache 和批处理调度影响。瓶颈分析要分训练/推理、Prefill/Decode，测 GPU 利用率、显存、吞吐、首字延迟和每 Token 时间，再选 FlashAttention、量化、并行或缓存等措施。",
+        "oral": "没有单一瓶颈：长序列训练常卡注意力与激活，推理还常卡 KV Cache、带宽和调度。",
+        "pitfalls": "不能只看理论 FLOPs 判断真实服务瓶颈。"
+      }
+    },
+    {
+      "id": "medium-144",
+      "index": 28,
+      "title": "Transformer 模型训练完成后，如何评估其性能和效果？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "离线先看独立测试集损失/困惑度，再按任务看准确率、F1、BLEU/ROUGE 或生成任务人工评估；对事实性、鲁棒性、公平性、安全和分布外样本做专项评测。工程侧测 TTFT、吞吐、p95 延迟、显存与费用。检查训练/测试泄漏、提示敏感性和基线对比，线上灰度观察真实业务指标。",
+        "oral": "评估要同时覆盖模型质量、风险和部署成本，不能只报训练 loss。",
+        "pitfalls": "通用 Benchmark 高分不必然转化为业务效果。"
+      }
+    },
+    {
+      "id": "medium-145",
+      "index": 29,
+      "title": "Transformer 的哪个部分最占用显存？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "没有统一答案，取决于训练还是推理。训练时模型参数、梯度、优化器状态和激活都占显存；长序列/大批量时激活与注意力中间张量可能主导，优化器状态也可能非常大。推理时参数权重是基础占用，高并发长上下文下 KV Cache 可能主导。应按配置做显存剖析，再决定量化、检查点、高效注意力或 KV 分页。",
+        "oral": "训练看参数、优化器和激活；推理看权重与 KV Cache。谁最大要由批量、长度和模型大小决定。",
+        "pitfalls": "不能笼统说“注意力矩阵永远最占显存”，高效内核可能不显式存完整矩阵。"
+      }
+    },
+    {
+      "id": "medium-146",
+      "index": 30,
+      "title": "Transformer 在计算 attention 的时候使用的是点乘还是加法？请说明理由。",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "原始 Transformer 使用缩放点积注意力：`score=QKᵀ/√d_k`，再 Softmax 后乘 V。点积能高效映射到矩阵乘法，在 GPU 上并行性好；除以 `√d_k` 是为了减轻维度增大导致分数方差变大、Softmax 饱和的问题。加性注意力是另一类注意力打分方式，早期 Seq2Seq 中常见，但不是原始 Transformer 的标准形式。",
+        "oral": "Transformer 标准注意力用缩放点积，因为矩阵乘法高效；缩放项稳定 Softmax。",
+        "pitfalls": "不要把残差中的“相加”误认为注意力打分用加性注意力。"
+      }
+    },
+    {
+      "id": "medium-147",
+      "index": 31,
+      "title": "Transformer 中，Decoder 阶段的多头自注意力和 Encoder 阶段的多头自注意力是相同的吗？",
+      "difficulty": "medium",
+      "tags": [
+        "Transformer",
+        "Encoder",
+        "Decoder",
+        "多头自注意力机制"
+      ],
+      "originalCategory": "medium-7",
+      "originalCategoryName": "Transformer、注意力与多模态",
+      "answer": {
+        "core": "核心 Q/K/V 多头计算形式相似，但可见性不同：Encoder 自注意力通常双向看完整输入（除 padding），Decoder 自注意力用因果 Mask 防止看到未来目标 Token。原始 Encoder-Decoder 的 Decoder 还多一层交叉注意力，Q 来自 Decoder，K/V 来自 Encoder。参数也分别学习，不能视为同一层共享。",
+        "oral": "计算形式类似，但 Decoder 自注意力有因果遮蔽，并且原始架构还会读取 Encoder 的交叉注意力。",
+        "pitfalls": "不要把 Decoder 的自注意力和交叉注意力混为一谈。"
+      }
+    },
+    {
+      "id": "medium-148",
+      "index": 32,
+      "title": "请解释 LSTM 和 GRU 网络在处理序列数据中的应用。",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "LSTM",
+        "GRU"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "LSTM 和 GRU 都是带门控的循环网络，逐步读取序列，通过门控保留或遗忘历史信息，常用于文本分类、序列标注、时间序列预测和较小数据场景。LSTM 有独立 cell state 与更多门，表达灵活；GRU 结构较简洁、参数通常较少。它们比普通 RNN 更能处理长距离依赖，但顺序计算不易并行，极长文本通常还需注意力或 Transformer。",
+        "oral": "两者都用门控控制信息流，适合时序任务；LSTM 更复杂，GRU 更轻量。",
+        "pitfalls": "门控缓解长依赖问题，不代表能无损记住任意长度序列。"
+      }
+    },
+    {
+      "id": "medium-149",
+      "index": 33,
+      "title": "简述 Word Embedding 可以怎样运用于文本分类任务？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "文本分类",
+        "Word Embedding"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "先将每个词或子词映射到稠密向量，再把序列表示送入分类器：简单方法做平均池化后接线性/SVM，复杂方法用 CNN、LSTM 或 Transformer 编码上下文后分类。可使用预训练向量并选择冻结或微调，处理 OOV、截断和类别不平衡。评价时与 TF-IDF 基线比较，并检查是否存在数据泄漏。",
+        "oral": "词嵌入把离散词转成稠密特征，可平均池化或交给序列编码器，再训练分类头。",
+        "pitfalls": "平均词向量会丢词序和否定关系，未必适合所有任务。"
+      }
+    },
+    {
+      "id": "medium-150",
+      "index": 34,
+      "title": "LSTM 和 GRU 有什么区别？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "LSTM",
+        "GRU"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "LSTM 通常有输入门、遗忘门、输出门，以及独立的 cell state 和 hidden state；GRU 常用更新门、重置门，通常没有独立 cell state，状态更新更紧凑。GRU 参数更少、训练可能更快，LSTM 在一些复杂长依赖任务上可能更有表达余地。没有稳定的“谁一定更好”，应在相同数据、参数预算和训练设置下实测。",
+        "oral": "LSTM 有三门和双状态，GRU 有两门、状态更简洁；选择主要看业务数据和效率。",
+        "pitfalls": "GRU 不是“简化版但必然更差”的 LSTM。"
+      }
+    },
+    {
+      "id": "medium-151",
+      "index": 35,
+      "title": "解释一个 LSTM 单元（LSTM cell）的基本组成，以及它们各自的作用。",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "LSTM"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "LSTM 单元接收当前输入、上一隐藏状态和上一单元状态。遗忘门决定保留多少旧 cell 信息，输入门控制候选新信息写入，输出门决定从更新后的 cell state 暴露多少到 hidden state；候选状态提供可写入内容。门值一般由 sigmoid 产生，候选状态常用 tanh。加性 cell 更新让信息与梯度更容易跨时间传播。",
+        "oral": "遗忘门删旧信息、输入门写新信息、输出门生成当前可见状态；cell state 是长期通道。",
+        "pitfalls": "不要把三门都理解为互斥开关，它们是连续权重。"
+      }
+    },
+    {
+      "id": "medium-152",
+      "index": 36,
+      "title": "LSTM 中，隐藏状态（hidden state）和单元状态（cell state）有什么区别？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "LSTM"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "Cell state `c_t` 是沿时间传播的内部记忆通道，通过遗忘与输入门进行加性更新；hidden state `h_t` 是当前时刻对外输出的表示，通常由输出门调节 `tanh(c_t)` 得到，并用于下一步门计算。两者维度常相同，但作用不同：`c_t` 更偏长期存储，`h_t` 更偏当前可见摘要。",
+        "oral": "`c_t` 是内部记忆，`h_t` 是对外暴露的当前表示；输出门决定记忆能显示多少。",
+        "pitfalls": "不能把 `h_t` 与 `c_t` 当成同一个变量。"
+      }
+    },
+    {
+      "id": "medium-153",
+      "index": 37,
+      "title": "在文本分类任务中，如何处理样本（类别）不平衡的问题？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "文本分类"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "先按时间和实体合理划分训练/测试集，检查真实类别比例；训练侧可用类别权重、少数类过采样、多数类欠采样或 Focal Loss，必要时采集更多高质量少数类样本。评估看每类召回/精确率、宏 F1、PR-AUC 和混淆矩阵，并依据误判成本调分类阈值。线上监控分布漂移和校准，不能只看总体准确率。",
+        "oral": "用重采样或损失加权改善训练，用宏 F1、少数类召回和业务成本评估，而不只看 accuracy。",
+        "pitfalls": "不要先过采样再划分测试集，否则重复样本泄漏会虚高分数。"
+      }
+    },
+    {
+      "id": "medium-154",
+      "index": 38,
+      "title": "CBOW 和 Skip-gram 分别更适合哪些应用场景？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "CBOW",
+        "Skip-gram"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "CBOW 用上下文词预测中心词，训练通常更快、对高频词和大语料效率较好；Skip-gram 用中心词预测上下文，能为稀有词提供更多训练信号，常在小语料或低频词表示上更有优势，但通常更慢。效果还受窗口、负采样、子采样和语料领域影响，应在下游任务上实测。",
+        "oral": "CBOW 偏快速、平滑；Skip-gram 偏细致学习低频词，代价是更多训练工作。",
+        "pitfalls": "二者差别在预测方向，不是一个有词向量、另一个没有。"
+      }
+    },
+    {
+      "id": "medium-155",
+      "index": 39,
+      "title": "Word2Vec 如何获取词向量？如何评估该训练得到的词向量的好坏？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "词嵌入",
+        "Word2Vec",
+        "词向量"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "Word2Vec 用 CBOW 或 Skip-gram 在大量文本上预测词与上下文，训练得到词嵌入矩阵，取其中对应词的行作为向量；负采样或层次 Softmax 常用于加速。评估可看词相似度、类比、近邻是否合理等内在指标，更重要的是在文本分类、检索等下游任务中比较性能。还要检查偏见、低频词和跨领域泛化。",
+        "oral": "Word2Vec 通过预测上下文学到词向量，效果要用近邻/相似度和下游任务双重评估。",
+        "pitfalls": "静态词向量无法根据上下文区分同一个词的不同含义。"
+      }
+    },
+    {
+      "id": "medium-156",
+      "index": 40,
+      "title": "在文本分类任务中，如何处理高维和稀疏数据？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "文本分类"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "对 TF-IDF/词袋可用稀疏矩阵与线性模型，避免先转成稠密矩阵；通过词频阈值、停用词、n-gram 筛选、卡方/互信息特征选择或截断 SVD 降维。若语义相似性重要，可换预训练词/句嵌入，但需评估额外成本与数据量。用验证集比较性能、内存和训练速度，注意筛选步骤只在训练集拟合。",
+        "oral": "稀疏高维不一定坏，线性模型能直接处理；必要时再做特征选择、SVD 或嵌入表示。",
+        "pitfalls": "在全数据上先做特征选择会泄漏测试集信息。"
+      }
+    },
+    {
+      "id": "medium-157",
+      "index": 41,
+      "title": "Word2Vec 到 BERT 有怎样的改进？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "BERT",
+        "Word2Vec"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "Word2Vec 为每个词学习相对固定的向量，同一词在不同语境中基本相同；BERT 用双向 Transformer 对整句编码，每个位置的表示随上下文变化，能更好处理多义词和长距离关系。BERT 预训练使用掩码语言建模等任务，微调后适合分类、抽取和问答。但其计算成本更高，且原版输入长度有限；两者目标和适用场景不同，不是简单版本升级。",
+        "oral": "核心进步是从静态词向量变为上下文化表示，并利用双向注意力建模整句。",
+        "pitfalls": "BERT 不会给一个词永久固定的唯一向量；具体表示依赖上下文。"
+      }
+    },
+    {
+      "id": "medium-158",
+      "index": 42,
+      "title": "请描述 BERT 模型的架构和应用场景。",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "BERT"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "BERT 是基于 Transformer Encoder 的双向预训练模型，输入由子词 Token、位置和句段信息构成，经过多层双向自注意力得到上下文化表示。原始预训练主要是掩码语言建模和下一句预测；下游加分类头、序列标注头或抽取式问答头进行微调。适合语义分类、实体识别和检索重排等理解任务，不是天然的逐 Token 文本生成器。",
+        "oral": "BERT 用双向 Encoder 学上下文表示，常用在分类、实体抽取、问答和重排。",
+        "pitfalls": "不要把 BERT 当作与 GPT 完全相同的自回归生成模型。"
+      }
+    },
+    {
+      "id": "medium-159",
+      "index": 43,
+      "title": "BERT 怎样进行 mask 相比 CBOW 有什么区别？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "BERT",
+        "CBOW"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "原始 BERT 预训练随机选约 15% Token 作为预测目标，被选位置多数替换为 `[MASK]`，少数替换成随机词或保持不变，再用双向上下文预测原词。CBOW 则通常根据固定窗口的上下文词预测中心词，没有深层上下文化表示和这种掩码策略。BERT 的随机/不变处理是为缓解预训练与推理时 `[MASK]` 不出现的差异。",
+        "oral": "BERT 随机遮蔽部分位置并利用整句双向上下文恢复；CBOW 用局部窗口预测中心词。",
+        "pitfalls": "不是所有被选中的 15% Token 都实际替换成 `[MASK]`。"
+      }
+    },
+    {
+      "id": "medium-160",
+      "index": 44,
+      "title": "与循环神经网络（RNN）相比，LSTM 是如何解决梯度消失问题的？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "LSTM",
+        "RNN",
+        "梯度消失"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "普通 RNN 反向传播要连续乘多步 Jacobian，容易让梯度指数衰减；LSTM 的 cell state 采用受门控的加性更新，提供较直接的信息与梯度通道，遗忘门可学习保留重要内容。因此能显著缓解长依赖问题。它并不彻底“解决”所有梯度消失，极长序列、门饱和或参数不佳仍可能使训练困难。",
+        "oral": "LSTM 用门控和加性 cell 通道，让梯度更容易跨时间传播，比普通 RNN 更能记长信息。",
+        "pitfalls": "不要说 LSTM 永远不会梯度消失。"
+      }
+    },
+    {
+      "id": "medium-161",
+      "index": 45,
+      "title": "BERT 是如何处理自然语言文本中不常见词或者罕见词的？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "BERT"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "BERT 通常使用 WordPiece 等子词分词，把罕见词拆成较常见的子词片段，再结合上下文编码。这样比整词词表更能覆盖新词，并控制词表规模；遇到无法表示的字符/片段，仍可能映射为未知符号，效果受分词器和语料覆盖影响。领域术语密集时可考虑领域继续预训练、调整词表或用适合该领域的模型。",
+        "oral": "BERT 通过子词拆分处理低频词，再利用上下文推断其含义。",
+        "pitfalls": "拆成子词不代表模型必然理解全新专业术语。"
+      }
+    },
+    {
+      "id": "medium-162",
+      "index": 46,
+      "title": "现有文本分类算法在处理多语种文本数据时可能遭遇哪些挑战？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "文本分类"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "挑战包括不同语言的分词和形态差异、低资源语言样本少、标签定义跨语言不一致、代码混用、拼写变体和文化语义差异。可采用多语预训练模型、语言检测与路由、跨语对齐或翻译增强，并建立各语种分层测试集。报告每种语言的召回、校准和错误案例，避免高资源语种的总体分数掩盖低资源语种失败。",
+        "oral": "多语分类不只换模型，还要处理数据不平衡、分词与标签语义差异，并按语言独立评估。",
+        "pitfalls": "把所有语言混在一起算一个 accuracy，可能掩盖少数语言的严重退化。"
+      }
+    },
+    {
+      "id": "medium-163",
+      "index": 47,
+      "title": "说一说负采样技术在 Word2Vec 中的运用。",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "词嵌入",
+        "Word2Vec",
+        "负采样"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "Word2Vec 的全词表 Softmax 计算昂贵，负采样把一次训练变成区分真实词—上下文配对和少量噪声配对的二分类目标。对正样本提高内积，对从噪声分布抽出的负样本降低内积，从而减少每步计算量。负样本数和采样分布影响低频词、训练速度和表示质量；它是近似训练技巧，不是简单随意删除“不重要词”。",
+        "oral": "负采样用少量伪配对替代全词表归一化，让 Word2Vec 更快训练词向量。",
+        "pitfalls": "负样本是构造出来的噪声词对，不等同于语料中的“负面情感句子”。"
+      }
+    },
+    {
+      "id": "medium-164",
+      "index": 48,
+      "title": "什么是词嵌入（Word Embedding）？有哪些常见的词嵌入方法？",
+      "difficulty": "medium",
+      "tags": [
+        "自然语言处理（NLP）",
+        "词嵌入",
+        "Word2Vec"
+      ],
+      "originalCategory": "medium-8",
+      "originalCategoryName": "NLP、序列模型与词表示",
+      "answer": {
+        "core": "词嵌入是把离散词或子词映射为连续稠密向量，使统计或语义相近的表达在空间中接近。常见静态方法有矩阵分解/LSA、Word2Vec、GloVe、FastText（含子词信息）；上下文化方法如 ELMo、BERT 会根据句子生成不同表示。选型看任务、语言、OOV、多义词、计算预算和是否需要句级语义；现代检索还常直接使用句嵌入模型。",
+        "oral": "词嵌入把词变成可学习的稠密向量；从 Word2Vec、GloVe 到 BERT，表示逐渐能利用更多上下文。",
+        "pitfalls": "词向量相近不等于事实关系正确，也不能直接替代完整句子语义。"
+      }
+    },
+    {
+      "id": "hard-41",
+      "index": 49,
+      "title": "LLaMA 模型中，输入句子的长度理论上是否可以无限长？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "大语言模型"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "不能。自回归 Transformer 的推理受模型训练/配置的上下文窗口、位置编码外推能力、注意力计算与 KV Cache 显存约束；即使 RoPE 可用缩放等方法扩展窗口，超出训练分布后质量可能下降。可用检索、分层摘要、滑窗或长上下文专门训练缓解，但这些是工程折中而非无限长度。对于极长输入，还要关注“中间信息被忽略”、费用和首字延迟。",
+        "oral": "LLaMA 的输入长度受窗口、显存、算力和有效注意力限制；RoPE 不等于无限上下文。",
+        "pitfalls": "标称可接收长度与实际可靠推理长度不是一回事。"
+      }
+    },
+    {
+      "id": "hard-42",
+      "index": 50,
+      "title": "如果让 K 和 Q 变成同一个矩阵，你觉得对模型性能会带来怎样的影响？",
+      "difficulty": "hard",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "若把自注意力的查询和键投影权重绑定为同一个矩阵，则未加 Mask 的相似度 `QKᵀ=QQᵀ` 在 Softmax 前对称、半正定，参数量下降，但模型失去分别学习“发起查询”与“被查询特征”的自由度。行 Softmax 后权重一般不完全对称，不能据此断言注意力图对称；在有因果 Mask 时可见性更不对称。可能牺牲表达能力，也可能带来正则化收益，需在相同参数/FLOPs 和任务集上实验。跨注意力中 Q/K 来自不同来源，强制同值甚至不一定有定义。",
+        "oral": "共享 Q/K 可省参数，但限制表示空间；对性能的净影响需要消融，不能凭直觉断言一定变差多少。",
+        "pitfalls": "“输入 X 相同”不等于 Q、K 投影矩阵相同；Softmax 后注意力也不必对称。"
+      }
+    },
+    {
+      "id": "hard-43",
+      "index": 51,
+      "title": "聊一聊 ELMo 技术，它有哪些优缺点？可以做到一词多义吗？为什么？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "ELMo"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "ELMo 通过双向语言模型（前向与后向 LSTM）为词生成与上下文相关的表示，并可组合不同层的信息。相同词在不同句子中得到不同向量，因此能在一定程度上表达一词多义；比 Word2Vec/GloVe 的单一静态词向量更灵活。缺点是循环结构难以像 Transformer 那样大规模并行，对超长依赖与当前大模型生态的支持有限，推理成本也高于静态向量。它不是基于标准双向 self-attention 的 BERT。",
+        "oral": "ELMo 用双向 LSTM 产生上下文化词向量，所以能区分语境中的词义，但计算较重且不如 Transformer 易并行。",
+        "pitfalls": "一词多义是“上下文表示不同”，不等于模型拥有完美的显式词义字典。"
+      }
+    },
+    {
+      "id": "hard-44",
+      "index": 52,
+      "title": "了解 ViLT（Vision-and-Language Transformer）吗？",
+      "difficulty": "hard",
+      "tags": [
+        "ViLT"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "ViLT 是图文联合预训练架构，将图像直接切成 patch、文本分成 Token，一起输入 Transformer，让计算重点从昂贵的视觉区域特征提取转向跨模态交互。常见训练目标包括图文匹配、掩码语言建模和词—图块对齐；可用于视觉问答、图文检索等任务。它不同于只做图像分类的 ViT，也不意味着完全不做视觉预处理。实际性能受图像分辨率、对齐数据质量和任务类型影响。",
+        "oral": "ViLT 通过图像 patch 与文本 Token 的统一 Transformer 表示，高效学习图文关系。",
+        "pitfalls": "不要把 ViLT 说成纯文本 LLM 或单纯的图像识别模型。"
+      }
+    },
+    {
+      "id": "hard-45",
+      "index": 53,
+      "title": "说说 GloVE 技术，怎样进行训练？有哪些应用场景？相比 Word2Vec 有哪些优缺点？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "Word2Vec",
+        "GloVE"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "GloVe（Global Vectors）先统计语料中的词—词共现矩阵，再用带权最小二乘目标，使词向量内积近似共现概率的对数；直觉上共现比例可表达语义关系。它利用全局统计，训练后可做相似词、类比、分类/检索初始化。Word2Vec 通常基于局部窗口预测任务、可流式采样，GloVe 则显式依赖共现统计；两者都主要给每个词静态向量，难处理多义词和 OOV。优劣依赖语料、词表、内存与下游任务，不能说某者必胜。",
+        "oral": "GloVe 从全局共现矩阵学向量，Word2Vec 从局部预测学向量；两者都是静态词表示，需按任务比较。",
+        "pitfalls": "GloVe 不是简单把共现矩阵直接当词向量，训练还包括加权目标与低维参数。"
+      }
+    },
+    {
+      "id": "hard-46",
+      "index": 54,
+      "title": "说说 FastText 技术，是否比 Word2Vec 更优越？哪些情况下更适合使用 FastText",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "Word2Vec",
+        "FastText"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "fastText 的词表示方法将词拆成字符 n-gram，词向量由子词信息组合而来；其工具库也提供高效文本分类。相比普通 Word2Vec，它对低频词、拼写变体和形态丰富语言更友好，可为未见词推导一定表示；但子词相似不一定语义相同，面对专有名词或歧义、较大模型时未必最优。文本分类场景中 fastText 的浅层模型速度快，适合作为强基线；若上下文、多义词和复杂推理重要，可评估 BERT 类模型。应按数据、语言和延迟要求实测。",
+        "oral": "fastText 加入字符子词，特别适合低频词、拼写变化和形态复杂语言；不是对 Word2Vec 的全面碾压。",
+        "pitfalls": "fastText“词向量方法”和“文本分类工具”相关但不是同一训练任务。"
+      }
+    },
+    {
+      "id": "hard-47",
+      "index": 55,
+      "title": "解释 hierarchical softmax 的流程，以及它有什么优点？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "词嵌入",
+        "Word2Vec",
+        "hierarchical softmax"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "层次 Softmax 将词表组织成一棵二叉树（Word2Vec 常用 Huffman 树），预测目标词不再对全词表归一化，而是沿根到目标叶子的路径连续做二分类；目标词概率是路径各分支概率之积。每个样本的计算量由 `O(|V|)` 降到约树深度 `O(log|V|)`，对大词表有利；Huffman 使高频词路径更短。代价是树结构影响参数共享和训练效果，和负采样各有适用场景。",
+        "oral": "把预测词改成沿树走若干二分类，避免每次计算全词表 Softmax。",
+        "pitfalls": "它不是把词表缩小；最终仍覆盖所有词，只是计算路径更短。"
+      }
+    },
+    {
+      "id": "hard-48",
+      "index": 56,
+      "title": "你觉得可以怎样缓解这个性能瓶颈？",
+      "difficulty": "hard",
+      "tags": [
+        "Transformer"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "题目缺少“这个瓶颈”的前文，面试时应先追问是训练显存、长序列注意力、GPU 通信，还是推理首字/解码。若指 Transformer 长序列注意力：用 FlashAttention 等 IO 感知内核、分块/稀疏/滑窗注意力，或检索/摘要缩短有效序列；若训练显存：混合精度、激活检查点、ZeRO/并行策略；若推理解码：KV Cache、分页管理、批处理、量化和并发调度。每项优化要用相同质量门槛比较吞吐、p95、显存和成本。",
+        "oral": "我会先明确瓶颈指标，再按长序列、训练显存或推理解码分别选优化方案，用剖析结果而非猜测决策。",
+        "pitfalls": "不应在问题缺失上下文时武断回答“加 GPU”或“用 FlashAttention”就能解决全部瓶颈。"
+      }
+    },
+    {
+      "id": "hard-49",
+      "index": 57,
+      "title": "Word2Vec 有哪些加速方法？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "词嵌入",
+        "Word2Vec"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "核心加速是负采样或层次 Softmax，避免每步对全词表做完整 Softmax；高频词下采样能减少“的/and”等词的无效训练，并改善表示；限制窗口大小、设最小词频、批处理和并行训练也能降成本。CBOW 相对 Skip-gram 通常每样本更省，但效果取决于语料与低频词需求。评估时同时看训练时间、下游效果和低频词质量，避免为速度牺牲关键业务词。",
+        "oral": "Word2Vec 常用负采样、层次 Softmax 和高频词下采样提速，外加合理词表/窗口与并行实现。",
+        "pitfalls": "把所有低频词都删掉虽能提速，却可能损害专业术语表示。"
+      }
+    },
+    {
+      "id": "hard-50",
+      "index": 58,
+      "title": "是否使用 Word2Vec 训练过数据？在这个过程中，如何获取语料？如何选择超参数？语料、词表和维度大小如何确定？怎样把握训练时长？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "词嵌入",
+        "Word2Vec"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "这是经历题，应如实回答，不能虚构训练项目。可按真实流程说明：先从有授权的业务文档/日志获取语料，去重、脱敏、规范分词，按文档或时间切分验证集；根据覆盖率和低频长尾选最小词频与词表大小，领域词不能被误删。语料量大、追求速度可先试 CBOW，稀有词重要可试 Skip-gram；向量维度、窗口、负样本数、学习率与 epoch 由验证集和下游任务调优，避免固定教条数字。每轮监控词近邻、类比/检索或文本分类指标，指标停滞与过拟合时早停，同时记录训练耗时、版本和随机种子。",
+        "oral": "若做过，就讲清语料来源、清洗切分、词表覆盖率、超参数搜索和停止标准；没做过应说是可执行方案。",
+        "pitfalls": "不要编造“训练过”，也不要只用词向量可视化好看作为有效性证据。"
+      }
+    },
+    {
+      "id": "hard-51",
+      "index": 59,
+      "title": "你有什么办法可以比较好地解决 BERT 输入长度的限制？",
+      "difficulty": "hard",
+      "tags": [
+        "自然语言处理（NLP）",
+        "BERT"
+      ],
+      "originalCategory": "hard-4",
+      "originalCategoryName": "模型原理、NLP 与部署选型",
+      "answer": {
+        "core": "先判断任务需局部证据还是全局聚合。局部任务可按句/段切块加少量重叠，用检索选相关片段；长文分类可分块编码后对块表示做注意力/池化，或层级 Transformer 聚合；抽取任务用滑窗并合并跨窗结果。若确需原生长依赖，可采用长上下文模型或 Longformer/BigBird 等稀疏注意力变体，并核对权重可用性。比较召回跨块证据、全局一致性、延迟与显存；不能简单把位置编码扩到更长就假设质量稳定。",
+        "oral": "常见方案是切块+滑窗/检索或层级聚合；需要长距离交互再选长上下文架构。",
+        "pitfalls": "直接截断前 512 Token 容易丢尾部关键证据；具体长度还受模型配置和 Tokenizer 影响。"
+      }
+    }
+  ]
+}

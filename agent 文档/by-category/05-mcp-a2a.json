@@ -1,0 +1,439 @@
+{
+  "topicId": "topic-5",
+  "name": "MCP 与 A2A",
+  "description": "工具协议与 Agent 互操作",
+  "count": 23,
+  "questions": [
+    {
+      "id": "easy-70",
+      "index": 1,
+      "title": "MCP 协议是什么？它在 AI Agent 系统中解决了什么问题？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "MCP 是 Model Context Protocol，即模型上下文协议，提供 AI 应用连接外部工具和数据的标准接口。服务端公开可用能力，客户端按协议发现和调用，应用将结果用于模型的任务执行。\n\n它主要减少重复集成工作。例如数据库、文档和工单系统各有自己的 API，如果每个 Agent 框架都为每套系统单独写适配器，维护成本很高。把这些业务能力封装为 MCP 服务后，兼容的应用可以复用同一接口；仍需要配置身份、权限和业务参数。\n\n常见能力分为 Tools、Resources 和 Prompts：工具提供可执行操作，资源提供可读取内容，提示模板提供可复用任务输入。协议定义交换方式，Host 决定如何向模型呈现和使用这些能力。[MCP 官方架构说明](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture)\n\nMCP 的价值是互操作性，不会自动替应用完成规划、事实验证或权限管理。接入成功后，还要评测工具描述是否清楚、调用是否正确、数据是否有权访问。",
+        "oral": "MCP 是 AI 应用接入工具和数据的标准协议。它让服务端统一公开能力，客户端复用发现和调用流程，减少每个模型框架都重新对接业务 API 的成本。Agent 仍负责选择工具和组织任务，应用则负责权限、参数校验和结果处理。",
+        "pitfalls": "- MCP Server 可以在本机或远程运行，不一定是云服务。\n- MCP 统一接口，不保证工具本身正确、安全或可用。"
+      }
+    },
+    {
+      "id": "easy-71",
+      "index": 2,
+      "title": "什么是 MCP 协议，它在 AI 大模型系统中的作用是什么？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "协议原理",
+        "系统设计",
+        "场景题"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "MCP 在大模型系统中承担“能力与上下文接入层”的职责。模型本身生成文本或调用意图，MCP 客户端与服务端则交换工具、资源和结果，让应用获得模型参数之外的信息及操作能力。\n\n例如企业助手需要查员工手册、查询订单和创建工单，可以分别接入文档、订单和工单 MCP 服务。Host 根据用户身份决定开放哪些操作，模型选择相关工具，运行时执行调用并将结果放入上下文，最后生成回答。\n\n协议的数据交换建立在 JSON-RPC 之上，传输层负责本地或远程通信；请求的版本和能力处理需遵循实际支持的协议修订。[MCP 基础规范](https://modelcontextprotocol.io/specification/2026-07-28/basic)\n\n它适合用于整合多个业务系统，也可作为 RAG 的资料获取入口。完整架构还需要模型调用层、任务状态、工具执行器、审计和评测，不能只靠协议完成整个 Agent。",
+        "oral": "我把 MCP 放在模型应用与外部系统之间，作为统一的工具和上下文接入层。比如文档查询和工单创建可以通过不同 MCP 服务提供，再由 Host 控制权限和调用。它解决连接标准化问题，任务规划、记忆和评测仍由应用负责。",
+        "pitfalls": "- MCP 不要求所有工具结果都一次性放入上下文。\n- 接入业务服务仍需设计错误处理、超时与版本兼容。"
+      }
+    },
+    {
+      "id": "easy-72",
+      "index": 3,
+      "title": "MCP 架构包含哪些核心组件？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "系统架构"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "MCP 的核心参与者是 Host、Client 和 Server：\n\n| 组件 | 主要职责 |\n| --- | --- |\n| Host | 承载用户交互、模型和应用逻辑，协调多个 Client，控制能力暴露与授权。 |\n| Client | Host 内与某个 Server 通信的组件，发现能力、发送协议请求和处理结果。 |\n| Server | 向 Client 提供工具、资源、提示模板等能力，对接外部系统。 |\n\n例如一个 AI 编辑器是 Host，它创建一个 Client 连接文件服务，另一个 Client 连接工单服务。Server 是提供能力的程序，既可本地运行，也可远程部署。[MCP 参与者定义](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture)\n\n此外，数据层规定消息和操作语义，传输层处理消息如何到达对端。模型不是 MCP Client 的同义词：模型可以生成调用意图，实际协议请求由应用组件执行。",
+        "oral": "Host 是整个 AI 应用，Client 是它与某个 MCP 服务通信的组件，Server 则公开外部工具和资料。一个 Host 可以管理多个 Client，连接多套系统。再往下分，有定义消息语义的数据层和负责通信的传输层。",
+        "pitfalls": "- Host 与 Client 是不同职责，不能省略 Host 的授权和协调作用。\n- 一个服务公开工具，不等于它拥有整个 Agent 的自主决策流程。"
+      }
+    },
+    {
+      "id": "easy-73",
+      "index": 4,
+      "title": "MCP 协议的架构包含哪些核心组件？Server 和 Client 分别负责什么？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "MCP 包含应用侧 Host、连接侧 Client 和能力侧 Server。本题重点是 Client 与 Server 的执行分工。\n\n**Server** 负责将业务能力映射为协议接口：提供工具列表和参数 Schema，接收调用、校验权限与参数，执行真实业务，再返回内容或错误；资源读取还应保留来源和访问边界。[MCP 工具规范](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)、[资源规范](https://modelcontextprotocol.io/specification/2026-07-28/server/resources)\n\n**Client** 负责与服务端通信、发现可用能力、发送请求、处理错误和兼容性，并把结果交给 Host。Host 再决定是否将结果加入上下文、继续调用还是展示给用户。\n\n以订单查询为例，Client 发送订单号，Server 根据调用者身份查询订单并返回受限字段。用户身份不能由模型随意填一个参数就算成立；服务端必须验证可信凭据，执行行级或租户级权限检查。",
+        "oral": "Server 提供能力并真正执行业务，Client 负责发现和协议调用，Host 管理模型、用户与权限。订单查询中，客户端发送参数，服务端校验调用者并查询，再由 Host 使用返回结果。两侧都要处理安全和错误，不能把权限控制交给模型。",
+        "pitfalls": "- 客户端过滤工具不能替代服务端授权。\n- 工具返回错误与协议通信错误应分别记录，便于定位。"
+      }
+    },
+    {
+      "id": "easy-74",
+      "index": 5,
+      "title": "MCP 协议支持哪些模式？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "协议设计"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "“模式”可能指传输方式、部署方式或 SDK 执行方式，面试时应先说明口径。按核心传输方式，常见的是：\n\n- **stdio**：客户端启动本地服务进程，通过标准输入输出交换协议消息，适合本地工具。普通日志应写到 stderr，避免污染协议输出。[stdio 规范](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio)\n- **Streamable HTTP**：服务独立运行，客户端通过 HTTP 请求调用，响应可以是 JSON 或与该请求相关的 SSE 流，适合远程和多客户端场景。[Streamable HTTP 规范](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http)\n\n旧版 HTTP+SSE 是需要区分的历史传输方案，不能把它与 Streamable HTTP 中的 SSE 响应混为一谈。实际互通取决于客户端、服务端和 SDK 支持的版本。\n\n“本地/远程”描述部署位置；“同步/异步”通常描述 SDK 的调用与编程模型，不是两种新的 MCP 协议。选择时看运行环境、并发、网络、鉴权和运维需求。",
+        "oral": "按传输层，MCP 常用 stdio 和 Streamable HTTP。前者适合本地子进程，后者适合远程服务，HTTP 响应也可以采用 SSE。需要区分旧 HTTP+SSE 方案；同步异步则是 SDK 的编程方式，应按框架和双方兼容情况选择。",
+        "pitfalls": "- SSE 可以是 HTTP 响应形式，不代表必然采用旧版双端点方案。\n- stdio 并不天然等于同步调用。"
+      }
+    },
+    {
+      "id": "easy-75",
+      "index": 6,
+      "title": "MCP 的工作流程是什么？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "协议原理"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "通用业务流程是：**配置与授权 → 确认兼容能力 → 发现工具或资源 → 执行调用 → 回传结果 → 继续任务或结束**。\n\n例如查订单：应用连接订单服务，获取可用工具及参数要求，向模型呈现允许调用的能力；模型提出查询意图后，应用校验并发送调用，服务返回数据，模型再组织回答。失败时按错误类型重试或报告，写操作还需要幂等控制。\n\n协议建立过程必须注明版本：**2025-11-25 及以前的旧修订通常先执行 `initialize` 和 `notifications/initialized`；2026-07-28 修订改为请求携带版本与客户端能力元数据，不再要求初始化握手，客户端可选择用 `server/discover` 了解服务能力。** `clientInfo` 是建议携带的客户端描述，不是用户认证凭据。双版本兼容应由 SDK 或明确的兼容逻辑处理。[MCP 版本与兼容规范](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning)、[TypeScript SDK 迁移说明](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28)\n\n因此面试中可以讲统一的业务链路，再说明所用 SDK 的实际协议版本，避免把旧初始化流程描述成永久不变的规则。",
+        "oral": "MCP 先确认访问权限和版本兼容，再发现能力、发送调用、取得结果并交回模型使用。旧版本有 initialize 握手，2026-07-28 规范改成每请求携带必要元数据。具体项目要按双方 SDK 支持的版本处理兼容，并做好超时、错误和幂等。",
+        "pitfalls": "- 新规范与现有 SDK 支持范围可能不同，不能默认全部同步升级。\n- 协议无状态不代表业务没有状态，跨请求业务状态应使用显式标识管理。"
+      }
+    },
+    {
+      "id": "easy-76",
+      "index": 7,
+      "title": "MCP 与 Function Calling 的区别是什么？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "Function Calling"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "Function Calling 是模型接口表达工具调用意图的机制：应用提供函数描述和参数结构，模型输出函数名及参数，再由运行时执行。MCP 则规范应用与工具服务之间的能力发现、调用和结果交换。\n\n可以把两者放在同一条链路中：**模型产生 Function Call → 应用校验并路由 → MCP Client 调用 Server → 工具结果回到模型**。Function Calling 解决“模型如何提出调用”，MCP 解决“应用如何标准化连接能力提供方”。\n\n本地函数调用适合工具少、系统关系固定的应用；MCP 适合能力需要被多个应用复用、工具动态发现或跨系统接入的场景。MCP 除工具之外，还能交换资源和提示模板；模型是否支持某种工具接口，则取决于供应商和适配层。\n\n例如模型想执行 `get_order`，应用既可以直接调用本地业务函数，也可以把意图映射成 MCP 请求。无论哪种方式，都必须在执行前进行参数和权限检查。",
+        "oral": "Function Calling 是模型生成结构化工具调用，MCP 是应用与工具服务的通信协议。二者可以配合使用：模型决定调用什么，应用经 MCP 执行业务，再把结果送回模型。简单内部工具可以直接调用，跨系统复用更适合 MCP。",
+        "pitfalls": "- 模型输出函数名，不等于已真正执行函数。\n- MCP 不是用来替换模型供应商的全部推理 API。"
+      }
+    },
+    {
+      "id": "easy-77",
+      "index": 8,
+      "title": "Agent 系统中的 Function Calling 和 MCP 有什么区别？各自的优缺点是什么？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "两者处在不同层面，可以从工程成本比较：\n\n| 方案 | 优点 | 需要承担的成本 |\n| --- | --- | --- |\n| 直接 Function Calling 集成 | 组件少、路由直接、便于控制内部工具 | 工具发现、鉴权、业务适配和供应商差异需要自行实现 |\n| 通过 MCP 接入能力 | 接口标准化，便于多个应用复用，支持能力发现 | 增加服务与协议运维、版本兼容、网络和安全治理 |\n\n采用 MCP 后，模型通常仍需要原生工具调用或应用适配器来表达调用意图。因此不是非此即彼，而是先判断业务能力是否值得独立服务化。\n\n例如单体助手只有两个内部查询函数，直接集成就可能足够；多个团队的 Agent 都需要文档和工单能力，统一 MCP 服务更易维护。评测时应比较执行成功率、延迟、故障排查和总维护成本，而不只追求协议数量。",
+        "oral": "直接 Function Calling 更轻量，适合少量固定工具，但集成逻辑需要自己维护。MCP 便于跨应用复用和能力发现，代价是协议兼容与服务治理。真实系统常把两者结合，选型依据是复用需求和维护成本。",
+        "pitfalls": "- 标准化接口不会自动统一不同业务系统的语义。\n- 引入 MCP 不必然比直接调用更低延迟。"
+      }
+    },
+    {
+      "id": "easy-78",
+      "index": 9,
+      "title": "如何将已有的应用转换成 MCP 服务？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "开发实践"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "通常无需重写整个应用，而是在现有业务逻辑之外增加一层 MCP 适配：\n\n1. **选择能力**：优先公开粒度清晰的查询和操作，例如查订单、创建工单。\n2. **定义契约**：明确工具名称、描述、输入 Schema、输出结构和失败情况；只读资料可映射为资源。\n3. **复用业务层**：服务端收到调用后，使用已有接口或服务对象，避免复制业务规则。\n4. **落实执行控制**：校验身份、权限、参数、超时、限流和写操作幂等。\n5. **选择传输与部署**：本地工具可采用 stdio，远程共享能力可采用 HTTP。\n6. **验证与监控**：检查能力发现、参数边界、错误路径和真实任务完成效果。\n\n例如订单系统可以公开 `get_order_status`，服务端根据调用者权限读取有限字段。不要把“任意 SQL”或“任意命令执行”当作默认业务工具，而应提供满足目标任务的受限操作。工具定义和调用消息需符合所选 MCP 修订。[MCP Tools 规范](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)",
+        "oral": "我会给现有应用加协议适配层，先选清晰的业务能力，再定义 Schema 和错误契约，内部仍调用原有业务服务。随后补齐鉴权、幂等、限流和监控，选择本地或远程传输，并用真实 Agent 测试工具是否容易正确使用。",
+        "pitfalls": "- 将 REST 接口机械改名为工具，不代表描述和粒度适合模型。\n- MCP 层不能绕过现有业务系统的授权检查。"
+      }
+    },
+    {
+      "id": "easy-79",
+      "index": 10,
+      "title": "在 Spring AI 框架中如何集成 MCP？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "Spring",
+        "Spring AI",
+        "Java"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "Spring AI 提供 MCP 客户端和服务端 Starter，通常通过 BOM 管理依赖版本，再选择对应运行模式。[Spring AI MCP 官方说明](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html)\n\n**客户端接入**：添加 `spring-ai-starter-mcp-client` 或 WebFlux 客户端 Starter；配置本地进程或远程服务、凭据、超时及同步/异步类型；发现工具并适配为 Spring AI 的 ToolCallback，交给模型调用链。工具结果再进入后续生成流程。\n\n**服务端暴露**：根据应用选择 `spring-ai-starter-mcp-server`、`spring-ai-starter-mcp-server-webmvc` 或 WebFlux 版本。可在 Spring Bean 上用 `@McpTool` 暴露业务方法，用 `@McpResource` 注册资源，按版本配置扫描与返回类型。Web 服务可选择 `STREAMABLE` 或 `STATELESS` 等配置；新项目优先使用 Streamable HTTP，Spring AI 2.x 已将旧 `SSE` 传输标记弃用。[服务端配置说明](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html)\n\n两端传输和协议修订需兼容；`SYNC/ASYNC` 是各端的本地编程模式，不要求客户端和服务端同型，但同一应用内的回调与返回类型应匹配所选模式。名为 `STATELESS` 的配置不能直接当作支持最新全部协议特性的证明。HTTP Starter 不代替鉴权，业务授权和幂等仍放在服务层。",
+        "oral": "Spring AI 集成 MCP 分为客户端消费工具和服务端公开能力。用 BOM 管理版本，客户端把发现的工具适配进模型调用链，服务端通过注解或注册方式复用业务方法。双方检查传输和协议兼容，各自正确配置同步异步回调，再补齐鉴权和超时。",
+        "pitfalls": "- 不同 Spring AI 版本的依赖和配置可能变化，不能照搬旧教程。\n- 工具注册成功仍需实际测试发现、调用和业务权限。"
+      }
+    },
+    {
+      "id": "easy-80",
+      "index": 11,
+      "title": "MCP 协议安全性设计包含哪些层面？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "MCP",
+        "安全性"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "MCP 安全需要同时关注通信、身份、工具执行和数据使用：\n\n- **通信与身份**：远程通信使用加密传输，验证服务来源和调用者；按场景采用授权机制，检查令牌受众、范围和有效期。\n- **能力与数据授权**：不同用户只看到和调用允许的工具，查询时强制租户及资源权限，返回字段按最小需要裁剪。\n- **执行安全**：参数校验、命令与路径约束、出站网络控制、超时、限流和幂等；高影响操作保留人工确认。\n- **内容与供应链**：工具描述、返回资料和插件可能不可信，应防范提示词注入与恶意更新。\n- **审计与恢复**：记录谁调用了什么、是否成功，日志脱敏，支持撤销访问和处置异常。\n\n官方安全规范明确反对令牌直接透传等危险代理模式，授权还需区分 HTTP 与本地 stdio 的运行方式。[MCP 安全实践](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices)\n\n例如读取订单和批量退款应有不同权限与审批边界，不能因为工具来自同一服务就赋予相同执行权限。",
+        "oral": "MCP 安全要覆盖身份和传输、数据授权、工具执行、内容可信性以及审计。客户端要验证服务，服务端要验证用户和参数，高影响动作需要更严格控制。工具描述不是权限凭据，也不能把调用方令牌不加验证地透传给下游。",
+        "pitfalls": "- 工具声明“只读”属于描述信息，仍需验证真实行为。\n- 仅隐藏工具列表无法防止攻击者直接请求服务端接口。"
+      }
+    },
+    {
+      "id": "easy-81",
+      "index": 12,
+      "title": "MCP 和 Skills 有什么区别？分别适用于什么场景？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent",
+        "Skills"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "MCP 主要规范外部能力如何被发现和调用；Skills 主要封装完成某类任务的知识、步骤、模板和辅助资源。前者更像“能用哪些工具”，后者更像“这个任务应该怎么做”。\n\n例如一个报表 Skill 可以规定读取哪些指标、如何检查数据、按什么模板输出，并调用 MCP 提供的数据库工具。Skill 提供流程，MCP 提供访问能力，两者可以组合。\n\n在 Agent Skills 开放格式中，一个技能目录以 `SKILL.md` 描述任务，也可包含脚本、参考资料和模板，并按需加载内容。[Agent Skills 官方说明](https://agentskills.io/home) 但不同平台对 Skills 的加载、权限和执行支持可能不同。\n\n选择时，跨应用复用业务 API 适合 MCP；沉淀专家流程、文档处理步骤和固定交付模板适合 Skills。两者都需要可信来源和适用范围，加载流程说明不代表自动获准执行其中所有操作。",
+        "oral": "MCP 解决工具和数据连接，Skills 沉淀任务流程和专业知识。报表技能可以教 Agent 怎么检查指标和组织结果，再用 MCP 数据库工具取得数据。实际应用里常配合使用，并分别管理工具权限和技能来源。",
+        "pitfalls": "- Skill 可以包含代码和资源，并不只是一个提示词字符串。\n- 安装 Skill 不会自动替代业务工具或授予工具权限。"
+      }
+    },
+    {
+      "id": "easy-82",
+      "index": 13,
+      "title": "A2A 协议的工作原理是怎样的？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "A2A",
+        "技术栈"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "A2A 是 Agent2Agent 协议，用于独立 Agent 之间的发现、通信和任务协作。调用方了解对方提供的能力后，发送任务相关消息，并接收状态和交付结果，无需知道对方内部使用哪个模型或框架。[A2A 官方概述](https://a2a-protocol.org/latest/topics/what-is-a2a/)\n\n核心对象包括 Agent Card、Message、Task 和 Artifact：卡片描述能力与接口，消息承载交互，任务记录执行状态，产物承载结果。执行较长时可以按双方支持的能力使用流式更新或通知。\n\n例如主 Agent 请求数据分析 Agent 生成销售报告，后者可以独立读取数据和计算，期间报告进度，完成后返回报告产物。任务可能需要补充输入或失败，调用方应据此推进流程，而不是把一次网络成功当作任务完成。\n\n协议负责互操作，真正的任务分配、预算、信任和业务验收仍由应用实现。对方声称有某项能力，也需要通过来源认证和结果评测确认可信程度。",
+        "oral": "A2A 让独立 Agent 通过统一的能力描述、消息、任务状态和产物进行协作。调用方无需了解对方内部模型，只需遵循接口并跟踪任务生命周期。协议统一通信，任务调度和结果验收仍由系统负责。",
+        "pitfalls": "- 对外开放 A2A 不要求公开 Agent 内部提示词和推理过程。\n- 接口调用成功不等于业务任务已成功完成。"
+      }
+    },
+    {
+      "id": "easy-83",
+      "index": 14,
+      "title": "A2A 协议的工作流程是怎样的？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "A2A"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "A2A 的典型流程可以分为六步：\n\n1. **发现**：取得 Agent Card，确认能力、接口、协议版本和输入输出类型。\n2. **认证**：获取或配置所需凭据，确认任务允许交给该 Agent。\n3. **发送消息**：描述目标、输入材料、约束和期望结果。\n4. **处理响应**：简单协商可返回消息，正式工作可建立带 ID 的任务。\n5. **跟踪任务**：处理工作中、需要输入、完成、失败或取消等状态，并按支持能力订阅更新。\n6. **接收与验收**：读取产物，校验来源、格式与业务结果，再决定下一步。\n\n任务进入完成、取消、拒绝或失败等终态后，新的修改需求应启动关联的新任务，而不是随意重启旧任务。[A2A 任务生命周期](https://a2a-protocol.org/latest/topics/life-of-a-task/)\n\n工程中还要处理重试、去重、取消传播和超时。例如网络断开后，应查询已有任务，避免把同一次报告请求重复提交并产生多份结果。",
+        "oral": "先发现 Agent 并认证，再发送任务消息，获得消息或任务响应，随后跟踪状态、补充输入，最后接收产物并验收。长任务要处理流式更新、重试和取消，完成后的修订按协议创建关联的新任务。",
+        "pitfalls": "- 不是每一条 A2A 消息都必须创建长任务。\n- 重试是否重复执行业务，需要应用的去重和幂等设计。"
+      }
+    },
+    {
+      "id": "easy-84",
+      "index": 15,
+      "title": "A2A 协议中的 Agent Card 是什么？它在多 Agent 发现和协作中起什么作用？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "Agent Card 是 Agent 对外提供的结构化能力说明，可理解为一张机器可读的服务名片。它描述身份、技能、输入输出形式、支持的接口与协议、流式能力和认证要求，帮助调用方选择合适的 Agent 并正确接入。[A2A Agent Card 与发现机制](https://a2a-protocol.org/latest/topics/agent-discovery/)\n\n例如报告 Agent 的卡片可以说明支持销售分析、接受表格数据、输出报告文件、需要企业身份认证。主 Agent 据此判断任务是否匹配，随后通过被支持的接口调用。\n\n卡片可以通过约定位置、注册目录或私有配置发现。它只描述服务声明，不是运行结果，也不是包含密钥的配置文件。敏感能力信息可以要求认证后获取，凭据应独立管理。\n\n工程上还应校验卡片来源、协议兼容和访问边界，并管理缓存更新。Agent 更新接口后，长期使用旧卡片会造成调用失败；服务声明与真实能力也需要持续评测。",
+        "oral": "Agent Card 是描述 Agent 身份、能力、接口和认证要求的服务名片。它帮助多 Agent 系统发现合适的协作者并准备请求。卡片声明不是能力或权限保证，仍需验证来源、版本和实际结果，也不能在里面放长期秘密。",
+        "pitfalls": "- 卡片中的 skills 是能力描述，不必等同于某平台的技能文件。\n- 找到某个 Agent 不代表有权调用它。"
+      }
+    },
+    {
+      "id": "easy-85",
+      "index": 16,
+      "title": "什么是 A2A 协议？它和 MCP 协议有什么区别？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "A2A 规范独立 Agent 之间的任务协作；MCP 规范 AI 应用接入外部工具、资源和上下文。可以从交互对象和状态管理区分：\n\n| 维度 | MCP | A2A |\n| --- | --- | --- |\n| 主要对象 | 能力服务、工具和资料 | 独立 Agent 服务 |\n| 常见交互 | 发现工具、读取资源、执行操作 | 发送任务消息、跟踪状态、取得产物 |\n| 能力描述 | 工具及资源契约 | Agent Card 与技能描述 |\n| 系统关注点 | 正确、安全地连接能力 | 跨 Agent 委派与执行协作 |\n\n例如查询库存可通过 MCP 工具完成；让供应链 Agent 综合库存、预测和供应商数据制定采购计划，可通过 A2A 委派。远端 Agent 内部还可以使用 MCP。\n\n这是一种主要职责划分，不应断言 MCP 永远不能暴露 Agent，或 A2A 能自动解决调度。业务边界、任务粒度和授权仍需要应用设计。[A2A 官方协议入口](https://a2a-protocol.org/)",
+        "oral": "MCP 更偏向把工具和数据接进应用，A2A 更偏向把任务交给另一个独立 Agent。两者可以组合：主 Agent 通过 A2A 委派工作，远端 Agent 再通过 MCP 使用自己的工具。选择看对方是提供具体操作，还是负责一段完整任务。",
+        "pitfalls": "- 两种协议解决不同主要问题，不是简单替代关系。\n- 接口名称相似，不代表对象、状态和授权语义相同。"
+      }
+    },
+    {
+      "id": "easy-86",
+      "index": 17,
+      "title": "MCP 协议和 A2A 协议如何协同工作？请设计一个同时使用两者的多 Agent 系统架构",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "以企业采购助手为例，可以让主 Agent 负责理解需求、协调任务和最终汇总，供应链 Agent 与财务 Agent 分别承担领域工作，具体业务访问通过 MCP 提供：\n\n```text\n用户 → 主 Agent\n         ├─ A2A → 供应链 Agent → MCP → 库存与供应商系统\n         └─ A2A → 财务 Agent   → MCP → 预算与付款规则\n       ← 状态、证据和产物 ← 各领域 Agent\n```\n\n主 Agent 按卡片和能力选择协作者，通过 A2A 传递目标、输入和期限；领域 Agent 通过 MCP 查询授权资料，再提交有来源的建议。主 Agent 验证结果，形成采购方案；真正下单仍交给受控业务流程。\n\n架构上需要统一任务关联 ID、来源和结果契约，限制每个分支的时间与成本，传播取消，并管理去重和恢复。身份应跨层验证，向下委派的权限不得扩大；文档与其他 Agent 的回答也要按来源处理，不能覆盖主任务规则。",
+        "oral": "我会用 A2A 连接主 Agent 与领域 Agent，用 MCP 连接各 Agent 与业务系统。主 Agent 管协调与验收，领域 Agent 独立完成任务并返回产物。跨层统一身份、任务 ID、预算和取消，写业务由权限与审批流程控制。",
+        "pitfalls": "- 父 Agent 的全部上下文和凭据不应默认传给所有协作者。\n- 超时取消请求不等于远端业务已回滚，需要明确补偿机制。"
+      }
+    },
+    {
+      "id": "easy-87",
+      "index": 18,
+      "title": "多 Agent 协作有哪些常见的编排模式？各自适合什么场景？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Agent"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "常见编排模式可以按任务依赖和控制方式选择：\n\n| 模式 | 适用场景与取舍 |\n| --- | --- |\n| 串行流水线 | 处理顺序固定，如抽取、审核、生成；容易控制，但前序错误会传递。 |\n| 并行分支 / DAG | 可拆分的检索或分析；降低等待时间，需合并冲突和限制总成本。 |\n| Supervisor 调度 | 主 Agent 分配任务给专家；灵活，但协调者可能成为瓶颈。 |\n| Handoff 接力 | 当前 Agent 将处理职责转交更合适的 Agent；需明确状态和用户交互归属。 |\n| 讨论与评审 | 方案比较、审查和反驳；能增加检查角度，但也可能共同犯错。 |\n| 共享工作区 | 多 Agent 读取或更新任务板、文件和状态；需处理一致性、并发及来源。 |\n\n例如客服路由适合主管或接力，调研任务适合并行，固定报表流程适合 DAG。设计时应先明确输入输出契约、谁有最终决定权、如何停止和如何验收，再决定是否需要动态 Agent。",
+        "oral": "我会根据任务依赖选模式：固定流程用流水线或 DAG，可独立工作用并行，有专家分工用主管或接力，关键方案增加评审。多 Agent 的价值来自有效分工，必须明确结果契约、状态所有权、预算和终止条件。",
+        "pitfalls": "- 多个 Agent 使用同一模型讨论，不代表形成独立可靠证据。\n- 单机内部编排不一定需要网络协议。"
+      }
+    },
+    {
+      "id": "easy-88",
+      "index": 19,
+      "title": "什么是 ACP 协议？它有哪两个不同的含义？",
+      "difficulty": "easy",
+      "tags": [
+        "—"
+      ],
+      "originalCategory": "easy-5",
+      "originalCategoryName": "MCP、A2A 与多智能体协议",
+      "answer": {
+        "core": "ACP 在 Agent 领域常见的两个含义属于不同项目，必须说明全称和来源：\n\n1. **Agent Client Protocol**：标准化编辑器或 IDE 与编程 Agent 的交互，例如会话、进度、文件操作和权限请求。本地实现常用 JSON-RPC over stdio；远程支持应按具体版本核对。[Agent Client Protocol 官方介绍](https://agentclientprotocol.com/get-started/introduction)\n2. **Agent Communication Protocol**：BeeAI 相关的 Agent、应用与人之间通信协议，描述消息、运行、发现和长任务协作。该项目官方仓库已宣布并入 A2A，仓库处于归档状态，新集成应关注迁移路径。[Agent Communication Protocol 官方仓库](https://github.com/i-am-bee/acp)\n\n前者主要关注“编辑器怎样与编码 Agent 协作”，后者历史上主要关注“Agent 之间怎样通信”。两者不是同一协议的客户端和服务端，也不能共享缩写就认为兼容。\n\n面试时先询问语境或主动列出两个全称，再结合项目版本说明。这里的“两种”是本题常见语境，并不排除其他领域也使用 ACP 缩写。",
+        "oral": "ACP 要先看全称。Agent Client Protocol 面向编辑器和编程 Agent，Agent Communication Protocol 则曾面向 Agent 通信，BeeAI 相关项目已并入 A2A。它们来自不同项目，接口和用途不同，不能仅凭缩写判断兼容性。",
+        "pitfalls": "- 不应把归档项目描述成仍独立持续演进的最新标准。\n- 协议名、SDK 版本和产品是否支持，需要分别确认。"
+      }
+    },
+    {
+      "id": "medium-70",
+      "index": 20,
+      "title": "A2A 协议有哪五大设计原则？",
+      "difficulty": "medium",
+      "tags": [
+        "大模型",
+        "AI",
+        "A2A",
+        "系统架构"
+      ],
+      "originalCategory": "medium-4",
+      "originalCategoryName": "Agent、协议与 OpenClaw",
+      "answer": {
+        "core": "按 A2A 官方文档，五项原则是：简单性（复用 HTTP 等现有标准）、企业就绪（认证、授权、审计等）、异步性（支持长任务、流式与回调）、模态无关（文本、文件和结构化数据）、不透明执行（协作方无需暴露内部工具和实现）。它们使不同厂商 Agent 能在保留自治与安全边界的前提下协作。",
+        "oral": "五项是简单、企业就绪、异步、模态无关和内部实现不透明。",
+        "pitfalls": "“不透明”不等于没有可观测性；任务状态和产物仍可对外暴露。"
+      }
+    },
+    {
+      "id": "medium-71",
+      "index": 21,
+      "title": "A2A 协议 与 MCP 协议的关系是怎样的？",
+      "difficulty": "medium",
+      "tags": [
+        "大模型",
+        "AI",
+        "A2A",
+        "MCP"
+      ],
+      "originalCategory": "medium-4",
+      "originalCategoryName": "Agent、协议与 OpenClaw",
+      "answer": {
+        "core": "A2A 侧重 Agent 与 Agent 之间的发现、任务委托、状态和结果交换；MCP 侧重 Agent/应用与工具、数据源之间的标准化连接。一个财务 Agent 可通过 A2A 委托报表 Agent，再由报表 Agent 通过 MCP 调数据库或文件服务。两者互补而非替代；认证、授权和审计需要分别落在各自边界。",
+        "oral": "A2A 让 Agent 彼此协作，MCP 让 Agent 使用工具和资源，可在同一系统里组合。",
+        "pitfalls": "不能把 MCP Server 直接等同于具有自主任务能力的 Agent。"
+      }
+    },
+    {
+      "id": "medium-77",
+      "index": 22,
+      "title": "什么是 A2A 协议，它的核心架构及主要组件有哪些？",
+      "difficulty": "medium",
+      "tags": [
+        "大模型",
+        "AI",
+        "A2A",
+        "系统架构"
+      ],
+      "originalCategory": "medium-4",
+      "originalCategoryName": "Agent、协议与 OpenClaw",
+      "answer": {
+        "core": "A2A 是独立 Agent 之间互操作的协议。客户端 Agent 根据 Agent Card 发现服务端 Agent 的能力、端点和认证要求，发送 Message；服务端可直接回复或创建有生命周期的 Task，使用状态更新、流式事件/推送和 Artifact 返回结果。Part 承载文本、文件或结构化数据。协议不要求公开被调用 Agent 的内部模型或工具。",
+        "oral": "A2A 的核心是 Agent Card 发现、Message 交互、Task 追踪和 Artifact 交付。",
+        "pitfalls": "Agent Card 是能力声明，不等于自动授权；仍要做认证与权限控制。"
+      }
+    },
+    {
+      "id": "medium-94",
+      "index": 23,
+      "title": "多 Agent 之间如何通信和协调？OpenClaw 的 Gateway 在其中扮演什么角色？",
+      "difficulty": "medium",
+      "tags": [
+        "AI",
+        "OpenClaw",
+        "大模型应用开发",
+        "AI应用开发",
+        "Agent开发"
+      ],
+      "originalCategory": "medium-4",
+      "originalCategoryName": "Agent、协议与 OpenClaw",
+      "answer": {
+        "core": "多 Agent 需要任务 ID、消息/产物格式、状态机、超时、重试和归属者。OpenClaw Gateway 负责会话与路由、接入渠道、跨 Agent 消息的策略检查和交付；子 Agent 有自己的会话，完成后向请求方反馈。共享任务状态应存持久层，消息送达不等于业务完成；需避免循环委托和越权读取其他会话。",
+        "oral": "Gateway 是协作的入口与控制面，帮助路由和交付；真正业务状态仍应由任务/会话记录管理。",
+        "pitfalls": "不能因为 Agent 都在同一 Gateway 上，就默认允许互读对话或跨渠道发消息。"
+      }
+    }
+  ]
+}
