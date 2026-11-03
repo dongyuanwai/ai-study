@@ -47,6 +47,11 @@ function cleanLabel(value: string): string {
   return value.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/[\u200B\uFEFF]/g, "").trim();
 }
 
+// Default layout, local and on Vercel: this app's cwd is `agent-docs/AI学习系统`
+// (the Vercel launcher chdirs there) and the six bank files are its parent.
+// Leave AI_BANK_DIR unset. A relative value such as `agent-docs` is resolved
+// from that cwd and misses the files; on Vercel the only useful override is
+// the absolute path `/var/task/agent-docs`.
 function sourceRoot(): string {
   return process.env.AI_BANK_DIR ? resolve(process.env.AI_BANK_DIR) : resolve(process.cwd(), "..");
 }
