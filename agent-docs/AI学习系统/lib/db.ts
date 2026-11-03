@@ -1,14 +1,25 @@
 import { mkdirSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { tmpdir } from "node:os";
+import { dirname, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
 const cache = globalThis as typeof globalThis & { __aiLearningDb?: DatabaseSync };
 
+// Local dev writes data/learning.sqlite under the app directory. On Vercel the
+// launcher chdirs to /var/task/agent-docs/AI学习系统, and that tree is read-only.
+// data/ is also absent from the traced function bundle. mkdirSync(recursive)
+// then fails with ENOENT on .../data (a non-recursive mkdir would be EROFS),
+// which is what crashes `/`. /tmp is the writable location. AI_DB_PATH still
+// overrides either default when set to a writable file.
+function dbFilename(): string {
+  if (process.env.AI_DB_PATH) return resolve(process.env.AI_DB_PATH);
+  if (process.env.VERCEL) return resolve(tmpdir(), "ai-learning", "learning.sqlite");
+  return resolve(process.cwd(), "data", "learning.sqlite");
+}
+
 export function getDb(): DatabaseSync {
   if (cache.__aiLearningDb) return cache.__aiLearningDb;
-  const filename = process.env.AI_DB_PATH
-    ? resolve(process.env.AI_DB_PATH)
-    : resolve(process.cwd(), "data", "learning.sqlite");
+  const filename = dbFilename();
   mkdirSync(dirname(filename), { recursive: true });
   const db = new DatabaseSync(filename);
   db.exec("PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 3000; PRAGMA foreign_keys = ON;");

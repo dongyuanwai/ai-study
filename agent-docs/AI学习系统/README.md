@@ -20,7 +20,7 @@ npm run dev
 - 题库默认从本目录的上一级读取 `AI大模型面试题库-简单题.md` 等六个原文件。本地开发和 Vercel 都是这个布局：工作目录是 `agent-docs/AI学习系统`，题库在它的父目录。请不要设置 `AI_BANK_DIR`。相对路径（例如 `agent-docs`）会从工作目录再往下解析，找不到这些文件。只有题库不在上一级时才设置它，并且必须是绝对路径；在 Vercel 函数里该目录是 `/var/task/agent-docs`。
 - 部署时这些 Markdown 不在 Next 应用目录内，`next.config.ts` 用 `outputFileTracingIncludes` 把它们打进 Serverless Function，否则运行时会因找不到文件而报 ENOENT。
 - JS/TS、Solidity 与 Web3 面试题维护在 `lib/web3-questions.ts`，每题包含难度、标签、核心回答、口述版、易错点和官方资料链接。
-- 作答、会话与复习计划保存到本地 `data/learning.sqlite`，不提交版本控制。可用 `AI_DB_PATH` 改存储位置。备份时复制该数据库文件及可能存在的 `-wal`、`-shm` 文件，最好先停服务。
+- 作答、会话与复习计划保存在 SQLite，不提交版本控制。本地开发写入 `data/learning.sqlite`。Vercel 上函数目录只读，且追踪后的函数包里没有 `data/`，继续在那里 `mkdir` 会让首页报 `ENOENT`，所以默认改写到临时目录下的 `ai-learning/learning.sqlite`（一般是 `/tmp`，实例回收后清空）。需要别的可写文件时再设置 `AI_DB_PATH`。备份时复制该数据库文件及可能存在的 `-wal`、`-shm` 文件，最好先停服务。
 - 复习时间按自评分数安排。当前是简化的间隔复习策略，不是经过学习科学验证的个性化算法。
 - 「最新知识」目前手工维护，不会自动抓取。时效性信息请以卡片链接的官方来源为准。
 - 这是本地单用户 MVP，没有账号、跨设备同步或权限隔离；不要直接暴露到公网。
