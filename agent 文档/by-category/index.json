@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "sourceRepo": "https://github.com/dongyuanwai/ai-study",
+  "grouping": "by-category (topic), not by difficulty",
+  "totalQuestions": 370,
+  "topics": [
+    {
+      "file": "01-jichu-gainian.json",
+      "topicId": "topic-1",
+      "name": "基础概念",
+      "count": 15
+    },
+    {
+      "file": "02-prompt-yujing.json",
+      "topicId": "topic-2",
+      "name": "Prompt 与上下文",
+      "count": 39
+    },
+    {
+      "file": "03-rag.json",
+      "topicId": "topic-3",
+      "name": "RAG 检索增强",
+      "count": 67
+    },
+    {
+      "file": "04-agent-yuanli.json",
+      "topicId": "topic-4",
+      "name": "Agent 原理",
+      "count": 59
+    },
+    {
+      "file": "05-mcp-a2a.json",
+      "topicId": "topic-5",
+      "name": "MCP 与 A2A",
+      "count": 23
+    },
+    {
+      "file": "06-kaifa-kuangjia.json",
+      "topicId": "topic-6",
+      "name": "开发框架",
+      "count": 47
+    },
+    {
+      "file": "07-weitiao.json",
+      "topicId": "topic-7",
+      "name": "微调与对齐",
+      "count": 41
+    },
+    {
+      "file": "08-transformer-nlp.json",
+      "topicId": "topic-8",
+      "name": "Transformer 与 NLP",
+      "count": 59
+    },
+    {
+      "file": "09-shengchan-anquan.json",
+      "topicId": "topic-9",
+      "name": "生产工程与安全",
+      "count": 20
+    }
+  ]
+}

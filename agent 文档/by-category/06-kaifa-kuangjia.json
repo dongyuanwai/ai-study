@@ -1,0 +1,836 @@
+{
+  "topicId": "topic-6",
+  "name": "开发框架",
+  "description": "LangChain、Spring AI 与工程集成",
+  "count": 47,
+  "questions": [
+    {
+      "id": "easy-89",
+      "index": 1,
+      "title": "市面上有哪些主流的 LLM Agent 框架？各自的特点是什么？",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "Agent"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "可以按“集成、编排、技术栈”理解常见框架，而不必背一个固定排名。下面是几种有代表性的选择：\n\n| 框架 | 主要特点 | 适合的需求 |\n| --- | --- | --- |\n| LangChain | 模型、工具和数据组件接口统一，提供预建 Agent | 快速集成模型和工具，搭建常见应用 |\n| LangGraph | 用状态和图显式控制执行，支持持久化与人工介入 | 有分支、循环、恢复要求的长任务 |\n| Spring AI | 贴合 Spring Boot，提供模型、RAG、工具和 MCP 集成 | Java 企业应用接入 AI 能力 |\n| Google ADK | 提供 Agent、工作流、会话、评测与运行工具 | 多 Agent 应用和完整开发运行流程 |\n\n这些定位分别可在 [LangChain 概览](https://docs.langchain.com/oss/python/langchain/overview)、[LangGraph 概览](https://docs.langchain.com/oss/python/langgraph/overview)、[Spring AI 概览](https://docs.spring.io/spring-ai/reference/)和 [ADK 官方文档](https://adk.dev/)核对。\n\n选型时先看任务是否需要自主决策、是否必须恢复，以及团队语言和已有基础设施。简单抽取可能只需 SDK；复杂业务可用框架，但仍要自己实现权限、幂等、成本预算和业务评测。",
+        "oral": "我会按需求选框架：LangChain 方便连接模型和工具，LangGraph 适合需要状态和恢复的复杂编排，Java 项目可以用 Spring AI，ADK 则提供 Agent 开发、运行和评测能力。决定因素是业务控制需求和团队技术栈，不是框架名气。",
+        "pitfalls": "- 框架提供工程抽象，不能替代模型能力和业务系统。\n- 多 Agent 并不一定更好，协调成本可能超过收益。\n- LangChain 与 LangGraph 可以组合，不是必须二选一。"
+      }
+    },
+    {
+      "id": "easy-90",
+      "index": 2,
+      "title": "LangChain 是什么？它主要用来解决什么问题？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "LangChain 基础"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "LangChain 是用于开发大模型应用和 Agent 的开源框架，主要解决“如何把模型与程序、工具及业务数据连接起来”的问题。当前推荐的高层 Agent 入口是 `create_agent`，其运行能力建立在 LangGraph 之上。[LangChain 官方概览](https://docs.langchain.com/oss/python/langchain/overview)\n\n它的价值可以分成三层：统一模型调用和消息表示，减少接入多个供应商时的重复代码；提供工具、提示词、文档加载和检索等可组合组件；把模型调用与工具执行组织成可运行的应用流程。\n\n例如知识库助手先加载资料、检索相关片段，再调用模型生成回答；订单助手则把查订单封装成工具，由模型决定何时调用。框架使这些组件容易连接，但检索质量、订单权限及错误处理仍由业务代码负责。\n\n选择它通常是因为需要多个组件复用或后续扩展；只有一次简单模型调用时，直接使用 SDK 也可能更清晰。应固定依赖版本，并保留模型、工具和业务逻辑的边界。",
+        "oral": "LangChain 是大模型应用的集成框架，让模型、工具、提示词和检索组件通过统一接口协作。它可以减少胶水代码，快速搭建 RAG 或 Agent，但模型能力、业务权限和效果评测仍需要开发者负责。",
+        "pitfalls": "- LangChain 不是新的基础模型，也不会自动训练模型。\n- 能切换模型接口，不代表不同模型的能力完全相同。\n- 旧教程的导入路径不一定适用于当前版本。"
+      }
+    },
+    {
+      "id": "easy-91",
+      "index": 3,
+      "title": "什么是 LangChain？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "LangChain"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "LangChain 可以看成大模型应用的一组标准接口、集成组件和 Agent 构建能力。理解它时，应区分几个相邻概念：LangChain 负责常见模型与工具集成；LangGraph 负责更底层的有状态执行；LangSmith 属于观测和评测产品，并不是运行开源应用的必选依赖。[LangChain 官方概览](https://docs.langchain.com/oss/python/langchain/overview)\n\n应用通常围绕“输入—上下文准备—模型—工具或检索—输出”组织。开发者定义任务指令，选择模型，提供工具，再根据业务需要增加状态、输出校验和限制。LangChain 提供这些部件之间的接口约定，业务仍需决定哪些步骤固定、哪些交给模型选择。\n\n面试中可举一个具体例子：客服问答使用检索器取得商品规则，将内容交给模型，再校验回答是否有依据；涉及退款时，通过受权限控制的工具处理，而不是让模型直接执行任意代码。\n\n采用框架后，应关注依赖管理和可调试性，避免业务代码过度依赖某一种模型或旧类。",
+        "oral": "LangChain 是开发大模型应用和 Agent 的框架，提供模型与工具的统一集成能力。它把上下文、模型调用和外部执行组织起来，适合快速构建可扩展应用。复杂状态编排可以进一步使用 LangGraph。",
+        "pitfalls": "- LangChain、LangGraph、LangSmith 是不同层次的能力。\n- 预建 Agent 不等于业务逻辑不需要设计。\n- 本题与第 90 题相关，回答时可突出组成和实际例子。"
+      }
+    },
+    {
+      "id": "easy-92",
+      "index": 4,
+      "title": "什么是 LangChain model",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "Agent",
+        "LangChain"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "LangChain 中的 model 通常指对底层模型或模型服务的接口封装。开发者通过一致的方式传入消息、配置参数并获取结果，而实际生成仍由所选择的模型完成。当前聊天模型可独立调用，也可作为 Agent 的决策组件。[LangChain Models 文档](https://docs.langchain.com/oss/python/langchain/models)\n\n需要区分三种用途：聊天模型接收有角色的消息，返回消息对象，可能包含文本或工具调用；传统文本补全模型主要接收文本并返回文本；Embedding 模型把文本变成向量，用于检索或相似度计算，不负责生成回答。\n\n聊天模型常见调用方式包括单次 `invoke`、流式 `stream` 和批量 `batch`。通过专门集成包可以连接云服务或本地服务，但工具调用、多模态和结构化输出是否可用，仍取决于底层模型及提供方。\n\n实践中会把模型初始化和业务逻辑分开，集中配置超时、重试与 Token 预算，并用真实任务验证切换后的质量。统一接口改善代码复用，不保证提示词和输出行为无差异。",
+        "oral": "LangChain model 是模型服务的适配层，让不同模型通过统一方式调用。聊天模型、文本补全模型和 Embedding 模型用途不同；聊天模型可以用于普通问答，也可以决定 Agent 的工具调用。模型能力仍要按供应商核对。",
+        "pitfalls": "- model 对象不是把所有模型权重下载到本地。\n- Embedding 向量不是聊天回答。\n- `batch` 的客户端并发不等于供应商的离线 Batch API。"
+      }
+    },
+    {
+      "id": "easy-93",
+      "index": 5,
+      "title": "LangChain 中的 Chain 是什么？有哪些常见类型？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "Chain 链式调用"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "Chain 表示把多个处理步骤组合成一个调用流程，上一步的输出成为下一步的输入。常见模式包括“提示词—模型—解析器”的基础链、多个任务依次执行的顺序链、按条件选择路径的路由链，以及包含检索步骤的 RAG 链。\n\n现代代码通常通过 LCEL 的 Runnable 组合表达流程，例如 `prompt | model | parser`。Runnable 提供统一调用方式，也方便将顺序、并行、流式处理和失败回退组合起来。官方集成示例展示了这一组合方式。[LangChain LCEL 示例](https://docs.langchain.com/oss/python/integrations/chat/amazon_nova)\n\n旧教程常提到 `LLMChain`、`ConversationChain` 等类；当前迁移文档将这些归入 `langchain-classic`。面试可以说明历史概念，但新项目不应直接照搬旧导入路径。[LangChain v1 迁移文档](https://docs.langchain.com/oss/python/migrate/langchain-v1)\n\n固定流程适合用 Chain；需要多次动态工具选择、循环和持久状态时，Agent 或 LangGraph 更合适。无论哪种方式，都要检查输入字段、输出类型与失败路径是否兼容。",
+        "oral": "Chain 是把提示词、模型、解析器或检索步骤连接起来的流程。现在可以用 Runnable 和 LCEL 组合，而旧的 LLMChain 属于兼容 API。确定的处理步骤适合 Chain，复杂循环和动态决策更适合 Agent 或图编排。",
+        "pitfalls": "- Chain 不一定只调用一次模型，也不一定只有线性流程。\n- Chain 和 Agent 的差异在控制方式，不只是代码写法。\n- 顺序链中前一步的字段必须匹配下一步的输入。"
+      }
+    },
+    {
+      "id": "easy-94",
+      "index": 6,
+      "title": "LangChain 中的 Prompt 模板有什么作用？如何使用？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "Prompt 提示词"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "Prompt 模板用于把稳定的任务指令和变化的业务输入分离，统一管理变量、消息角色和输出要求。文本模板适合单段提示词，`ChatPromptTemplate` 则适合组织系统消息、用户消息及对话上下文。\n\n下面示例使用已经初始化的聊天模型 `model`，将用户问题填入模板，再把消息结果转为字符串：\n\n```python\nfrom langchain_core.prompts import ChatPromptTemplate\nfrom langchain_core.output_parsers import StrOutputParser\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"请用中文准确解释概念，缺少依据时说明。\"),\n    (\"human\", \"请解释：{topic}\"),\n])\nchain = prompt | model | StrOutputParser()\nanswer = chain.invoke({\"topic\": \"向量检索\"})\n```\n\n该模板与 LCEL 组合方式来自当前官方示例；模型初始化和凭证应由项目另外配置。[LangChain Prompt 组合示例](https://docs.langchain.com/oss/python/integrations/chat/amazon_nova)\n\n实践中应对变量、模板版本及生成后的消息进行测试；检索内容和用户输入应保留来源，并限制长度。模板让提示词可复用、可评测，但不能自动保证语义质量或抵御注入。",
+        "oral": "Prompt 模板把固定指令和变量分开，让提示词复用和版本管理更方便。聊天任务可以用 ChatPromptTemplate 保留消息角色，再与模型及解析器组成流程。使用时要校验变量，并控制动态内容的长度和可信度。",
+        "pitfalls": "- 模板变量占位符和业务 JSON 的花括号可能冲突，应按模板语法处理。\n- 用户输入不能被提升为可信系统指令。\n- 模板只是组装上下文，不会给模型增加业务知识。"
+      }
+    },
+    {
+      "id": "easy-95",
+      "index": 7,
+      "title": "LangChain 中的 DocumentLoader 有哪些类型？如何选择？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "DocumentLoader 文档加载"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "DocumentLoader 负责把不同来源的数据读取并转换成统一的 Document 表示，通常包含正文 `page_content` 和来源等 `metadata`。加载器可以面向文本、PDF、Word、HTML、CSV、网页、对象存储或其他业务数据源，具体功能由相应集成提供。[LangChain 文档加载器目录](https://docs.langchain.com/oss/python/integrations/document_loaders)\n\n选择时先看文件真实结构，再看解析质量。纯文本适合轻量加载器；有表格、页眉和多栏布局的 PDF 要关注版面保留；扫描件需要 OCR；网页需要正文抽取并排除导航噪声。不能只按扩展名随便选择一个加载器。\n\n数据规模大时可考虑 `lazy_load` 一类惰性读取方式，但要确认该实现确实支持流式，避免一次装入全部内容。加载完成后还要做去重、清洗、分块和元数据校验，加载器本身不等于完整 RAG 流程。\n\n生产中保留文件版本、页码、来源地址和权限字段，方便引用和增量更新；解析失败应记录并隔离，不能默默把空正文建入索引。",
+        "oral": "DocumentLoader 把文件或数据源统一转换为正文加元数据的 Document。选型主要看格式、扫描情况和版面复杂度，再用样本验证文本和表格是否正确。后续清洗、分块和向量化仍需要独立处理。",
+        "pitfalls": "- 加载器读取数据，不一定自动分块或生成向量。\n- 扫描 PDF 不会因为扩展名是 PDF 就有可提取文本。\n- 解析成功不代表没有丢表格、页码或权限信息。"
+      }
+    },
+    {
+      "id": "easy-96",
+      "index": 8,
+      "title": "LangChain 的 OutputParser 有什么作用？有哪些常见类型？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "OutputParser 输出解析"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "OutputParser 把模型输出转换成程序需要的类型，并在适用时进行结构校验。比如模型返回消息对象，但下游需要字符串、列表、JSON 对象或具备字段类型的业务对象，就可以通过解析器衔接。\n\n常见类型有：`StrOutputParser` 提取文本；`JsonOutputParser` 解析 JSON；`PydanticOutputParser` 使用 Pydantic 模型进行解析和校验；列表解析器处理逗号分隔或列表形式的输出。这些类仍可在当前 [LangChain OutputParser 参考](https://reference.langchain.com/python/langchain-core/output_parsers)中查到。\n\n如果模型支持原生结构化输出，应优先评估相应能力；Agent 也可以声明结构化结果格式。解析器更适合兼容非原生模型、后处理或附加校验。[LangChain 结构化输出](https://docs.langchain.com/oss/python/langchain/structured-output)\n\n实际流程是提供格式要求、获取输出、解析、校验，再处理失败。重试应有次数上限，重要字段还要做业务检查，例如订单号是否存在、金额是否合理。能成功解析，只说明结构可用，不说明事实一定正确。",
+        "oral": "OutputParser 将模型结果转换为字符串、JSON 或类型化对象，方便下游程序使用。常见有字符串、JSON 和 Pydantic 解析器。模型原生结构化输出可减少格式错误，但仍需要业务校验和有界的失败处理。",
+        "pitfalls": "- JSON 能解析不等于满足字段类型和业务规则。\n- 解析器不能保证模型回答真实。\n- 不应无限让模型“修复格式”，要设置终止和回退策略。"
+      }
+    },
+    {
+      "id": "easy-97",
+      "index": 9,
+      "title": "LangChain 中如何实现多轮对话的上下文管理？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "上下文管理"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "多轮对话需要应用保存历史，并在下一次调用时提供相关上下文。当前 LangChain Agent 将消息等短期状态保存于 AgentState；配置 checkpointer，并使用同一 `thread_id`，可以在同一线程继续对话。生产中应使用数据库支持的持久化实现，内存实现主要适合演示。[LangChain 短期记忆文档](https://docs.langchain.com/oss/python/langchain/short-term-memory)\n\n上下文管理通常包括三部分：完整聊天记录用于审计；本轮模型输入只保留必要历史、摘要和工具结果；跨会话偏好或事实使用独立长期存储，再按需检索。三者的生命周期和访问权限应分别设计。\n\n历史变长时，可以裁剪早期消息或生成摘要，但保留用户约束、当前目标及尚未完成的工具调用关系。按 Token 预算预留输出空间，比只按消息条数限制更可靠。\n\n工程上还要将线程与已认证用户绑定，避免共享 `thread_id` 导致串话；并发写入和删除请求也要正确处理。旧教程中的 ConversationBufferMemory 等 API，不应与当前 Agent 状态方案混用。",
+        "oral": "当前可以通过 AgentState、checkpointer 和 thread_id 保存同一会话状态，生产环境使用持久化存储。模型输入再按 Token 预算裁剪或摘要；跨会话记忆单独存储。还要做用户隔离，防止多用户共享历史。",
+        "pitfalls": "- 保存完整历史不代表每次都应把全部历史发给模型。\n- 内存 checkpointer 不保证进程重启后仍存在。\n- 线程标识不能替代用户鉴权。"
+      }
+    },
+    {
+      "id": "easy-98",
+      "index": 10,
+      "title": "LangChain 如何与其他 AI 框架或工具集成？",
+      "difficulty": "easy",
+      "tags": [
+        "LangChain",
+        "框架集成"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "可以通过标准组件接口、工具适配或服务 API 三种方式集成。模型供应商通过专门集成包连接；数据系统可以包装为加载器、检索器或向量存储；业务函数则可以声明输入结构和用途，提供为 Agent 工具。LangChain 的官方集成目录涵盖这些类型。[LangChain 集成目录](https://docs.langchain.com/oss/python/integrations/providers/overview)\n\n与其他框架结合时，通常让对方负责擅长的部分，例如已有检索服务返回带来源的文档，LangChain 负责生成或工具决策。跨语言和跨进程时，通过 HTTP、RPC 或适用的协议边界连接，比直接耦合内部对象更容易维护。\n\n实际适配要明确输入输出 Schema、超时、错误码、身份传播与幂等语义。模型只能提出调用意图，业务服务仍需核验用户权限。返回内容过大时，应提供摘要、分页或结果引用。\n\n尽量只保留一个负责顶层生命周期的编排器，避免两套 Agent 循环互相调用、重复重试或各自维护冲突的历史；同时把跨系统链路放入统一追踪。",
+        "oral": "LangChain 可以通过模型集成包、检索组件、工具函数和服务接口连接其他系统。我会保持清晰的输入输出契约，把权限、超时和幂等放在实际服务里，并避免同时由多个框架控制整个 Agent 循环。",
+        "pitfalls": "- 接口兼容不代表两套框架的消息和记忆语义一致。\n- 工具参数中的用户 ID 必须与服务端认证身份核对。\n- 集成层重试可能放大非幂等业务操作。"
+      }
+    },
+    {
+      "id": "easy-99",
+      "index": 11,
+      "title": "什么是 LangChain Agent",
+      "difficulty": "easy",
+      "tags": [
+        "大模型",
+        "AI",
+        "Agent",
+        "LangChain"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "LangChain Agent 是让模型根据任务和当前上下文选择工具、处理结果并继续完成任务的执行流程。当前推荐使用 `create_agent`；开发者提供模型、工具和任务指令，框架组织模型与工具之间的循环。[LangChain Agents 文档](https://docs.langchain.com/oss/python/langchain/agents)\n\n典型过程是：模型读取消息和工具描述；返回回答或带参数的工具请求；程序校验并执行工具；把结果写回消息，再让模型决定下一步。例如查询订单后，模型根据实际状态解释物流，而不是凭参数知识猜测。\n\n与固定 Chain 相比，Agent 的关键是部分路径由模型动态决定。开发者仍可通过中间件调整可用工具、上下文、模型和错误处理，并加入记忆或人工介入。[LangChain 上下文工程](https://docs.langchain.com/oss/python/langchain/context-engineering)\n\n生产中必须配置时间、调用次数与成本限制；对写操作进行权限检查和必要确认，记录每一步证据。流程非常固定时，用普通业务代码或显式工作流可能更稳定。",
+        "oral": "LangChain Agent 是模型选择工具、程序执行工具、结果再回到模型的循环。当前通常使用 create_agent。它适合步骤不完全固定的任务，但工具权限、停止条件和错误处理仍要由工程系统控制。",
+        "pitfalls": "- 模型提出工具调用，并不是模型自己在服务器上执行代码。\n- ReAct 式循环不要求向用户展示模型内部完整思考。\n- Agent 不能代替确定性的支付、权限和事务逻辑。"
+      }
+    },
+    {
+      "id": "easy-100",
+      "index": 12,
+      "title": "什么是 LangGraph ？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "LangChain",
+        "LangGraph"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "LangGraph 是用于构建和运行有状态、长时间 Agent 或工作流的编排框架。开发者显式定义状态、节点和连接，让流程能够分支、循环、暂停和继续；它不要求每个节点都是模型，也不要求必须使用 LangChain。[LangGraph 官方概览](https://docs.langchain.com/oss/python/langgraph/overview)\n\n例如退款流程可以包含身份校验、查询订单、规则判断、人工审批和实际退款。判断规则可由普通代码实现，解释或信息抽取由模型负责，审批节点等待人工输入。这种设计把业务控制与模型决策放到可检查的执行结构里。\n\n状态记录当前目标、消息和中间结果；节点读取状态并返回更新；边决定接下来运行哪些节点。配置检查点后，可以保存线程状态并在失败或中断后继续。长任务也需要为持久化状态做版本兼容设计。\n\n它适合对控制、可恢复性和人工参与有明确要求的任务，但也增加状态设计和运行维护成本。简单问答直接调用模型，通常不需要先设计复杂图。",
+        "oral": "LangGraph 把 Agent 或业务流程表达成有状态的图，通过节点执行操作、边控制路线，并支持持久化与人工介入。它适合长任务和复杂分支，让哪些步骤由代码控制、哪些交给模型更加明确。",
+        "pitfalls": "- 图可以有循环，不只是一个固定的 DAG。\n- 检查点保存状态，不代表外部业务操作自动只执行一次。\n- 不需要把所有业务函数都转换成智能体。"
+      }
+    },
+    {
+      "id": "easy-101",
+      "index": 13,
+      "title": "LangGraph 编排的原理是什么？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "LangChain",
+        "LangGraph"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "LangGraph 以共享状态驱动图执行。节点读取当前 State，执行代码、模型或工具，再返回部分状态更新；边或条件路由决定下一批节点。多个节点更新同一字段时，需要按字段的 reducer 定义合并规则，例如消息追加，而不是任意覆盖。[LangGraph Graph API](https://docs.langchain.com/oss/python/langgraph/use-graph-api)\n\n图经过 `compile` 成为可调用的运行对象。运行时按执行步推进，符合依赖的节点可以并行；配置 checkpointer 后将状态保存到相应线程，`thread_id` 用于定位这条执行历史。到达结束条件时终止，循环则必须设置次数或预算边界。\n\n人工介入可以用 `interrupt` 暂停并保存状态，再用 `Command(resume=...)` 传回输入。恢复会从中断所在节点的开头重新运行，因此中断前的代码可能再次执行。[LangGraph 中断文档](https://docs.langchain.com/oss/python/langgraph/interrupts)\n\n外部写操作要采用幂等键、结果记录或事务等方式防重，不能把图检查点当成业务 Exactly-once。并行写共享字段时，合并规则也必须与业务顺序要求一致。",
+        "oral": "LangGraph 通过状态、节点、边和 reducer 推进流程，检查点记录每个线程的执行状态。interrupt 能暂停等待人工输入，但恢复可能重新执行所在节点，所以外部副作用必须设计幂等。循环、并行和终止都需要显式约束。",
+        "pitfalls": "- 节点返回的是状态更新，不必返回整个状态。\n- 列表追加 reducer 不会自动保证业务去重。\n- 持久化恢复与数据库事务是两个问题。"
+      }
+    },
+    {
+      "id": "easy-102",
+      "index": 14,
+      "title": "LangChain 和 LangGraph 有什么区别？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "LangChain",
+        "LangGraph"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "两者处于不同抽象层：LangChain 更偏向模型和工具集成及预建 Agent；LangGraph 更偏向有状态流程的底层编排和运行控制。当前 LangChain 的 Agent 建立在 LangGraph 之上，因此两者可以共同使用。[LangChain 概览](https://docs.langchain.com/oss/python/langchain/overview)、[LangGraph 概览](https://docs.langchain.com/oss/python/langgraph/overview)\n\n| 对比项 | LangChain | LangGraph |\n| --- | --- | --- |\n| 开发入口 | 标准组件、预建 Agent | 自定义状态、节点和路由 |\n| 关注重点 | 快速接入模型、数据和工具 | 控制分支、循环、恢复及人工介入 |\n| 自定义程度 | 常见任务较省代码 | 需要设计更多执行细节 |\n\n例如普通带工具的助手，可以从 `create_agent` 开始；需要“检索—审核—审批—执行”且各步骤有不同约束时，可直接设计 LangGraph 图，再在节点中使用 LangChain 的模型组件。\n\n选型不是比较谁更强，而是需要多少控制。过早编写复杂图会增加维护成本；完全依赖通用 Agent 循环也可能无法满足严格流程。可以先做最小可用实现，再按实际需求降低抽象层。",
+        "oral": "LangChain 提供高层集成和预建 Agent，LangGraph 提供更细的状态与流程控制。它们可以组合：常见助手用 LangChain 快速搭建，复杂分支、循环和恢复需求用 LangGraph 编排，节点里仍可以复用 LangChain 组件。",
+        "pitfalls": "- 不能简单说 LangChain 没状态、LangGraph 才能做记忆。\n- LangGraph 能编排普通函数，不仅编排 Agent。\n- 图结构本身不保证生成质量。"
+      }
+    },
+    {
+      "id": "easy-103",
+      "index": 15,
+      "title": "什么是 Spring AI 框架？它有哪些核心特性？",
+      "difficulty": "easy",
+      "tags": [
+        "后端",
+        "编程导航"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "Spring AI 是 Spring 生态的大模型应用框架，帮助 Java 应用连接模型服务、企业数据和业务 API。它沿用 Spring Boot 的依赖注入、配置和自动装配方式，适合把 AI 能力融入已有后端系统。[Spring AI 官方介绍](https://docs.spring.io/spring-ai/reference/)\n\n核心能力包括模型接口和 `ChatClient`，用于组织提示词、调用及流式响应；Embedding 与 VectorStore 抽象，用于向量检索；工具调用，用于连接业务函数；结构化结果转换；以及用于会话和 RAG 等处理的 Advisors。框架还提供 MCP 集成和可观测能力，实际支持情况取决于选用版本及集成包。\n\n`ChatClient` 是面向应用的调用入口，Advisor 在调用链中增强请求或处理响应。例如检索 Advisor 加入相关知识，会话 Advisor 加入历史，从而减少控制器中的重复逻辑。[ChatClient 文档](https://docs.spring.io/spring-ai/reference/api/chatclient.html)、[Advisors 文档](https://docs.spring.io/spring-ai/reference/api/advisors.html)\n\n它不负责自动训练模型，也不自动解决鉴权和幻觉。项目应使用匹配的 BOM、Starter 和 Spring Boot 版本，并独立维护业务安全及评测。",
+        "oral": "Spring AI 是面向 Java 和 Spring Boot 的大模型应用框架，提供模型调用、ChatClient、向量检索、工具、结构化输出和 Advisor 等能力。它让 AI 接入符合已有 Spring 工程习惯，但业务权限和效果保证仍要自己设计。",
+        "pitfalls": "- Spring AI 不等于一个大模型训练框架。\n- 抽象统一不代表所有模型支持相同功能。\n- 需要按实际依赖版本核对 Starter 和 API。"
+      }
+    },
+    {
+      "id": "easy-104",
+      "index": 16,
+      "title": "你在 AI 超级智能体项目中如何利用 Spring AI 开发应用？用到了哪些特性？",
+      "difficulty": "easy",
+      "tags": [
+        "后端",
+        "编程导航"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "这是一道项目经历题。下面提供示例回答结构，需按真实经历删改；未实现的能力应表述为设计方案，不能当作已完成项目经历。\n\n示例：我会将智能体拆成模型调用、知识检索、业务工具和运行控制四部分。使用 `ChatClient` 统一请求及流式响应；通过会话 Advisor 管理历史，通过检索 Advisor 获取知识库证据；将查询业务数据封装为受权限控制的工具；用结构化结果转换向前端返回可校验字段。这些组合能力有官方示例可核对。[Spring AI Advisors](https://docs.spring.io/spring-ai/reference/api/advisors.html)\n\n复杂任务的执行顺序、停止条件和重试策略由应用层明确控制，不能只依靠一段 Prompt。写操作先做鉴权与确认，工具结果限制大小，并用追踪关联模型、检索和执行步骤。\n\n面试时重点说明一条实际链路、一个真实问题以及验证方法。例如检索召回不足时如何改数据和评测，工具超时如何降级。效果数字只使用可复现记录；如果没有数据，可以描述指标和测试方法。",
+        "oral": "如果实际项目用过，我会说明 ChatClient 如何调用模型、Advisor 如何管理会话与 RAG、工具如何连接业务，再解释超时、权限和终止条件。最后用真实测试结果证明效果；没有实施过的部分会明确说是设计方案。",
+        "pitfalls": "- 本题不能照抄成不存在的个人项目经历。\n- 流式输出改善体验，不代表任务已经执行成功。\n- “框架支持”与“项目实际使用”必须分开。"
+      }
+    },
+    {
+      "id": "easy-105",
+      "index": 17,
+      "title": "如何实现程序和 AI 大模型的集成？有哪些方式？",
+      "difficulty": "easy",
+      "tags": [
+        "后端",
+        "编程导航"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "常见方式有四种：直接调用模型服务 HTTP API；使用供应商 SDK；通过应用框架统一接入；或者把开放权重模型部署为服务后调用。集成方式决定接口和运维分工，模型是否云端或本地则是部署选择，两者可以组合。\n\n直接 API 或 SDK 适合调用链短、需要完整控制请求的场景；框架适合同时接入模型、RAG、会话和工具；本地部署适合特定数据或离线要求，但需要承担硬件、推理服务和模型维护成本。Spring AI 的 `ChatClient` 就是框架接入的一种入口。[Spring AI ChatClient](https://docs.spring.io/spring-ai/reference/api/chatclient.html)\n\n典型调用流程是服务端读取凭证，组装指令和上下文，发送请求，处理流式或完整结果，再做格式及业务校验。模型需要操作外部系统时，由程序执行工具，而不是把数据库凭证放进提示词。\n\n生产集成还要配置超时、限流、有界重试、Token 预算和请求追踪，并为拒答、格式错误及服务不可用设置回退。浏览器前端不应直接暴露长期服务端密钥。",
+        "oral": "可以直接调用 HTTP API、使用 SDK、通过框架接入，或部署本地模型服务。选择依据是复杂度、控制需求和运维能力。无论哪种方式，都需要保护凭证、控制超时成本，并对输出及工具执行做业务校验。",
+        "pitfalls": "- API 兼容不代表模型行为和参数支持完全相同。\n- 调用成功只表示请求完成，不表示答案正确。\n- 应区分模型请求重试与业务写操作重试。"
+      }
+    },
+    {
+      "id": "easy-106",
+      "index": 18,
+      "title": "什么是 Google ADK？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "Google ADK，即 Agent Development Kit，是 Google 提供的开源 Agent 开发框架，用于定义、运行、调试、评估和部署智能体。官方现提供多种语言实现；虽然与 Gemini 及 Google 生态集成方便，也支持通过适配器接入其他模型或本地模型。[ADK 官方文档](https://adk.dev/)\n\n典型结构是：Agent 描述职责、模型和工具；Runner 协调运行；会话保存当前交互状态，事件记录执行过程；记忆和产物服务管理跨任务信息及生成文件。Python 官方示例可以看到 Runner、SessionService 与事件流的组合。[ADK Runner 示例](https://github.com/google/adk-python/tree/main/contributing/samples/core/runner_debug_example)\n\n编排既可以使用模型驱动的任务委派，也可以用顺序、并行、循环等明确工作流。开发工具和评测能力有助于检查实际工具轨迹和最终结果，但上线仍需应用自行处理用户权限、失败恢复与资源限制。\n\n适合想用统一框架管理 Agent 全生命周期的团队。选型时应检查所用语言版本的功能支持，而不是假设 Python、Java 等实现完全一致。",
+        "oral": "ADK 是 Google 的开源 Agent 开发套件，覆盖 Agent、工具、会话、运行、编排和评测。它支持 Google 模型，也能接入其他模型。开发时仍要设计权限、终止和业务校验，并核对具体语言版本的能力。",
+        "pitfalls": "- ADK 不是 Gemini 模型本身，也不局限于 Gemini。\n- Session、长期 Memory 和 Artifact 的用途不同。\n- 使用框架不意味着自动获得完整生产安全保证。"
+      }
+    },
+    {
+      "id": "easy-107",
+      "index": 19,
+      "title": "什么是 Manus？说说你对它的了解",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "大模型",
+        "Manus"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "Manus 是面向完成任务和交付结果的通用 AI Agent 产品。官方资料将其描述为能够规划、执行任务，并在带网络和文件系统的沙箱计算环境中工作；产品展示包含研究、网站、幻灯片等交付形式。[Manus 官方介绍](https://manus.im/docs/introduction/welcome)、[Manus 产品页面](https://manus.im/)\n\n可以从使用方式理解它：用户提出目标及约束，系统组织多步操作并产生文件或其他成果，用户再检查成果是否符合要求。这种交付方式需要模型、工具和运行环境共同参与，其评价重点除了回答质量，还有任务成功率、工具错误和结果可验证性。\n\n但从产品展示不能准确推导底层实现。是否采用特定多 Agent 架构、具体模型、调度算法或内部记忆机制，要以公开技术材料为依据；不能把其他开源项目的结构直接当作 Manus 的实现。\n\n在实际选择中，关注它能否访问所需系统、输出是否可复核、数据处理规则与成本限制。涉及重要提交或发布，仍要检查实际结果，不能把任务状态提示当成业务成功凭证。",
+        "oral": "Manus 是以任务执行和结果交付为目标的通用 Agent 产品，通过沙箱计算环境开展多步工作。它展示了 Agent 从问答走向行动的产品形态。对未公开的内部模型和编排细节，我不会仅凭演示推断。",
+        "pitfalls": "- Manus 产品、开源复现项目和基础模型是不同概念。\n- 有自主执行能力不等于每次任务都可靠完成。\n- 公共产品资料没有披露的实现细节，应明确不确定。"
+      }
+    },
+    {
+      "id": "easy-108",
+      "index": 20,
+      "title": "OpenClaw 是什么？它要解决什么问题？它的核心能力有哪些？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "OpenClaw",
+        "大模型应用开发",
+        "AI应用开发",
+        "Agent开发"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "OpenClaw 是可自行运行的个人 AI 助手系统，把常用消息渠道、Agent 和工具连接到同一个运行环境。它要解决的是：用户能从熟悉的聊天入口发起任务，助手能持续管理会话并调用工具，而不只是返回一次文本。[OpenClaw 官方介绍](https://docs.openclaw.ai/)\n\n其架构核心是常驻 Gateway，负责消息渠道连接和控制接口；不同客户端及设备节点连接 Gateway，渠道将用户消息送入 Agent 运行链路。[OpenClaw Gateway 架构](https://docs.openclaw.ai/concepts/architecture)\n\n常见能力包括模型接入、工具和插件扩展、Skills、会话与记忆、消息路由及任务自动化；具体可用能力依赖配置、模型和插件。自托管使工作空间和权限更可控，但调用云模型时，发送给模型的数据仍可能离开本机。\n\n落地时要明确哪些用户能发起任务、工具能访问哪些目录或系统，以及写操作如何审批。OpenClaw 提供运行平台，实际任务效果仍由模型能力、工具实现、上下文和权限设计共同决定。",
+        "oral": "OpenClaw 是能自运行的个人 Agent 助手系统，通过 Gateway 连接消息渠道、模型、工具和设备，让用户从聊天入口发起多步任务。它的价值在于运行与集成能力，实际效果和边界仍依赖模型、工具及配置。",
+        "pitfalls": "- OpenClaw 不是新的基础模型。\n- 自托管运行不等于所有模型推理都在本地。\n- 能接入多个用户，不等于权限和记忆天然隔离。"
+      }
+    },
+    {
+      "id": "easy-109",
+      "index": 21,
+      "title": "最近 OpenClaw 这么火，你知道它的原理吗？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "OpenClaw",
+        "大模型应用开发",
+        "Agent 开发",
+        "AI 应用开发"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "可以从“渠道入口—Gateway—会话—Agent 循环—工具—回复”解释其原理，不必对流行程度作无法核实的排名判断。消息进入后，系统确定对应 Agent 和会话，准备工作空间、历史、Skills 与上下文，再开始模型调用。\n\n官方 Agent Loop 文档描述了会话内串行的运行链路，包括上下文组装、推理、工具执行、流式事件和持久化；Gateway 返回运行标识，客户端可以观察生命周期和结果。[OpenClaw Agent Loop](https://docs.openclaw.ai/concepts/agent-loop)\n\n模型可以直接回答，也可以提出工具调用。运行时执行被允许的工具，将结果反馈给模型，再继续推进任务。过程中的历史、工具返回及任务状态为下一步提供证据；最终内容经渠道适配后交付给用户。\n\n其工程关键是同一会话的并发控制、可用工具和权限、上下文长度、超时及终止策略。不能因为看到文本流就判断任务已完成，应核对终止状态和实际工具结果。不同版本或运行后端的内部函数可能变化，面试应重点解释职责和链路。",
+        "oral": "OpenClaw 通过 Gateway 接收渠道消息，路由到会话并组装上下文，再运行模型和工具之间的循环。它管理串行会话、事件、持久化及结果交付。核心是工程运行系统，可靠性取决于权限、工具结果和停止条件。",
+        "pitfalls": "- 工具结果不可信时，Agent 也可能被误导。\n- 收到一次模型响应不一定代表整个任务结束。\n- 内部函数和默认配置要按实际版本核对。"
+      }
+    },
+    {
+      "id": "easy-110",
+      "index": 22,
+      "title": "如果一个 Agent 系统要同时接入 Telegram、飞书、钉钉等渠道，你会怎么设计抽象层？OpenClaw 的 Channel Plugin 接口是怎么设计的？",
+      "difficulty": "easy",
+      "tags": [
+        "AI",
+        "OpenClaw",
+        "大模型应用开发",
+        "AI应用开发",
+        "Agent开发"
+      ],
+      "originalCategory": "easy-6",
+      "originalCategoryName": "Agent 框架与应用开发",
+      "answer": {
+        "core": "我会用渠道适配器把平台事件转换成统一消息，保留渠道、账号、用户、会话、线程、消息 ID 和媒体引用。公共层负责鉴权、路由、去重及 Agent 调用；适配器负责平台验证、收发、格式、限流和重试。不同渠道的富文本和线程能力通过能力声明处理，不强求完全一致。\n\nOpenClaw 当前源码中的 `ChannelPlugin` 是一组分职责的适配器契约；`id`、`meta`、`capabilities` 来自其基础类型，`config` 负责账号解析，其他适配器按需提供。[ChannelPlugin 源码](https://github.com/openclaw/openclaw/blob/main/src/channels/plugins/types.plugin.ts)、[基础类型源码](https://github.com/openclaw/openclaw/blob/main/src/channels/plugins/setup-wizard-types.ts)\n\n| 字段 | 主要职责 |\n| --- | --- |\n| `config` | 列出和解析账号，如 `listAccountIds`、`resolveAccount` |\n| `gateway` | 渠道账号运行和连接生命周期 |\n| `outbound` | 将回复投递到平台 |\n| `messaging`、`threading` | 消息目标和回复线程语义 |\n| `security`、`pairing` | 渠道访问策略与配对流程 |\n\n当前官方还提供 `createChannelPluginBase` 和 `createChatChannelPlugin` 帮助组装这些适配器；账号读取属于 `config`，配置写入则属于 `setup`。[渠道插件开发文档](https://docs.openclaw.ai/plugins/sdk-channel-plugins)",
+        "oral": "我会统一消息和会话身份，把平台协议与 Agent 核心分开，再通过能力声明处理渠道差异。OpenClaw 使用分职责的 ChannelPlugin：config 管账号，gateway 管连接，outbound 管发送，并配合线程和安全适配器。",
+        "pitfalls": "- 这是版本相关接口，需核对项目所装 SDK，不能把示意表当完整类型定义。\n- 多渠道会话合并必须有身份绑定依据，不能只按同名用户匹配。\n- 不能默认所有渠道已内置支持；未知渠道应实现或核验插件。"
+      }
+    },
+    {
+      "id": "medium-98",
+      "index": 23,
+      "title": "LangChain 的核心组件有哪些？",
+      "difficulty": "medium",
+      "tags": [
+        "大模型",
+        "AI",
+        "Agent",
+        "LangChain"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "核心抽象包括聊天模型、消息与 Prompt、工具、Retriever/向量存储、Document 与加载/切分组件、结构化输出，以及 Runnable/Agent 工作流。当前 LangChain 的 Agent 可通过 `create_agent` 构建，短期记忆可借助检查点和中间件；更复杂编排由 LangGraph 承担。具体集成包通常独立安装，不能假设所有功能都在一个核心包里。",
+        "oral": "LangChain 把模型、提示词、工具、检索、输出和编排统一成可组合组件。",
+        "pitfalls": "“Memory 类”“Chain 类”的旧教程未必适用于当前版本。"
+      }
+    },
+    {
+      "id": "medium-99",
+      "index": 24,
+      "title": "LangChain核心架构是什么样的",
+      "difficulty": "medium",
+      "tags": [
+        "大模型",
+        "AI",
+        "Agent",
+        "LangChain"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "可从三层看：底层统一模型、消息、工具和文档等接口；中间层用 Runnable/Agent 组织调用、状态与中间件；外层接向量库、模型 Provider、追踪/评测等集成。固定流程可用可组合的 Runnable，动态工具选择用 Agent，复杂分支和持久状态可下沉 LangGraph。应用层仍负责鉴权、权限、异常、部署与业务规则。",
+        "oral": "LangChain 以统一抽象连接模型与外部系统，上层用固定链或 Agent 编排任务，复杂状态交给 LangGraph。",
+        "pitfalls": "框架只简化编排，不会自动保证答案正确或工具安全。"
+      }
+    },
+    {
+      "id": "medium-100",
+      "index": 25,
+      "title": "解释LangChain框架中的Chain和Agent概念，并举例说明各自的应用场景",
+      "difficulty": "medium",
+      "tags": [
+        "大模型"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "Chain 是开发者预先定义的调用序列，如“检索→Prompt→模型→解析”，适合流程固定、可预测的摘要和 RAG。Agent 则让模型根据任务动态决定是否调用工具、调用哪一个以及是否继续，适合开放式多步任务。Chain 易测试、延迟可控；Agent 灵活但成本和风险更高。新版 LangChain 中 Chain 多可用 Runnable 组合表达，经典类名可能转到 legacy 包。",
+        "oral": "Chain 路径预设，Agent 路径由模型动态选择；稳定任务优先 Chain，开放任务才用 Agent。",
+        "pitfalls": "不要把任何多次模型调用都称为 Agent。"
+      }
+    },
+    {
+      "id": "medium-101",
+      "index": 26,
+      "title": "什么是工具调用 Tool Calling？如何利用 Spring AI 实现工具调用？",
+      "difficulty": "medium",
+      "tags": [
+        "后端",
+        "编程导航"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "工具调用是模型输出工具名和参数，宿主程序校验并执行，再把结果回传模型。Spring AI 可把 Java 方法用 `@Tool` 声明名称/描述，通过 `ChatClient.prompt().tools(工具对象)` 提供给模型；当前版本的 `ToolCallingAdvisor` 管理“模型请求→执行→回传→继续”循环。业务侧仍需限制工具权限、参数、超时和副作用，不能因方法被注解就允许任意用户调用。",
+        "oral": "Spring AI 用 `@Tool` 暴露方法，用 `ChatClient` 注册工具，框架处理调用循环，应用负责安全边界。",
+        "pitfalls": "模型只提出调用，真正执行仍在 Java 应用中。"
+      }
+    },
+    {
+      "id": "medium-102",
+      "index": 27,
+      "title": "什么是结构化输出？Spring AI 是怎么实现结构化输出的？",
+      "difficulty": "medium",
+      "tags": [
+        "后端",
+        "编程导航"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "结构化输出是让模型结果符合预先定义的字段和类型，便于程序处理。Spring AI 的 `ChatClient` 可用 `.call().entity(MyType.class)` 将结果映射到 Java 类型；当前文档还提供 Schema 验证/纠错和 Provider 原生结构化输出选项。仍应校验业务约束，例如金额范围、枚举和字段间一致性，处理解析失败与重试。",
+        "oral": "Spring AI 用 Java 类型定义输出契约，`entity` 解析成对象；必要时启用 Schema 校验和原生约束。",
+        "pitfalls": "合法 JSON 不等于业务数据正确。"
+      }
+    },
+    {
+      "id": "medium-103",
+      "index": 28,
+      "title": "什么是 Re-Reading？如何基于 Spring AI 实现 Re-Reading Advisor？",
+      "difficulty": "medium",
+      "tags": [
+        "后端",
+        "编程导航"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "Re-Reading（Re2）让模型在回答前再次阅读同一问题，常见提示形式为“原问题；请再读一遍原问题”。在 Spring AI 中可实现/配置 Advisor，在请求进入模型前改写用户消息，把重读模板附加进去；官方 Advisor 文档有 ReReadingAdvisor 示例或相应能力。应在固定任务集上比较效果、Token 成本和延迟，尤其检查是否因重复问题而冲淡检索证据。",
+        "oral": "Re-Reading 是输入侧的重复审题策略，Spring AI 可用 Advisor 在模型调用前插入相应模板。",
+        "pitfalls": "重复一遍问题不是事实校验，也不保证推理更准。"
+      }
+    },
+    {
+      "id": "medium-104",
+      "index": 29,
+      "title": "如何在 LangChain 中自定义 Tool 工具？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "Tool 工具"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "定义有清晰名称、描述、参数类型/Schema 和返回格式的函数，可用 LangChain 的 `@tool` 转成工具并传给 `create_agent`；复杂场景可自定义工具类。工具内部要做输入校验、权限、超时、异常映射和审计；返回尽量简洁结构化，避免泄漏密钥或超大输出。可用单元测试先验证工具，再做 Agent 端到端测试。",
+        "oral": "把可控函数声明为 Tool，给模型准确参数描述；执行安全仍由工具实现负责。",
+        "pitfalls": "工具描述不是安全策略，不能靠 Prompt 代替鉴权。"
+      }
+    },
+    {
+      "id": "medium-105",
+      "index": 30,
+      "title": "LangChain 的 Memory 组件有什么作用？常见的 Memory 类型有哪些？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "Memory 记忆机制"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "Memory 的目标是让多轮任务保留必要状态。经典教程常列缓冲、窗口、摘要和向量检索记忆；在当前 LangChain/LangGraph 实践中，更推荐用会话检查点管理短期消息，用持久存储/检索管理长期记忆，再用中间件做裁剪或摘要。无论采用哪种类或存储，必须按会话隔离、控制 Token 和隐私生命周期。",
+        "oral": "Memory 管跨轮上下文；常见策略是全量、窗口、摘要和检索，当前实现还要关注检查点持久化。",
+        "pitfalls": "旧版 `ConversationBufferMemory` 等 API 不应不核版本地照搬到新项目。"
+      }
+    },
+    {
+      "id": "medium-106",
+      "index": 31,
+      "title": "LangChain 中如何处理多模态数据？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "多模态"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "先选支持目标模态的模型与集成，再把文本、图片、音频或视频内容编码成该模型接受的消息内容块；文件可由加载器解析，必要时对图片做 OCR/视觉描述，对音频做转写。多模态 RAG 还需选择文本化索引、跨模态嵌入或原图回传策略。处理大文件时关注体积、隐私、费用和模型对模态的真实支持，不要假定 LangChain 本身提供视觉能力。",
+        "oral": "LangChain 负责消息和流程编排，多模态理解能力来自所接模型，索引策略要按模态选择。",
+        "pitfalls": "仅把图片文件路径当纯文本发给模型，通常不等于传入图片内容。"
+      }
+    },
+    {
+      "id": "medium-107",
+      "index": 32,
+      "title": "如何在 LangChain 中实现函数调用 Function Calling？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "Function Calling"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "把函数包装为带参数 Schema 的 Tool，可将工具绑定到支持工具调用的聊天模型，或传入 `create_agent` 让 Agent 管理循环。模型返回调用请求后，框架/宿主验证参数并执行，再将工具结果作为消息追加，直到模型输出最终答复。对写操作设权限和确认，校验所有模型返回的参数，并设置最大循环次数。",
+        "oral": "函数调用就是模型选函数、宿主执行、结果回传；LangChain 的 Tool 与 Agent 可封装这条链路。",
+        "pitfalls": "Function Calling 不是模型直接执行本地代码。"
+      }
+    },
+    {
+      "id": "medium-108",
+      "index": 33,
+      "title": "LangChain 和 LlamaIndex 有什么区别？各自适合什么场景？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "LlamaIndex",
+        "框架对比"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "LangChain 更强调模型、工具、Agent 和工作流的通用编排；LlamaIndex 以数据接入、文档索引、Retriever/Query Engine 起家，但现在也支持 Agent 和工作流。若主要难点是异构数据解析、索引与知识问答，可优先试 LlamaIndex；若主要难点是工具编排、多步骤应用集成，可优先试 LangChain。两者能力重叠，实际还要比较团队语言栈、生态、可观测性和维护成本。",
+        "oral": "LlamaIndex 偏数据与检索，LangChain 偏应用与 Agent 编排；现在有重叠，按项目瓶颈选。",
+        "pitfalls": "不要说 LlamaIndex 只能做 RAG，或 LangChain 不能做索引。"
+      }
+    },
+    {
+      "id": "medium-109",
+      "index": 34,
+      "title": "什么是 LangChain 中的 Agent？它和 Chain 有什么区别？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "Agent 智能体"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "Agent 是让模型在执行过程中动态选择工具和下一步动作的循环；Chain/Runnable 则由开发者预设数据流。Agent 可处理未知步骤的研究、操作和工具选择，但更难预测、成本更高；Chain 适合抽取、固定 RAG 和规范化处理。当前 LangChain 的 `create_agent` 用 LangGraph 支撑运行时，复杂业务仍要自己设计权限、停止条件和评测。",
+        "oral": "Agent 动态决策，Chain 固定流程；能用确定性流程解决的任务不必上 Agent。",
+        "pitfalls": "Agent 不等于“无限自主”，权限和终止条件必须外部控制。"
+      }
+    },
+    {
+      "id": "medium-110",
+      "index": 35,
+      "title": "LangChain 中如何实现对话历史的管理和持久化？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "对话历史管理"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "给每个对话稳定的 `thread_id`/会话键，用检查点保存消息和状态；开发环境可内存存储，生产使用可持久化的数据库实现。每轮按会话键加载状态并追加消息；长历史用摘要中间件或裁剪，跨会话事实存独立长期记忆。外层应用要认证、隔离租户、保证并发顺序，并提供过期和删除策略。",
+        "oral": "用会话 ID 加持久检查点保存状态，再用摘要和长期记忆管理窗口；生产中还要保证隔离与删除。",
+        "pitfalls": "只保存前端聊天气泡，不等于模型实际能恢复完整会话状态。"
+      }
+    },
+    {
+      "id": "medium-111",
+      "index": 36,
+      "title": "LangChain 中的 Callback 回调机制是什么？有什么用？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "Callback 回调"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "Callback/事件机制允许在模型、工具、链路开始、产生 Token、结束或出错时获得通知，常用于流式展示、追踪、成本统计、日志和审计。设计回调时要避免阻塞主链路，处理异步上下文传播、敏感数据脱敏与重复事件。当前版本还可利用结构化事件流和追踪服务；具体事件 API 按语言与版本核对。",
+        "oral": "回调把运行过程暴露给观测和 UI 层，可记录模型/工具事件和错误。",
+        "pitfalls": "回调是观测/扩展点，不应成为绕过主流程权限的后门。"
+      }
+    },
+    {
+      "id": "medium-112",
+      "index": 37,
+      "title": "如何处理 LangChain 应用中的错误和异常？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "异常处理"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "按模型超时/限流、检索无结果、工具失败、解析失败和业务拒绝分类；每类设明确的超时、有限重试、指数退避、降级或转人工。工具写操作需幂等，结构化输出失败可给有限修复机会。记录 trace ID、步骤输入输出摘要和错误类型，但脱敏个人信息；用故障注入测试重试风暴与恢复。",
+        "oral": "先分类错误，再针对性重试或降级，不能一遇异常就无限重跑整条 Agent 链。",
+        "pitfalls": "重试整条链可能重复执行已成功的副作用工具。"
+      }
+    },
+    {
+      "id": "medium-113",
+      "index": 38,
+      "title": "LangChain 中的 LCEL 表达式语言是什么？有什么优势？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "LCEL"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "LCEL 是用 Runnable 组合可执行步骤的表达方式，典型形态是“Prompt → 模型 → 解析器”，并支持批量、异步和流式等统一调用语义。优点是数据流清楚、便于复用和观测；固定流程尤其合适。它不是一种独立编程语言，也不自动实现复杂状态机；需要动态分支、循环或持久状态时可考虑 LangGraph。",
+        "oral": "LCEL 用 Runnable 组合固定链路，让调用、流式和批量处理共享接口。",
+        "pitfalls": "不要把 `|` 管道看作能自动处理任意业务异常和权限。"
+      }
+    },
+    {
+      "id": "medium-114",
+      "index": 39,
+      "title": "LangChain 中如何实现条件分支和动态路由？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "条件路由"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "先定义路由条件和候选链，例如按查询意图将问题发往 FAQ、订单或人工处理。轻量固定分支可用 Runnable 条件路由或自定义分派函数；需要多步状态、循环与恢复时用 LangGraph 条件边。路由结果应有默认分支、可观测日志和权限过滤，离线评测误路由率及回退成本。",
+        "oral": "简单分支用条件 Runnable，复杂状态流用 LangGraph；路由器要可测试且有兜底。",
+        "pitfalls": "仅靠模型返回字符串路由，未经校验可能进入不存在或无权访问的分支。"
+      }
+    },
+    {
+      "id": "medium-115",
+      "index": 40,
+      "title": "LangChain 的未来发展趋势如何？有哪些值得关注的方向？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "技术趋势"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "这是趋势判断而非确定事实。可关注更稳定的 Agent/状态管理、模型与工具互操作、上下文工程、可观测评测、安全权限，以及多模态和人机协作。LangChain 目前已将简单 Agent 与 LangGraph 的持久执行能力衔接；长期选型不应押注单一 API 名称，而应封装业务接口、留可替换边界，跟踪官方迁移说明和版本策略。",
+        "oral": "重点看 Agent 可靠性、状态、评测和互操作，不只看更多集成数量；具体路线要跟官方版本变化。",
+        "pitfalls": "不要把个人趋势预测说成 LangChain 官方已经承诺的产品路线。"
+      }
+    },
+    {
+      "id": "medium-116",
+      "index": 41,
+      "title": "在 LangChain 中如何实现流式输出？",
+      "difficulty": "medium",
+      "tags": [
+        "LangChain",
+        "流式输出"
+      ],
+      "originalCategory": "medium-5",
+      "originalCategoryName": "LangChain、Spring AI 与框架开发",
+      "answer": {
+        "core": "选择支持流式的模型，在 Runnable 或 Agent 上使用 `stream`/`astream` 或事件流接口，逐块消费文本、工具调用和状态更新；服务端再通过 SSE/WebSocket 转给前端。UI 应处理部分 Token、断连、最终完成事件和错误，必要时合并小块减少渲染抖动。结构化结果通常要等完整对象才可可靠解析，不要把未结束的 JSON 当有效对象。",
+        "oral": "LangChain 通过流式迭代接口输出增量，后端转发给前端并处理断连与最终状态。",
+        "pitfalls": "模型流式 Token 和完整答案质量是两回事；工具调用阶段可能暂时没有文本输出。"
+      }
+    },
+    {
+      "id": "hard-12",
+      "index": 42,
+      "title": "LlamaIndex 如何与 LangChain 结合？",
+      "difficulty": "hard",
+      "tags": [
+        "大模型",
+        "AI",
+        "Agent",
+        "LangChain",
+        "LlamaIndex"
+      ],
+      "originalCategory": "hard-2",
+      "originalCategoryName": "Agent、推理与框架",
+      "answer": {
+        "core": "比较稳妥的边界是让 LlamaIndex 负责数据加载、索引、Retriever/Query Engine，让 LangChain 负责对话、工具与 Agent 编排。可把 LlamaIndex 的查询能力封装为 LangChain Tool（输入问题，输出答案及来源），或把检索结果转换为 LangChain Document，统一元数据字段；官方示例也有将索引封装为 LangChain 工具的做法。集成时明确谁负责 Embedding、谁维护会话和引用，避免双重检索、两次生成或重复计费；用端到端追踪和同一评测集测延迟与答案质量。",
+        "oral": "把 LlamaIndex 当知识检索/索引层，LangChain 当工作流/Agent 层，通过 Tool 或 Document 适配器连接。",
+        "pitfalls": "两个框架都有 Agent/RAG 能力，不能随意叠加；先选清楚职责与版本兼容性。"
+      }
+    },
+    {
+      "id": "hard-22",
+      "index": 43,
+      "title": "LangChain 有哪些常见的性能瓶颈？如何优化？",
+      "difficulty": "hard",
+      "tags": [
+        "LangChain",
+        "性能瓶颈"
+      ],
+      "originalCategory": "hard-2",
+      "originalCategoryName": "Agent、推理与框架",
+      "answer": {
+        "core": "瓶颈通常不在框架本身，而在模型排队/生成、串行检索与工具、过长上下文、重复 Embedding、跨地域网络和频繁序列化。先用追踪分解每个步骤的 p50/p95 延迟与 Token 成本，再针对性优化：并行独立检索、缓存稳定结果、减少无关上下文、批量嵌入、流式输出、选合适模型、限制工具轮数与超时。检查质量回归，避免为降延迟牺牲召回或安全。",
+        "oral": "先定位是模型、检索、工具还是网络慢，再做并行、缓存、上下文裁剪和模型分级。",
+        "pitfalls": "流式输出改善首字体验，不一定降低完整回答时间。"
+      }
+    },
+    {
+      "id": "hard-23",
+      "index": 44,
+      "title": "在生产环境中使用 LangChain 需要注意哪些问题？",
+      "difficulty": "hard",
+      "tags": [
+        "LangChain",
+        "生产实践"
+      ],
+      "originalCategory": "hard-2",
+      "originalCategoryName": "Agent、推理与框架",
+      "answer": {
+        "core": "应锁定框架和集成包版本、记录模型/Prompt/索引版本；为工具、Retriever、结构化输出加输入校验和异常处理。会话使用持久检查点并按租户隔离，工具最小权限、高风险动作审批；设置超时、重试上限、限流与熔断，追踪每步延迟、Token、错误和引用。对 Prompt 注入、数据泄露、无证据回答和长上下文溢出做回归。上线前先有离线黄金集、灰度发布和回滚路径，不能把示例代码直接部署。",
+        "oral": "生产重点是版本、状态、权限、评测、观测与故障恢复，LangChain 只负责一部分编排。",
+        "pitfalls": "开发用内存检查点不适合多实例生产持久化；旧版教程 API 也可能失效。"
+      }
+    },
+    {
+      "id": "hard-24",
+      "index": 45,
+      "title": "如何保证 LangChain 应用的输出质量和一致性？",
+      "difficulty": "hard",
+      "tags": [
+        "LangChain",
+        "质量保证"
+      ],
+      "originalCategory": "hard-2",
+      "originalCategoryName": "Agent、推理与框架",
+      "answer": {
+        "core": "定义输出 Schema、业务规则和参考答案集，使用结构化输出或解析校验，失败时有限重试/人工兜底；RAG 任务要求证据引用并核验。固定模型版本、Prompt 模板、检索索引与采样配置，记录每次变更；对分类/抽取等任务可降低随机性，但不能指望完全确定。建立离线回归、人工盲评和线上质量指标，按问题类型做错误分析。高风险字段交确定性代码或权威数据源验证。",
+        "oral": "靠结构化契约、证据、版本管理和回归集稳定输出；低温只是辅助，不是质量保证。",
+        "pitfalls": "模型多次输出相同不代表正确；“一致性”还包括业务口径和引用一致。"
+      }
+    },
+    {
+      "id": "hard-25",
+      "index": 46,
+      "title": "如何优化 LangChain 应用的性能和成本？",
+      "difficulty": "hard",
+      "tags": [
+        "LangChain",
+        "性能优化"
+      ],
+      "originalCategory": "hard-2",
+      "originalCategoryName": "Agent、推理与框架",
+      "answer": {
+        "core": "建立每条链路的 Token、模型、检索、工具和基础设施成本账本，按质量门槛选最小满足要求的模型。减少重复系统提示与会话历史，检索后重排、压缩证据，缓存稳定查询和 Embedding；独立步骤并行，批量处理文档，长任务异步。对高难问题使用强模型路由，对简单任务用规则或小模型；限制 Agent 步数和外部工具费用。用同一业务评测集监控成本下降是否带来事实性/召回退化。",
+        "oral": "优化先做成本归因，再在模型分级、上下文、缓存、并行和 Agent 步数上动手，并持续检查质量。",
+        "pitfalls": "只看单次 Token 单价会忽略重试、工具、向量库和长尾人工成本。"
+      }
+    },
+    {
+      "id": "hard-27",
+      "index": 47,
+      "title": "LangChain 的 Agent 执行流程是怎样的？",
+      "difficulty": "hard",
+      "tags": [
+        "LangChain",
+        "Agent 原理"
+      ],
+      "originalCategory": "hard-2",
+      "originalCategoryName": "Agent、推理与框架",
+      "answer": {
+        "core": "以当前 LangChain Agent 为例，`create_agent` 将模型、工具和系统规则组成有状态执行图：收到消息与检查点状态→中间件可调整上下文/工具→模型返回普通答案或结构化工具调用→宿主执行工具并追加 ToolMessage→模型继续，直到无工具调用或命中停止条件。运行可流式暴露消息和工具事件，检查点保存线程状态；持久化、安全和工具副作用由应用设计。旧版 `AgentExecutor` 教程与新版实现可能不同，面试可先说明版本。",
+        "oral": "Agent 每轮在模型节点和工具节点之间循环，状态与工具结果不断更新，最后输出答案并持久化会话。",
+        "pitfalls": "不要把模型的工具调用请求当作已经执行成功；需要宿主校验并执行。"
+      }
+    }
+  ]
+}
