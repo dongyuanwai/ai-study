@@ -1,4 +1,4 @@
-# 知序 AI 学习系统
+# oldCode AI 学习系统
 
 代码直接导出自 `/Users/yuanwai/code/ai-tools-web/grokbotkit` 的 `template-starter` 分支，源提交为 `377d58305cce3b1884c7c36af7b2f871f89b477a`。来源记录在 `docs/template-origin.json`。
 
@@ -21,6 +21,7 @@ npm run dev
 - 知识库：按主题、难度和关键词筛选 378 条题目（370 条原始题目与 8 条补充研读）。
 - 详情：核心回答、口述练习、易错点；支持标记掌握及进入单题练习。
 - AI 时间线：2023 年起的滚动式时间线，含 15 个代表节点；中央时间轴贯穿页面，知识节点在左右两侧交错排列，滚动联动轴线点亮、内容入场和全屏粒子背景，按四类筛选、按年份跳转，弹窗查看详情、题目及来源；支持减少动态效果设置。
+- 公司面试真题：按公司、岗位和关键词筛选，按题目分类浏览；当前为字节跳动 Agent 开发（抖音开发）技术一面 47 道题，包括项目追问 35 题、后端服务化 10 题、手撕算法 2 题。47 题均已补充参考答案、口述版和易错点，两道算法题使用 JavaScript。
 - 测试：专题和难度随机组题，支持 5 / 10 / 20 题、独立作答、切题和参考答案复盘。
 - 学习标记存入本机浏览器 localStorage；当前作答草稿存入当前标签页的 sessionStorage。
 - 当前不包含账号、后端数据库或 AI 自动评分，也不包含资讯模块。
@@ -30,6 +31,8 @@ src/app/[lang]/                 双语首页和根布局
 src/app/[lang]/knowledge/       知识库及静态知识详情
 src/app/[lang]/practice/        测试与复盘
 src/app/[lang]/timeline/        AI 发展历程与知识时间线
+src/app/[lang]/interviews/      公司面试案例与题目答案
+src/data/company-interviews.json 公司面试独立数据
 src/data/ai-timeline.json       时间线节点、概念、题目匹配词与来源
 src/components/study/           学习组件、Markdown 展示及进度状态
 src/data/                      完整题库与轻量目录索引
@@ -88,3 +91,9 @@ npm run check:analytics
 部署使用已提交的题库 JSON，不需要在 Vercel 执行 `data:import`，也不需要数据库或 API 密钥。部署后检查 `/zh/`、`/zh/knowledge/`、`/zh/timeline/`、`/zh/practice/` 与知识详情页的直接访问和刷新。
 
 Vercel 官方参考：[构建设置](https://vercel.com/docs/builds/configure-a-build)、[vercel.json 配置](https://vercel.com/docs/project-configuration/vercel-json)。
+
+## 公司面试真题
+
+中文入口 `/zh/interviews/`，英文入口 `/en/interviews/`。数据独立维护在 `src/data/company-interviews.json`，类型定义在 `src/lib/company-interviews.ts`，不混入通用知识库。每条记录包含稳定 `id`、公司中英文名、岗位、轮次、时长、标签、摘要与题目列表。每题使用稳定 ID、连续编号、大类 `group`、专题 `topic`、题干以及可空的 `answer`、`oral`、`pitfalls`；答案支持 Markdown。
+
+目前仅收录用户提供的字节 Agent 开发一面 47 题，已移除全部模拟公司与模拟题目。按用户要求不保留作者、来源链接等来源信息。47 题均已逐题补充参考答案、口述版与易错点，页面注明这些不是原面试者的回答；项目架构题使用可替换的答题框架，不虚构实际经历或业绩。两道算法使用 JavaScript 实现，测试直接执行题目答案中的代码，覆盖空输入、越界、重复值和原地合并。未来新增题目未提供答案时使用 `null`，仅有答案的题目显示展开入口。

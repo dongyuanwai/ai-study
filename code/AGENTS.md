@@ -147,7 +147,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - 题目与答案由 scripts/import-questions.mjs 从 ../agent-docs 的原始 Markdown 和 ai-concepts-supplement.json 统一生成；新增联网研读内容维护在补充 JSON，保留来源、事件日期与核对日期，修改后重新导入，不手工维护生成题库。
 - 题库原文为中文；保留中英文路由和界面。
-- 页面与组件遵循已确认的白色简洁设计，导航集中展示首页、知识库、AI 时间线和能力测试。
+- 页面与组件遵循已确认的白色简洁设计，导航集中展示首页、知识库、AI 时间线、公司面试真题和能力测试。
 - 默认 ALLOW_INDEXING=false；没有明确授权，不启用索引、统计或发布。
 - 使用 Turbopack，不添加 --webpack 作为构建回退。
 - Vercel 使用 Next.js 预设，Root Directory 为 code，输出目录保持自动识别；静态导出的 out 不是适配器读取清单的目录，禁止将 Vercel outputDirectory 设为 out。部署说明见 README.md。
@@ -156,3 +156,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - AI 时间线采用从 2023 年起的页面滚动驱动时间线，采用贯穿页面的中央纵向时间轴，知识节点按时间在左右两侧交错排列，滚动联动轴线进度、节点入场和全屏背景，并尊重减少动态效果偏好，知识点归入模型与推理、训练与对齐、检索与知识、智能体与应用四类，点击后展开详情。内容维护在 src/data/ai-timeline.json；新增节点须核对原始论文或官方公告，标明事件类型，避免将相关术语误记为同年诞生。
 
 - 持续知识更新记录在 docs/knowledge-updates.json；只收录核实过的一手来源，按稳定 ID 和概念去重，使用 questionIds 关联新增时间线与题目。官方解读使用 article 类型，不伪装成概念首发；日期精度不足时保留 YYYY-MM，不编造日期。定时执行由应用任务管理，文档本身不负责调度。
+
+- 公司面试真题独立维护在 src/data/company-interviews.json，只录入用户提供的真实面试资料，不加入模拟记录；按用户要求不保留来源信息。未提供且未要求补充的答案使用 null；用户要求补充时，逐题撰写并标明为参考答法，不冒充原面试者回答。算法题统一使用 JavaScript，代码须覆盖边界测试，维护方式见 README.md。

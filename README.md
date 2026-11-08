@@ -1,6 +1,6 @@
-# 知序 AI 学习系统
+# oldCode AI 学习系统
 
-当前应用位于 `code/`，基于 Next.js 16、React 19 和 Turbopack，提供知识库、能力测试及 AI 发展时间线。
+当前应用位于 `code/`，基于 Next.js 16、React 19 和 Turbopack，提供知识库、能力测试、AI 发展时间线及公司面试真题。
 
 - `code/`：当前应用代码与 [运行、验证及部署说明](code/README.md)。
 - `agent-docs/`：原始题目、答案、补充研读资料与历史原型。

@@ -25,4 +25,4 @@ export const alternateLinks = (path = "") => ({
 });
 
 // 新增页面时登记不含语言前缀的路径；没有可靠日期就省略 updated。
-export const pages: { path: string; updated?: string }[] = [{ path: "" }, { path: "knowledge" }, { path: "practice" }, { path: "timeline" }, ...questionIndex.map(question => ({ path: `knowledge/${question.id}` }))];
+export const pages: { path: string; updated?: string }[] = [{ path: "" }, { path: "knowledge" }, { path: "practice" }, { path: "timeline" }, { path: "interviews" }, ...questionIndex.map(question => ({ path: `knowledge/${question.id}` }))];

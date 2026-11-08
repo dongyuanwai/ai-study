@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 
 const paths = {
+  company: <><path d="M4 21V5h10v16M14 10h6v11M2 21h20M8 9h2M8 13h2M8 17h2M17 14h1M17 18h1"/></>,
   timeline: <><path d="M6 5v14M10 5h10M10 12h7M10 19h10"/><circle cx="6" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="6" cy="19" r="2"/></>,
   home: <><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></>,
   book: <><path d="M3 4h6l3 2 3-2h6v15h-6l-3 2-3-2H3zM12 6v15"/></>,
