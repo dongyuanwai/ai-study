@@ -8,7 +8,7 @@
 
 ## Vercel 部署
 
-导入本仓库，Production Branch 选 `master`，**Root Directory 必须设为 `code`**。框架为 Next.js，安装命令 `npm ci`，构建命令 `npm run build`，输出目录 `out`；这些构建设置已写入 `code/vercel.json`。
+导入本仓库，Production Branch 选 `master`，**Root Directory 必须设为 `code`**。框架为 Next.js，安装命令 `npm ci`，构建命令 `npm run build`，Output Directory 保持自动识别（关闭 Override，不填写 `out`）；这些构建设置已写入 `code/vercel.json`。
 
 在 Vercel 环境变量中设置 `SITE_URL` 为最终访问地址（包含 `https://`，不要带路径），保留 `ALLOW_INDEXING=false`。首次部署后如果域名变化，更新 `SITE_URL` 并重新部署。中文首页路径为 `/zh/`，根路径跳转到 `/en/`。
 

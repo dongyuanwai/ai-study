@@ -104,7 +104,10 @@ for (const filename of fs.readdirSync(output, { recursive: true })) {
   assert.ok(sitemapPaths.has(`/${filename.slice(0, -"index.html".length)}`), `导出页面未纳入 sitemap：${filename}`);
 }
 assert.ok(!fs.existsSync(path.join(output, "index.html")), "根路径不应重复导出首页");
-const routes = JSON.parse(fs.readFileSync(".next/routes-manifest.json", "utf8"));
+const hosting = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+const manifestPath = path.join(hosting.outputDirectory || ".next", "routes-manifest.json");
+assert.ok(fs.existsSync(manifestPath), `Vercel 无法读取路由清单：${manifestPath}；Next.js 预设应保持输出目录自动识别，不要设为 out`);
+const routes = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 assert.equal(routes.redirects.find(item => item.source === "/" && item.destination === "/en/")?.statusCode, 308);
 const robots = read("robots.txt");
 assert.match(robots, allowIndexing ? /^Allow: \/$/m : /^Disallow: \/$/m);

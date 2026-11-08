@@ -77,9 +77,11 @@ npm run check:analytics
 | Framework Preset | Next.js |
 | Install Command | `npm ci` |
 | Build Command | `npm run build` |
-| Output Directory | `out` |
+| Output Directory | 自动识别，关闭 Override，不填写 `out` |
 | SITE_URL | 最终站点根地址，例如 `https://你的项目.vercel.app` |
 | ALLOW_INDEXING | `false` |
+
+`vercel.json` 中的 `outputDirectory: null` 恢复框架自动识别。Vercel 的 Next.js 适配器先读取 `.next/routes-manifest.json`，再根据导出记录收集 `out/` 静态资源，因此不能把适配器输出目录设为 `out`。
 
 构建与根路径跳转已配置在 `vercel.json`；根路径永久跳转到 `/en/`，中文入口为 `/zh/`。`SITE_URL` 在构建时用于 canonical 与 sitemap，必须填写真实访问域名，变更后重新部署。只有决定开放搜索引擎收录时才将 `ALLOW_INDEXING` 设为 `true`。
 
