@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+.sites-runtime/
+.DS_Store
+
+# 本地工具配置
+.vercel/
+.codex/
+.agents/

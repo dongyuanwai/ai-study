@@ -1,0 +1,93 @@
+{
+  "lastSuccessfulCheck": "2026-11-08",
+  "runs": [
+    {
+      "checkedAt": "2026-11-08",
+      "status": "complete",
+      "addedMilestoneIds": [
+        "context-engineering",
+        "reasoningbank",
+        "agent-skills",
+        "agent-harness",
+        "agentic-rag",
+        "agent-memory",
+        "sleep-framework",
+        "llm-as-rnn"
+      ],
+      "addedQuestionIds": [
+        "concept-context-engineering",
+        "concept-reasoningbank",
+        "concept-agent-skills",
+        "concept-agent-harness",
+        "concept-agentic-rag",
+        "concept-agent-memory",
+        "concept-sleep-framework",
+        "concept-llm-as-rnn"
+      ],
+      "sources": [
+        {
+          "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+          "title": "Effective context engineering for AI agents",
+          "date": "2025-09-29",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://arxiv.org/abs/2509.25140",
+          "title": "ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory",
+          "date": "2025-09-29",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills",
+          "title": "Equipping agents for the real world with Agent Skills",
+          "date": "2025-10-16",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+          "title": "Effective harnesses for long-running agents",
+          "date": "2025-11-26",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://research.google/blog/unlocking-dependable-responses-with-gemini-enterprise-agent-platforms-agentic-rag/",
+          "title": "Unlocking dependable responses with Gemini Enterprise Agent Platform’s Agentic RAG",
+          "date": "2026-06-05",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://arxiv.org/abs/2610.35089",
+          "title": "Learning to Remember: Advances in Memory Mechanisms for Large Language Models",
+          "date": "2026-10-26",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+          "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
+          "date": "2026-10-27",
+          "checkedAt": "2026-11-08"
+        },
+        {
+          "url": "https://aclanthology.org/2026.aacl-long.222/",
+          "title": "LLM-as-RNN: Feedback-Driven Memory Rewriting for Online Learning and Sequential Prediction",
+          "date": "2026-11",
+          "checkedAt": "2026-11-08"
+        }
+      ],
+      "notes": [
+        "本轮补查 2025 至 2026 年代表性概念；不代表对所有来源穷尽检查。",
+        "LLM-as-RNN 的来源日期仅到月份，保留 2026-11。",
+        "ReasoningBank 按论文首版 2025-09-29 排序；Sleep Framework 采用官方解读日期并注明非概念首发。"
+      ],
+      "failures": [],
+      "validation": [
+        "5 项数据测试通过",
+        "原始 370 条题目逐项未变",
+        "重复导入结果一致",
+        "Turbopack 构建通过",
+        "SEO 检查通过：764 个规范页面",
+        "浏览器验证：15 个节点、2026 年跳转、8 个新页面、精确关联、来源与手机布局通过"
+      ]
+    }
+  ]
+}

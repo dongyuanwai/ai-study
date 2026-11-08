@@ -1,0 +1,588 @@
+[
+  {
+    "id": "qlora",
+    "date": "2023-05-23",
+    "category": "tuning",
+    "name": "QLoRA",
+    "title": {
+      "zh": "量化与低秩微调",
+      "en": "Quantized low-rank tuning"
+    },
+    "description": {
+      "zh": "将冻结的预训练模型量化为 4 bit，并训练 LoRA 适配器，降低微调显存需求。学习重点是量化精度、低秩适配与显存开销之间的关系。",
+      "en": "A frozen 4-bit base model is adapted with trainable LoRA adapters to reduce fine-tuning memory requirements."
+    },
+    "terms": {
+      "zh": [
+        "量化",
+        "LoRA",
+        "参数高效微调"
+      ],
+      "en": [
+        "Quantization",
+        "LoRA",
+        "Parameter-efficient tuning"
+      ]
+    },
+    "keywords": [
+      "QLoRA",
+      "LoRA"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2305.14314",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs"
+    },
+    "kind": "paper",
+    "questionIds": []
+  },
+  {
+    "id": "dpo",
+    "date": "2023-05-29",
+    "category": "tuning",
+    "name": "DPO",
+    "title": {
+      "zh": "直接偏好优化",
+      "en": "Direct preference optimization"
+    },
+    "description": {
+      "zh": "通过偏好数据中的优选回答与较差回答直接优化语言模型，省去单独拟合奖励模型的步骤。学习重点是偏好对、参考模型与对齐目标。",
+      "en": "Preferred and rejected response pairs directly optimize a language model, without separately fitting a reward model."
+    },
+    "terms": {
+      "zh": [
+        "DPO",
+        "偏好对齐",
+        "参考模型"
+      ],
+      "en": [
+        "DPO",
+        "Preference alignment",
+        "Reference model"
+      ]
+    },
+    "keywords": [
+      "DPO",
+      "RLHF"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2305.18290",
+      "title": "Direct Preference Optimization"
+    },
+    "kind": "paper",
+    "questionIds": []
+  },
+  {
+    "id": "self-rag",
+    "date": "2023-10-17",
+    "category": "knowledge",
+    "name": "Self-RAG",
+    "title": {
+      "zh": "检索与自我反思",
+      "en": "Retrieval and self-reflection"
+    },
+    "description": {
+      "zh": "根据需求决定是否检索，并通过反思标记评价检索片段与生成结果。它是 RAG 的后续方法，2023 年并非 RAG 概念的起点。",
+      "en": "Retrieval is used on demand, with reflection tokens evaluating retrieved passages and generated answers. This is a later RAG method, not the origin of RAG."
+    },
+    "terms": {
+      "zh": [
+        "RAG",
+        "自适应检索",
+        "反思标记"
+      ],
+      "en": [
+        "RAG",
+        "Adaptive retrieval",
+        "Reflection tokens"
+      ]
+    },
+    "keywords": [
+      "RAG",
+      "检索增强"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2310.11511",
+      "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection"
+    },
+    "kind": "paper",
+    "questionIds": []
+  },
+  {
+    "id": "graphrag",
+    "date": "2024-04-24",
+    "category": "knowledge",
+    "name": "GraphRAG",
+    "title": {
+      "zh": "图结构知识检索",
+      "en": "Graph-based retrieval"
+    },
+    "description": {
+      "zh": "从文档提取实体与关系，构建知识图谱及社区摘要，帮助回答需要综合整个语料库的问题。学习重点是实体关系、社区摘要与全局检索。",
+      "en": "Entity graphs and community summaries help answer questions requiring a global view of a document collection."
+    },
+    "terms": {
+      "zh": [
+        "知识图谱",
+        "社区摘要",
+        "全局检索"
+      ],
+      "en": [
+        "Knowledge graphs",
+        "Community summaries",
+        "Global retrieval"
+      ]
+    },
+    "keywords": [
+      "GraphRAG",
+      "知识图谱"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2404.16130",
+      "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization"
+    },
+    "kind": "paper",
+    "questionIds": []
+  },
+  {
+    "id": "mcp",
+    "date": "2024-11-25",
+    "category": "agents",
+    "name": "MCP",
+    "title": {
+      "zh": "工具与数据连接",
+      "en": "Connecting tools and data"
+    },
+    "description": {
+      "zh": "用统一的客户端—服务器协议连接 AI 应用与外部工具、资源及提示模板。学习重点是工具发现、调用流程和访问边界。",
+      "en": "A shared client–server protocol connects AI applications to tools, resources and prompt templates."
+    },
+    "terms": {
+      "zh": [
+        "MCP",
+        "工具调用",
+        "客户端—服务器"
+      ],
+      "en": [
+        "MCP",
+        "Tool use",
+        "Client–server"
+      ]
+    },
+    "keywords": [
+      "MCP"
+    ],
+    "source": {
+      "url": "https://www.anthropic.com/news/model-context-protocol",
+      "title": "Introducing the Model Context Protocol"
+    },
+    "kind": "release",
+    "questionIds": []
+  },
+  {
+    "id": "r1",
+    "date": "2025-01-22",
+    "category": "models",
+    "name": "DeepSeek-R1",
+    "title": {
+      "zh": "强化学习与推理",
+      "en": "Reinforcement learning for reasoning"
+    },
+    "description": {
+      "zh": "论文探索通过强化学习提升语言模型的推理能力，并研究将推理能力蒸馏到更小模型。学习重点是奖励设计、推理训练与蒸馏。",
+      "en": "The paper explores reinforcement learning for reasoning and distilling reasoning capabilities into smaller models."
+    },
+    "terms": {
+      "zh": [
+        "强化学习",
+        "推理模型",
+        "蒸馏"
+      ],
+      "en": [
+        "Reinforcement learning",
+        "Reasoning models",
+        "Distillation"
+      ]
+    },
+    "keywords": [
+      "强化学习",
+      "蒸馏"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2501.12948",
+      "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning"
+    },
+    "kind": "paper",
+    "questionIds": []
+  },
+  {
+    "id": "a2a",
+    "date": "2025-04-09",
+    "category": "agents",
+    "name": "A2A",
+    "title": {
+      "zh": "智能体之间的协作",
+      "en": "Agent interoperability"
+    },
+    "description": {
+      "zh": "让不同系统中的智能体交换信息并协同完成任务。学习重点是智能体能力发现、任务生命周期，以及它与工具连接协议的区别。",
+      "en": "Agents from different systems exchange information and coordinate tasks. Key concepts include capability discovery and task lifecycles."
+    },
+    "terms": {
+      "zh": [
+        "A2A",
+        "能力发现",
+        "任务协作"
+      ],
+      "en": [
+        "A2A",
+        "Capability discovery",
+        "Task coordination"
+      ]
+    },
+    "keywords": [
+      "A2A"
+    ],
+    "source": {
+      "url": "https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/",
+      "title": "Announcing the Agent2Agent Protocol"
+    },
+    "kind": "release",
+    "questionIds": []
+  },
+  {
+    "id": "context-engineering",
+    "date": "2025-09-29",
+    "category": "agents",
+    "name": "Context Engineering",
+    "title": {
+      "zh": "上下文的选择与维护",
+      "en": "Selecting and maintaining context"
+    },
+    "description": {
+      "zh": "Anthropic 工程文章梳理上下文选择、即时检索与长期任务管理；此日期是文章发表日，不是术语诞生日。",
+      "en": "An engineering article on context selection and just-in-time retrieval; its date marks publication, not the origin of the term."
+    },
+    "terms": {
+      "zh": [
+        "即时检索",
+        "上下文预算",
+        "信息选择"
+      ],
+      "en": [
+        "Just-in-time retrieval",
+        "Context budget",
+        "Selection"
+      ]
+    },
+    "keywords": [
+      "Context Engineering",
+      "即时检索",
+      "上下文预算",
+      "信息选择"
+    ],
+    "source": {
+      "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+      "title": "Effective context engineering for AI agents",
+      "date": "2025-09-29",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "article",
+    "questionIds": [
+      "concept-context-engineering"
+    ]
+  },
+  {
+    "id": "reasoningbank",
+    "date": "2025-09-29",
+    "category": "agents",
+    "name": "ReasoningBank",
+    "title": {
+      "zh": "从成功与失败中提炼经验",
+      "en": "Learning from success and failure"
+    },
+    "description": {
+      "zh": "将任务经历提炼成可复用的推理策略，再按任务检索。日期对应论文首版；2026 年官方解读不作为首次发表时间。",
+      "en": "Reusable reasoning memories are distilled from successes and failures. The date follows the first paper submission."
+    },
+    "terms": {
+      "zh": [
+        "推理记忆",
+        "经验提炼",
+        "MaTTS"
+      ],
+      "en": [
+        "Reasoning memory",
+        "Experience distillation",
+        "MaTTS"
+      ]
+    },
+    "keywords": [
+      "ReasoningBank",
+      "推理记忆",
+      "经验提炼",
+      "MaTTS"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2509.25140",
+      "title": "ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory",
+      "date": "2025-09-29",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "paper",
+    "questionIds": [
+      "concept-reasoningbank"
+    ]
+  },
+  {
+    "id": "agent-skills",
+    "date": "2025-10-16",
+    "category": "agents",
+    "name": "Agent Skills",
+    "title": {
+      "zh": "按需加载的领域能力",
+      "en": "On-demand domain expertise"
+    },
+    "description": {
+      "zh": "将任务说明、脚本与资源组织为可发现的技能包，按需要逐层加载。此节点记录官方介绍文章。",
+      "en": "Discoverable packages of instructions, scripts and resources are loaded progressively as needed."
+    },
+    "terms": {
+      "zh": [
+        "渐进式加载",
+        "SKILL.md",
+        "可复用流程"
+      ],
+      "en": [
+        "Progressive disclosure",
+        "SKILL.md",
+        "Reusable workflows"
+      ]
+    },
+    "keywords": [
+      "Agent Skills",
+      "渐进式加载",
+      "SKILL.md",
+      "可复用流程"
+    ],
+    "source": {
+      "url": "https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills",
+      "title": "Equipping agents for the real world with Agent Skills",
+      "date": "2025-10-16",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "article",
+    "questionIds": [
+      "concept-agent-skills"
+    ]
+  },
+  {
+    "id": "agent-harness",
+    "date": "2025-11-26",
+    "category": "agents",
+    "name": "Agent Harness",
+    "title": {
+      "zh": "跨会话任务的运行支撑",
+      "en": "Support for work across sessions"
+    },
+    "description": {
+      "zh": "官方工程案例用环境初始化、增量执行和进度交接支撑长任务；此日期代表案例发表。",
+      "en": "An engineering case study combines initialization, incremental execution and progress handoffs."
+    },
+    "terms": {
+      "zh": [
+        "环境初始化",
+        "进度交接",
+        "增量验证"
+      ],
+      "en": [
+        "Initialization",
+        "Handoffs",
+        "Incremental validation"
+      ]
+    },
+    "keywords": [
+      "Agent Harness",
+      "环境初始化",
+      "进度交接",
+      "增量验证"
+    ],
+    "source": {
+      "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+      "title": "Effective harnesses for long-running agents",
+      "date": "2025-11-26",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "article",
+    "questionIds": [
+      "concept-agent-harness"
+    ]
+  },
+  {
+    "id": "agentic-rag",
+    "date": "2026-06-05",
+    "category": "knowledge",
+    "name": "Agentic RAG",
+    "title": {
+      "zh": "多轮检索与证据充分性",
+      "en": "Iterative retrieval and sufficient context"
+    },
+    "description": {
+      "zh": "Google 官方介绍跨语料检索方案，通过规划、查询改写和迭代检索补齐证据。日期记录该方案介绍，并非 Agentic RAG 的诞生。",
+      "en": "Google describes cross-corpus retrieval with planning, query rewriting and iterative evidence gathering."
+    },
+    "terms": {
+      "zh": [
+        "查询规划",
+        "跨库检索",
+        "证据充分性"
+      ],
+      "en": [
+        "Query planning",
+        "Cross-corpus retrieval",
+        "Sufficient context"
+      ]
+    },
+    "keywords": [
+      "Agentic RAG",
+      "查询规划",
+      "跨库检索",
+      "证据充分性"
+    ],
+    "source": {
+      "url": "https://research.google/blog/unlocking-dependable-responses-with-gemini-enterprise-agent-platforms-agentic-rag/",
+      "title": "Unlocking dependable responses with Gemini Enterprise Agent Platform’s Agentic RAG",
+      "date": "2026-06-05",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "article",
+    "questionIds": [
+      "concept-agentic-rag"
+    ]
+  },
+  {
+    "id": "agent-memory",
+    "date": "2026-10-26",
+    "category": "knowledge",
+    "name": "Agent Memory",
+    "title": {
+      "zh": "记忆的完整生命周期",
+      "en": "The complete memory lifecycle"
+    },
+    "description": {
+      "zh": "近期综述从存储方式、生命周期和系统角色整理大模型记忆。论文日期不代表记忆机制首次出现。",
+      "en": "A recent survey organizes LLM memory by storage, lifecycle and system role."
+    },
+    "terms": {
+      "zh": [
+        "记忆维护",
+        "记忆检索",
+        "遗忘与评估"
+      ],
+      "en": [
+        "Maintenance",
+        "Retrieval",
+        "Forgetting and evaluation"
+      ]
+    },
+    "keywords": [
+      "Agent Memory",
+      "记忆维护",
+      "记忆检索",
+      "遗忘与评估"
+    ],
+    "source": {
+      "url": "https://arxiv.org/abs/2610.35089",
+      "title": "Learning to Remember: Advances in Memory Mechanisms for Large Language Models",
+      "date": "2026-10-26",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "paper",
+    "questionIds": [
+      "concept-agent-memory"
+    ]
+  },
+  {
+    "id": "sleep-framework",
+    "date": "2026-10-27",
+    "category": "tuning",
+    "name": "Sleep Framework",
+    "title": {
+      "zh": "短期记忆的离线巩固",
+      "en": "Offline consolidation of short-term memory"
+    },
+    "description": {
+      "zh": "Google 官方解读交互与离线巩固交替的学习框架。节点日期为解读发表日；相关论文和更早版本已存在。",
+      "en": "An official explanation of alternating interaction and offline consolidation; earlier research versions already exist."
+    },
+    "terms": {
+      "zh": [
+        "持续学习",
+        "记忆巩固",
+        "知识蒸馏"
+      ],
+      "en": [
+        "Continual learning",
+        "Consolidation",
+        "Knowledge distillation"
+      ]
+    },
+    "keywords": [
+      "Sleep Framework",
+      "持续学习",
+      "记忆巩固",
+      "知识蒸馏"
+    ],
+    "source": {
+      "url": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+      "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
+      "date": "2026-10-27",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "article",
+    "questionIds": [
+      "concept-sleep-framework"
+    ]
+  },
+  {
+    "id": "llm-as-rnn",
+    "date": "2026-11",
+    "category": "models",
+    "name": "LLM-as-RNN",
+    "title": {
+      "zh": "反馈驱动的记忆改写",
+      "en": "Feedback-driven memory rewriting"
+    },
+    "description": {
+      "zh": "2026 年 11 月会议论文研究固定模型参数、有限自然语言记忆下的在线预测。来源仅明确到月份，因此不填写具体日。",
+      "en": "A November 2026 conference paper studies online prediction with frozen weights and bounded natural-language memory."
+    },
+    "terms": {
+      "zh": [
+        "在线反馈",
+        "固定参数",
+        "有界记忆"
+      ],
+      "en": [
+        "Online feedback",
+        "Frozen weights",
+        "Bounded memory"
+      ]
+    },
+    "keywords": [
+      "LLM-as-RNN",
+      "在线反馈",
+      "固定参数",
+      "有界记忆"
+    ],
+    "source": {
+      "url": "https://aclanthology.org/2026.aacl-long.222/",
+      "title": "LLM-as-RNN: Feedback-Driven Memory Rewriting for Online Learning and Sequential Prediction",
+      "date": "2026-11",
+      "checkedAt": "2026-11-08"
+    },
+    "kind": "paper",
+    "questionIds": [
+      "concept-llm-as-rnn"
+    ]
+  }
+]

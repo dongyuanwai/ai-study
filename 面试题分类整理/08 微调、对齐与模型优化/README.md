@@ -1,0 +1,15 @@
+# 08 微调、对齐与模型优化
+
+[返回总目录](../README.md)
+
+本类归档 43 题；简单 23 / 中等 8 / 困难 12。
+
+## 知识点目录
+
+- [01 微调选型：Prompt、RAG 与 Fine-tuning](01%20%E5%BE%AE%E8%B0%83%E9%80%89%E5%9E%8B%EF%BC%9APrompt%E3%80%81RAG%20%E4%B8%8E%20Fine-tuning.md) — 8 题
+- [02 SFT 数据构建与质量控制](02%20SFT%20%E6%95%B0%E6%8D%AE%E6%9E%84%E5%BB%BA%E4%B8%8E%E8%B4%A8%E9%87%8F%E6%8E%A7%E5%88%B6.md) — 6 题
+- [03 全量微调与参数高效微调](03%20%E5%85%A8%E9%87%8F%E5%BE%AE%E8%B0%83%E4%B8%8E%E5%8F%82%E6%95%B0%E9%AB%98%E6%95%88%E5%BE%AE%E8%B0%83.md) — 10 题
+- [04 LoRA、QLoRA、DoRA、Adapter、Prefix](04%20LoRA%E3%80%81QLoRA%E3%80%81DoRA%E3%80%81Adapter%E3%80%81Prefix.md) — 7 题
+- [05 RLHF、奖励模型、PPO、DPO、ORPO](05%20RLHF%E3%80%81%E5%A5%96%E5%8A%B1%E6%A8%A1%E5%9E%8B%E3%80%81PPO%E3%80%81DPO%E3%80%81ORPO.md) — 3 题
+- [06 量化、蒸馏与混合精度](06%20%E9%87%8F%E5%8C%96%E3%80%81%E8%92%B8%E9%A6%8F%E4%B8%8E%E6%B7%B7%E5%90%88%E7%B2%BE%E5%BA%A6.md) — 2 题
+- [07 过拟合、灾难性遗忘与持续学习](07%20%E8%BF%87%E6%8B%9F%E5%90%88%E3%80%81%E7%81%BE%E9%9A%BE%E6%80%A7%E9%81%97%E5%BF%98%E4%B8%8E%E6%8C%81%E7%BB%AD%E5%AD%A6%E4%B9%A0.md) — 7 题

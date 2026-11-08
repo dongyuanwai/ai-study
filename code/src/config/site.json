@@ -1,0 +1,8 @@
+{
+  "name": "知序 AI",
+  "googleAnalyticsId": "",
+  "home": {
+    "en": { "title": "Understand AI. Make it yours.", "description": "Build your AI knowledge with 370 original questions, clear reference explanations, and focused practice." },
+    "zh": { "title": "理解 AI，从这里开始", "description": "通过 9 个学习方向、370 条题目与参考答案，系统学习大模型知识，在独立作答与复盘中建立理解。" }
+  }
+}

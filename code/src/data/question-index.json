@@ -1,0 +1,3452 @@
+[
+  {
+    "id": "easy-1",
+    "number": 1,
+    "title": "大模型的 Token 是什么？输入 Token 和输出 Token 在计费上有什么区别？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-2",
+    "number": 2,
+    "title": "什么是大模型的参数量？参数量和模型能力之间是什么关系？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-3",
+    "number": 3,
+    "title": "大模型的训练和推理分别是什么？它们在计算资源需求上有什么区别？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-4",
+    "number": 4,
+    "title": "什么是大模型的上下文窗口（Context Window）？不同模型的窗口大小差异对应用开发有什么影响？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-5",
+    "number": 5,
+    "title": "开源大模型和闭源大模型各有什么优劣？2026 年主流的开源和闭源大模型有哪些？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-6",
+    "number": 6,
+    "title": "什么是模型蒸馏（Knowledge Distillation）？它和模型量化有什么区别？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-7",
+    "number": 7,
+    "title": "什么是大模型的涌现能力（Emergent Abilities）？它对 AI 应用开发有什么启示？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-8",
+    "number": 8,
+    "title": "什么是 AI 幻觉（Hallucination）？大模型为什么会产生幻觉？有哪些缓解方法？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-9",
+    "number": 9,
+    "title": "什么是深度思考（Deep Thinking）和自适应思考（Adaptive Thinking）？它们在 AI 编程中有什么应用？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-10",
+    "number": 10,
+    "title": "大模型的结构化输出指的是什么？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "easy-11",
+    "number": 11,
+    "title": "什么是 GPT Structured Outputs？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "easy-12",
+    "number": 12,
+    "title": "如何评估大模型的能力？主流的 Benchmark 有哪些？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-13",
+    "number": 13,
+    "title": "LLaMA 有哪些实际应用？",
+    "level": "简单",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础与核心概念（13 题）",
+    "tags": "自然语言处理（NLP）、大语言模型"
+  },
+  {
+    "id": "easy-14",
+    "number": 14,
+    "title": "什么是 Prompt Engineering 提示词工程？它的核心价值是什么？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、提示词工程基础"
+  },
+  {
+    "id": "easy-15",
+    "number": 15,
+    "title": "Prompt 提示词的基本结构包括哪些部分？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、提示词结构"
+  },
+  {
+    "id": "easy-16",
+    "number": 16,
+    "title": "什么是系统提示词 System Prompt？它和用户提示词有什么区别？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、System Prompt"
+  },
+  {
+    "id": "easy-17",
+    "number": 17,
+    "title": "提示词中的分隔符有什么作用？如何使用？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、分隔符"
+  },
+  {
+    "id": "easy-18",
+    "number": 18,
+    "title": "如何在提示词中设置约束条件和输出要求？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、约束条件"
+  },
+  {
+    "id": "easy-19",
+    "number": 19,
+    "title": "什么是角色扮演 Role Playing？如何在提示词中使用？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、角色扮演"
+  },
+  {
+    "id": "easy-20",
+    "number": 20,
+    "title": "如何让 AI 输出指定格式的内容，比如 JSON、表格、Markdown？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、格式控制"
+  },
+  {
+    "id": "easy-21",
+    "number": 21,
+    "title": "Token 是什么？如何计算和控制 Token 数量？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、Token"
+  },
+  {
+    "id": "easy-22",
+    "number": 22,
+    "title": "什么是上下文窗口 Context Window？它有什么限制？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "Prompt、上下文窗口"
+  },
+  {
+    "id": "easy-23",
+    "number": 23,
+    "title": "什么是上下文工程（Context Engineering）？为什么说它是 2026 年最重要的 AI 工程技能？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-24",
+    "number": 24,
+    "title": "什么是上下文压缩（Context Compaction）？有哪些常见的压缩策略？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-25",
+    "number": 25,
+    "title": "当对话历史超出上下文窗口时，有哪些上下文压缩策略？各自的优缺点是什么？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-26",
+    "number": 26,
+    "title": "什么是 Agent 的上下文窗口？为什么它是 Agent 工程中最核心的约束？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-27",
+    "number": 27,
+    "title": "（OpenClaw 前置知识）什么是 Agent 的 Context Window？为什么它是 Agent 工程中最核心的约束之一？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "easy-28",
+    "number": 28,
+    "title": "（OpenClaw 前置知识）System Prompt 在 Agent 系统中承载了哪些职责？如果 System Prompt 越来越长，你会怎么处理？",
+    "level": "简单",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（15 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "easy-29",
+    "number": 29,
+    "title": "什么是 RAG 检索增强生成？它解决了大模型的哪些问题？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、RAG 基础"
+  },
+  {
+    "id": "easy-30",
+    "number": 30,
+    "title": "什么是 RAG？RAG 的主要流程是什么？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG、编程导航"
+  },
+  {
+    "id": "easy-31",
+    "number": 31,
+    "title": "RAG 的完整流程是怎么样的？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-32",
+    "number": 32,
+    "title": "RAG 的完整工作流程是怎样的？核心步骤有哪些？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、RAG 流程"
+  },
+  {
+    "id": "easy-33",
+    "number": 33,
+    "title": "什么是 RAG 中的分块？为什么需要分块？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-34",
+    "number": 34,
+    "title": "在 RAG 中，常见的分块策略有哪些？分别有什么区别？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-35",
+    "number": 35,
+    "title": "RAG 系统中为什么要进行文档切割？有哪些切割策略？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、文档切割"
+  },
+  {
+    "id": "easy-36",
+    "number": 36,
+    "title": "在 RAG 中的 Embedding 嵌入是什么？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-37",
+    "number": 37,
+    "title": "RAG 中的 Embedding 向量化是什么？如何工作的？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、Embedding"
+  },
+  {
+    "id": "easy-38",
+    "number": 38,
+    "title": "在 RAG 中，你知道有哪些 Embedding Model 嵌入模型？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-39",
+    "number": 39,
+    "title": "RAG 为什么需要向量数据库？它和传统数据库有什么区别？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、向量数据库"
+  },
+  {
+    "id": "easy-40",
+    "number": 40,
+    "title": "RAG 中如何计算文本相似度？常见算法有哪些？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、相似度计算"
+  },
+  {
+    "id": "easy-41",
+    "number": 41,
+    "title": "RAG 检索中的 Top-K 是什么意思？K 值如何确定？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、Top-K"
+  },
+  {
+    "id": "easy-42",
+    "number": 42,
+    "title": "什么自查询？为什么在 RAG 中需要自查询？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-43",
+    "number": 43,
+    "title": "什么提示压缩？为什么在 RAG 中需要提示压缩？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "easy-44",
+    "number": 44,
+    "title": "RAG 和模型微调 Fine-tuning 有什么区别？如何选择？",
+    "level": "简单",
+    "category": "rag",
+    "sourceTopic": "3. RAG 检索增强生成（16 题）",
+    "tags": "RAG、Fine-tuning"
+  },
+  {
+    "id": "easy-45",
+    "number": 45,
+    "title": "什么是 AI Agent？它和直接调用大模型 API 有什么区别？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-46",
+    "number": 46,
+    "title": "什么是大模型 Agent？它与传统的 AI 系统有什么不同？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "大模型、AI、Agent、编程导航"
+  },
+  {
+    "id": "easy-47",
+    "number": 47,
+    "title": "（OpenClaw 前置知识）什么是 AI Agent？它和直接调用大模型 API 做一次问答有什么本质区别？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI 应用开发、Agent 开发"
+  },
+  {
+    "id": "easy-48",
+    "number": 48,
+    "title": "LLM Agent 常见功能有哪些？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "easy-49",
+    "number": 49,
+    "title": "LLM Agent 的基本架构有哪些组成部分？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "easy-50",
+    "number": 50,
+    "title": "AI Agent 的核心组件有哪些？感知、决策、执行、记忆各自的作用是什么？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-51",
+    "number": 51,
+    "title": "什么是 Agent Loop（智能体循环）？一个典型的 Agent Loop 包含哪些步骤？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-52",
+    "number": 52,
+    "title": "ReAct 是什么？说说它的原理",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "easy-53",
+    "number": 53,
+    "title": "ReAct 推理范式是什么？它如何让 Agent 更可靠地完成任务？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-54",
+    "number": 54,
+    "title": "什么是 Reflexion？它和 ReAct 有什么区别？如何提升 Agent 的自我纠错能力？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-55",
+    "number": 55,
+    "title": "（OpenClaw 前置知识）请解释 Tool Calling（工具调用）的完整链路：工具是怎么定义的、LLM 怎么调用它、结果怎么回传",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "easy-56",
+    "number": 56,
+    "title": "什么是 AI Agent 中的工具调用（Tool Calling）？它的基本流程是怎样的？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-57",
+    "number": 57,
+    "title": "AI Agent 如何处理工具调用返回超大结果的问题？有哪些实用的解决方案？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-58",
+    "number": 58,
+    "title": "什么是 AI Agent 中的 Skills？它有什么用？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent、Skills"
+  },
+  {
+    "id": "easy-59",
+    "number": 59,
+    "title": "AI Agent 的记忆机制有哪些类型？短期记忆和长期记忆分别怎么实现？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-60",
+    "number": 60,
+    "title": "如何让 AI Agent 具备长期记忆能力？有哪些存储和检索方案？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-61",
+    "number": 61,
+    "title": "Agent 系统中如何设计优雅的终止条件？避免死循环有哪些策略？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-62",
+    "number": 62,
+    "title": "如何设计 AI Agent 的工具权限控制？不同场景下的工具应该有什么样的权限差异？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-63",
+    "number": 63,
+    "title": "子 Agent（Subagent）模式有什么优势和挑战？父 Agent 调用子 Agent 时需要考虑哪些边界问题？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-64",
+    "number": 64,
+    "title": "如果让你从零设计一个 Agent 框架，你会优先实现哪些核心模块？为什么？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-65",
+    "number": 65,
+    "title": "如何设计一个生产级的 Agent 系统架构？需要考虑哪些关键模块？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-66",
+    "number": 66,
+    "title": "如何评估 AI Agent 的效果？有哪些评估维度和方法？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-67",
+    "number": 67,
+    "title": "什么是 Background Agent（后台 Agent）？它改变了 AI 编程的什么工作方式？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-68",
+    "number": 68,
+    "title": "什么是 Agentic Engineering？它和 Vibe Coding 有什么区别？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-69",
+    "number": 69,
+    "title": "什么是 AI 编程中的自动修复循环（Auto-fix Loop）？它的工作流程和退出策略怎么设计？",
+    "level": "简单",
+    "category": "agent",
+    "sourceTopic": "4. AI Agent 原理与设计（25 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-70",
+    "number": 70,
+    "title": "MCP 协议是什么？它在 AI Agent 系统中解决了什么问题？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-71",
+    "number": 71,
+    "title": "什么是 MCP 协议，它在 AI 大模型系统中的作用是什么？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、协议原理、系统设计、场景题"
+  },
+  {
+    "id": "easy-72",
+    "number": 72,
+    "title": "MCP 架构包含哪些核心组件？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、系统架构"
+  },
+  {
+    "id": "easy-73",
+    "number": 73,
+    "title": "MCP 协议的架构包含哪些核心组件？Server 和 Client 分别负责什么？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-74",
+    "number": 74,
+    "title": "MCP 协议支持哪些模式？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、协议设计"
+  },
+  {
+    "id": "easy-75",
+    "number": 75,
+    "title": "MCP 的工作流程是什么？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、协议原理"
+  },
+  {
+    "id": "easy-76",
+    "number": 76,
+    "title": "MCP 与 Function Calling 的区别是什么？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、Function Calling"
+  },
+  {
+    "id": "easy-77",
+    "number": 77,
+    "title": "Agent 系统中的 Function Calling 和 MCP 有什么区别？各自的优缺点是什么？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-78",
+    "number": 78,
+    "title": "如何将已有的应用转换成 MCP 服务？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、开发实践"
+  },
+  {
+    "id": "easy-79",
+    "number": 79,
+    "title": "在 Spring AI 框架中如何集成 MCP？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、Spring、Spring AI、Java"
+  },
+  {
+    "id": "easy-80",
+    "number": 80,
+    "title": "MCP 协议安全性设计包含哪些层面？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、MCP、安全性"
+  },
+  {
+    "id": "easy-81",
+    "number": 81,
+    "title": "MCP 和 Skills 有什么区别？分别适用于什么场景？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent、Skills"
+  },
+  {
+    "id": "easy-82",
+    "number": 82,
+    "title": "A2A 协议的工作原理是怎样的？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、A2A、技术栈"
+  },
+  {
+    "id": "easy-83",
+    "number": 83,
+    "title": "A2A 协议的工作流程是怎样的？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "大模型、AI、A2A"
+  },
+  {
+    "id": "easy-84",
+    "number": 84,
+    "title": "A2A 协议中的 Agent Card 是什么？它在多 Agent 发现和协作中起什么作用？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-85",
+    "number": 85,
+    "title": "什么是 A2A 协议？它和 MCP 协议有什么区别？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-86",
+    "number": 86,
+    "title": "MCP 协议和 A2A 协议如何协同工作？请设计一个同时使用两者的多 Agent 系统架构",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-87",
+    "number": 87,
+    "title": "多 Agent 协作有哪些常见的编排模式？各自适合什么场景？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "easy-88",
+    "number": 88,
+    "title": "什么是 ACP 协议？它有哪两个不同的含义？",
+    "level": "简单",
+    "category": "protocol",
+    "sourceTopic": "5. MCP、A2A 与多智能体协议（19 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-89",
+    "number": 89,
+    "title": "市面上有哪些主流的 LLM Agent 框架？各自的特点是什么？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "easy-90",
+    "number": 90,
+    "title": "LangChain 是什么？它主要用来解决什么问题？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、LangChain 基础"
+  },
+  {
+    "id": "easy-91",
+    "number": 91,
+    "title": "什么是 LangChain？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、大模型、LangChain"
+  },
+  {
+    "id": "easy-92",
+    "number": 92,
+    "title": "什么是 LangChain model",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "大模型、AI、Agent、LangChain"
+  },
+  {
+    "id": "easy-93",
+    "number": 93,
+    "title": "LangChain 中的 Chain 是什么？有哪些常见类型？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、Chain 链式调用"
+  },
+  {
+    "id": "easy-94",
+    "number": 94,
+    "title": "LangChain 中的 Prompt 模板有什么作用？如何使用？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、Prompt 提示词"
+  },
+  {
+    "id": "easy-95",
+    "number": 95,
+    "title": "LangChain 中的 DocumentLoader 有哪些类型？如何选择？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、DocumentLoader 文档加载"
+  },
+  {
+    "id": "easy-96",
+    "number": 96,
+    "title": "LangChain 的 OutputParser 有什么作用？有哪些常见类型？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、OutputParser 输出解析"
+  },
+  {
+    "id": "easy-97",
+    "number": 97,
+    "title": "LangChain 中如何实现多轮对话的上下文管理？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、上下文管理"
+  },
+  {
+    "id": "easy-98",
+    "number": 98,
+    "title": "LangChain 如何与其他 AI 框架或工具集成？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "LangChain、框架集成"
+  },
+  {
+    "id": "easy-99",
+    "number": 99,
+    "title": "什么是 LangChain Agent",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "大模型、AI、Agent、LangChain"
+  },
+  {
+    "id": "easy-100",
+    "number": 100,
+    "title": "什么是 LangGraph ？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、大模型、LangChain、LangGraph"
+  },
+  {
+    "id": "easy-101",
+    "number": 101,
+    "title": "LangGraph 编排的原理是什么？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、大模型、LangChain、LangGraph"
+  },
+  {
+    "id": "easy-102",
+    "number": 102,
+    "title": "LangChain 和 LangGraph 有什么区别？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、大模型、LangChain、LangGraph"
+  },
+  {
+    "id": "easy-103",
+    "number": 103,
+    "title": "什么是 Spring AI 框架？它有哪些核心特性？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "easy-104",
+    "number": 104,
+    "title": "你在 AI 超级智能体项目中如何利用 Spring AI 开发应用？用到了哪些特性？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "easy-105",
+    "number": 105,
+    "title": "如何实现程序和 AI 大模型的集成？有哪些方式？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "easy-106",
+    "number": 106,
+    "title": "什么是 Google ADK？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "easy-107",
+    "number": 107,
+    "title": "什么是 Manus？说说你对它的了解",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、大模型、Manus"
+  },
+  {
+    "id": "easy-108",
+    "number": 108,
+    "title": "OpenClaw 是什么？它要解决什么问题？它的核心能力有哪些？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "easy-109",
+    "number": 109,
+    "title": "最近 OpenClaw 这么火，你知道它的原理吗？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、Agent 开发、AI 应用开发"
+  },
+  {
+    "id": "easy-110",
+    "number": 110,
+    "title": "如果一个 Agent 系统要同时接入 Telegram、飞书、钉钉等渠道，你会怎么设计抽象层？OpenClaw 的 Channel Plugin 接口是怎么设计的？",
+    "level": "简单",
+    "category": "framework",
+    "sourceTopic": "6. Agent 框架与应用开发（22 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "easy-111",
+    "number": 111,
+    "title": "什么是大模型微调？与预训练的核心区别是什么？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "大模型、AI、微调、预训练"
+  },
+  {
+    "id": "easy-112",
+    "number": 112,
+    "title": "请解释大模型微调（Fine-tuning）的原理，并说明在什么业务场景下需要微调而不是直接使用基础模型？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "easy-113",
+    "number": 113,
+    "title": "为什么需要微调？直接用 Prompt Engineering 或 RAG 不行吗？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-114",
+    "number": 114,
+    "title": "常见的微调任务有哪些？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "easy-115",
+    "number": 115,
+    "title": "常见的微调方法有哪些？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "easy-116",
+    "number": 116,
+    "title": "什么是全量微调？它有哪些优缺点？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-117",
+    "number": 117,
+    "title": "什么是 LoRA？它的原理是什么？为什么能减少训练参数？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-118",
+    "number": 118,
+    "title": "LoRA 的数学原理是什么？为什么低秩分解能近似全量微调的效果？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-119",
+    "number": 119,
+    "title": "LoRA 的超参数应该怎么设置？有什么经验法则？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-120",
+    "number": 120,
+    "title": "LoRA 和 QLoRA 有什么区别？各自适合什么场景？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-121",
+    "number": 121,
+    "title": "对比 LoRA、QLoRA、DoRA 和全量微调，在不同场景下应该如何选择？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-122",
+    "number": 122,
+    "title": "Adapter Tuning 和 Prefix Tuning 是什么？它们和 LoRA 有什么区别？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-123",
+    "number": 123,
+    "title": "微调大模型需要什么样的硬件？7B 和 70B 模型分别需要多少显存？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-124",
+    "number": 124,
+    "title": "2026 年主流的微调工具有哪些？Unsloth、Axolotl、TRL 各有什么特点？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-125",
+    "number": 125,
+    "title": "什么是 SFT 指令微调？微调数据需要什么格式？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-126",
+    "number": 126,
+    "title": "如何构建高质量的 SFT 微调数据集？数据质量和数量哪个更重要？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-127",
+    "number": 127,
+    "title": "微调时出现过拟合怎么办？有哪些正则化方法可以使用？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-128",
+    "number": 128,
+    "title": "微调过程中如何防止灾难性遗忘？有哪些实用的缓解策略？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-129",
+    "number": 129,
+    "title": "如何评估微调的效果？需要关注哪些指标？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-130",
+    "number": 130,
+    "title": "RLHF 的完整训练流程是怎样的？从 SFT 到 Reward Model 到 PPO 每个阶段做了什么？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-131",
+    "number": 131,
+    "title": "什么是 DPO？它相比 RLHF 和 PPO 有什么优势？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-132",
+    "number": 132,
+    "title": "ORPO 是什么？它如何将指令微调和偏好对齐合二为一？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-133",
+    "number": 133,
+    "title": "在多模态微调中，如何确保文本和图像数据的对齐质量？有哪些技术挑战？",
+    "level": "简单",
+    "category": "finetune",
+    "sourceTopic": "7. 微调、对齐与模型优化（23 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-134",
+    "number": 134,
+    "title": "使用 Transformer 解决了 RNN 面临的一些什么问题？",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "Transformer、RNN"
+  },
+  {
+    "id": "easy-135",
+    "number": 135,
+    "title": "self attention 中的 K 和 Q 是用来做什么的？",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "Transformer、自注意力机制"
+  },
+  {
+    "id": "easy-136",
+    "number": 136,
+    "title": "Transformer 的位置编码是怎样的？",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "Transformer、位置编码"
+  },
+  {
+    "id": "easy-137",
+    "number": 137,
+    "title": "Transformer 和 LLM 有哪些区别",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "Transformer、LLM"
+  },
+  {
+    "id": "easy-138",
+    "number": 138,
+    "title": "说说 LSTM 的基本原理。",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "自然语言处理（NLP）、LSTM"
+  },
+  {
+    "id": "easy-139",
+    "number": 139,
+    "title": "如何比较文本的相似度？",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "自然语言处理（NLP）、文本分类"
+  },
+  {
+    "id": "easy-140",
+    "number": 140,
+    "title": "支持向量机可以用于文本分类任务吗？若可以，请说明。",
+    "level": "简单",
+    "category": "transformer",
+    "sourceTopic": "8. Transformer 与 NLP 基础（7 题）",
+    "tags": "自然语言处理（NLP）、文本分类、支持向量机"
+  },
+  {
+    "id": "easy-141",
+    "number": 141,
+    "title": "什么是 GPTCache？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "easy-142",
+    "number": 142,
+    "title": "什么是 Token 缓存机制？它如何帮助降低 AI 应用的成本？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-143",
+    "number": 143,
+    "title": "什么是 LLM-as-Judge？用大模型评估大模型靠谱吗？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-144",
+    "number": 144,
+    "title": "如何对 AI 应用进行 A／B 测试？和传统软件的 A／B 测试有什么不同？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-145",
+    "number": 145,
+    "title": "AI 应用中的内容审核应该怎么做？有哪些技术方案和最佳实践？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-146",
+    "number": 146,
+    "title": "什么是护栏技术？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "easy-147",
+    "number": 147,
+    "title": "什么是 AI 护栏（Guardrails）技术？它在生产环境中如何保障 AI 应用的安全？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-148",
+    "number": 148,
+    "title": "什么是 Prompt 注入攻击？有哪些常见的攻击方式和防范方法？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-149",
+    "number": 149,
+    "title": "什么是红队测试（Red Teaming）？如何对大模型应用进行安全测试？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-150",
+    "number": 150,
+    "title": "如何设计一个安全可控的 AI 系统？从模型层到应用层需要考虑哪些安全维度？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "—"
+  },
+  {
+    "id": "easy-151",
+    "number": 151,
+    "title": "在生产环境中，如何保证 Agent 系统的安全性？需要防范哪些风险？",
+    "level": "简单",
+    "category": "engineering",
+    "sourceTopic": "9. 生产工程、评估与安全（11 题）",
+    "tags": "AI、大模型、Agent"
+  },
+  {
+    "id": "medium-1",
+    "number": 1,
+    "title": "什么是大模型的涌现能力？列举三种典型表现并解释其可能成因",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础、工程与场景设计（6 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-2",
+    "number": 2,
+    "title": "假设要开发一个智能工单分类系统，请拆解AI可参与的环节并说明技术选型思路",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础、工程与场景设计（6 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-3",
+    "number": 3,
+    "title": "当大模型API响应延迟超过1秒时，前端可以采取哪些优化策略保证用户体验？",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础、工程与场景设计（6 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-4",
+    "number": 4,
+    "title": "现场实操：给定一个包含数据Schema的API文档，请使用AI工具在15分钟内生成符合RESTful规范的CRUD接口代码，并解释关键实现逻辑",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础、工程与场景设计（6 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-5",
+    "number": 5,
+    "title": "如何保证 AI 应用的性能和稳定性？",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础、工程与场景设计（6 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-6",
+    "number": 6,
+    "title": "如果一个GPU集群的LLM处理能力为1000tokenss，那1000个用户同时并发访问，响应给每个用户的性能只有1 tokens吗？怎么分析性能瓶颈",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "1. 大模型基础、工程与场景设计（6 题）",
+    "tags": "后端、场景题、大模型"
+  },
+  {
+    "id": "medium-7",
+    "number": 7,
+    "title": "要让AI生成一个带表单验证的Vue3组件，请写出包含以下要素的Prompt",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-8",
+    "number": 8,
+    "title": "假设需要让大模型生成一个React表单组件代码，请设计一个包含上下文约束的Prompt（需包含数据验证、错误提示等要求）",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-9",
+    "number": 9,
+    "title": "当需要处理超长大模型上下文窗口限制时，有哪些可行的工程解决方案？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-10",
+    "number": 10,
+    "title": "当大模型上下文窗口扩展到100万token时，哪些现有业务场景可能发生质变？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-11",
+    "number": 11,
+    "title": "有哪些设计和优化 Prompt 的技巧？请举例说明",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "通用、编程导航"
+  },
+  {
+    "id": "medium-12",
+    "number": 12,
+    "title": "提示词优化考虑哪些维度？你们提示词模板有哪些字段？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "medium-13",
+    "number": 13,
+    "title": "如何设计提示词来减少 AI 的幻觉问题？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、幻觉问题"
+  },
+  {
+    "id": "medium-14",
+    "number": 14,
+    "title": "什么是 Few-shot Learning？Zero-shot、One-shot、Few-shot 有什么区别？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、Few-shot Learning"
+  },
+  {
+    "id": "medium-15",
+    "number": 15,
+    "title": "如何优化过长的提示词？提示词压缩有哪些技巧？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、提示词压缩"
+  },
+  {
+    "id": "medium-16",
+    "number": 16,
+    "title": "如何使用提示词实现任务分解？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、任务分解"
+  },
+  {
+    "id": "medium-17",
+    "number": 17,
+    "title": "temperature 和 top_p 参数有什么作用？如何选择合适的值？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、模型参数"
+  },
+  {
+    "id": "medium-18",
+    "number": 18,
+    "title": "什么是提示词模板？如何设计可复用的提示词模板？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、提示词模板"
+  },
+  {
+    "id": "medium-19",
+    "number": 19,
+    "title": "什么是 CoT 思维链？它的工作原理是什么？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、CoT 思维链"
+  },
+  {
+    "id": "medium-20",
+    "number": 20,
+    "title": "零样本 CoT 和少样本 CoT 有什么区别？各自适合什么场景？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、CoT 类型"
+  },
+  {
+    "id": "medium-21",
+    "number": 21,
+    "title": "什么是提示词链接？如何实现？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、提示词链接"
+  },
+  {
+    "id": "medium-22",
+    "number": 22,
+    "title": "什么是负面提示词？在什么场景下使用？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、负面提示词"
+  },
+  {
+    "id": "medium-23",
+    "number": 23,
+    "title": "什么是自洽性？如何应用？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、自洽性"
+  },
+  {
+    "id": "medium-24",
+    "number": 24,
+    "title": "如何让 AI 进行自我反思和迭代优化？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、自我反思"
+  },
+  {
+    "id": "medium-25",
+    "number": 25,
+    "title": "如何让 AI 一步步思考来提升推理能力？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、推理引导"
+  },
+  {
+    "id": "medium-26",
+    "number": 26,
+    "title": "如何选择和设计 Few-shot 示例以提升效果？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、Few-shot 示例设计"
+  },
+  {
+    "id": "medium-27",
+    "number": 27,
+    "title": "如何为不同领域设计专用提示词？比如编程、创作、数据分析",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "2. Prompt 与上下文工程（21 题）",
+    "tags": "Prompt、领域专用提示词"
+  },
+  {
+    "id": "medium-28",
+    "number": 28,
+    "title": "什么是 RAG 中的 Rerank？具体需要怎么做？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-29",
+    "number": 29,
+    "title": "什么混合检索？在基于大模型的应用开发中，混合检索主要解决什么问题？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-30",
+    "number": 30,
+    "title": "在 RAG 应用中为了优化检索精度，其中的数据清洗和预处理怎么做？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-31",
+    "number": 31,
+    "title": "什么查询扩展？为什么在 RAG 应用中需要查询扩展？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-32",
+    "number": 32,
+    "title": "如何进行 RAG 调优后的效果评估？请给出真实应用场景中采用的效果评估标准与方法",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-33",
+    "number": 33,
+    "title": "在 RAG 中，你如何选择 Embedding Model 嵌入模型，需要考虑哪些因素？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-34",
+    "number": 34,
+    "title": "在 RAG 中，索引流程中的文档解析你们怎么做的？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-35",
+    "number": 35,
+    "title": "在 RAG 应用的过程中，关于提示工程的设计有什么心得和技巧吗？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG、提示工程"
+  },
+  {
+    "id": "medium-36",
+    "number": 36,
+    "title": "什么是 Advanced RAG？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-37",
+    "number": 37,
+    "title": "什么是 Modular RAG？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-38",
+    "number": 38,
+    "title": "什么是向量数据库？在基于大模型的应用开发中，向量数据库主要解决什么问题？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "大模型、编程导航"
+  },
+  {
+    "id": "medium-39",
+    "number": 39,
+    "title": "你都了解哪些向量数据库？如何选型？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "medium-40",
+    "number": 40,
+    "title": "向量数据库原理是什么？ 请简述下它的原理",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG、向量数据库"
+  },
+  {
+    "id": "medium-41",
+    "number": 41,
+    "title": "向量数据库中的 HNSW、LSH、PQ 分别是什么意思？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG、向量数据库"
+  },
+  {
+    "id": "medium-42",
+    "number": 42,
+    "title": "向量数据库中的 ANN 是什么？为什么需要用它？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG、向量数据库"
+  },
+  {
+    "id": "medium-43",
+    "number": 43,
+    "title": "向量数据库中，常见的向量搜索方法：余弦相似度、欧几里得距离和曼哈顿距离分别是什么？有什么区别？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG、向量数据库"
+  },
+  {
+    "id": "medium-44",
+    "number": 44,
+    "title": "向量数据库的工作流程有哪些？请简述下",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG、向量数据库"
+  },
+  {
+    "id": "medium-45",
+    "number": 45,
+    "title": "请描述使用LangChain构建一个文档问答系统的关键技术组件及实现步骤",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-46",
+    "number": 46,
+    "title": "使用LangChain时，如何实现多路召回结果的动态权重分配？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-47",
+    "number": 47,
+    "title": "当发现RAG系统召回结果与用户query意图不匹配时，有哪些可能的改进方向？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-48",
+    "number": 48,
+    "title": "使用LangChain实现RAG系统时，如何处理PDF文档中的表格数据召回问题？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-49",
+    "number": 49,
+    "title": "什么是查询重写？它有什么作用？如何基于 Spring AI 实现查询重写？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-50",
+    "number": 50,
+    "title": "什么是上下文查询增强？它有什么作用？如何基于 Spring AI 实现上下文查询增强来处理无关问题？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-51",
+    "number": 51,
+    "title": "什么是 Spring AI 提出的模块化 RAG 架构？预检索、检索和后检索阶段各自负责什么？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-52",
+    "number": 52,
+    "title": "RAG 的文档处理流程是怎样的？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-53",
+    "number": 53,
+    "title": "你有多个知识库，做 RAG 的时候，怎么保证查询效率和准确性兼容，并尽可能减少幻觉？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "AI、大模型、RAG"
+  },
+  {
+    "id": "medium-54",
+    "number": 54,
+    "title": "RAG 系统如何标注信息来源和提供引用？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、引用标注"
+  },
+  {
+    "id": "medium-55",
+    "number": 55,
+    "title": "LangChain 支持哪些向量数据库？如何选择？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "LangChain、向量数据库"
+  },
+  {
+    "id": "medium-56",
+    "number": 56,
+    "title": "RAG 中如何设计 Prompt 来有效利用检索到的文档？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、Prompt 设计"
+  },
+  {
+    "id": "medium-57",
+    "number": 57,
+    "title": "如何为 RAG 系统选择合适的 Embedding 模型？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、Embedding 模型选择"
+  },
+  {
+    "id": "medium-58",
+    "number": 58,
+    "title": "RAG 系统如何利用元数据过滤提升检索精度？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、元数据过滤"
+  },
+  {
+    "id": "medium-59",
+    "number": 59,
+    "title": "如何为 RAG 项目选择向量数据库？Milvus、Pinecone、Chroma 怎么选？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、向量数据库选型"
+  },
+  {
+    "id": "medium-60",
+    "number": 60,
+    "title": "如何构建和使用向量索引？HNSW 和 IVF 有什么区别？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、向量索引"
+  },
+  {
+    "id": "medium-61",
+    "number": 61,
+    "title": "LangChain 中的 TextSplitter 文档切分策略有哪些？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "LangChain、文档切分"
+  },
+  {
+    "id": "medium-62",
+    "number": 62,
+    "title": "LangChain 中的 Retriever 检索器有哪些类型？各有什么特点？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "LangChain、Retriever 检索器"
+  },
+  {
+    "id": "medium-63",
+    "number": 63,
+    "title": "什么是 RAG？在 LangChain 中如何实现 RAG 应用？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "LangChain、RAG 检索增强"
+  },
+  {
+    "id": "medium-64",
+    "number": 64,
+    "title": "如何处理 RAG 检索不到相关文档的情况？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、检索失败处理"
+  },
+  {
+    "id": "medium-65",
+    "number": 65,
+    "title": "RAG 中如何实现向量数据库的增量更新？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、增量更新"
+  },
+  {
+    "id": "medium-66",
+    "number": 66,
+    "title": "RAG 系统如何处理 PDF、Word、Markdown 等不同格式文档？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、文档处理"
+  },
+  {
+    "id": "medium-67",
+    "number": 67,
+    "title": "RAG 检索时相似度阈值如何设置？设置不当有什么影响？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、相似度阈值"
+  },
+  {
+    "id": "medium-68",
+    "number": 68,
+    "title": "RAG 中文档切割的 chunk_size 和 overlap 应该如何设置？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、文档切割参数"
+  },
+  {
+    "id": "medium-69",
+    "number": 69,
+    "title": "什么是 RAG 混合检索？如何实现向量检索和关键词检索结合？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "3. RAG、检索与向量数据库（42 题）",
+    "tags": "RAG、混合检索"
+  },
+  {
+    "id": "medium-70",
+    "number": 70,
+    "title": "A2A 协议有哪五大设计原则？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "大模型、AI、A2A、系统架构"
+  },
+  {
+    "id": "medium-71",
+    "number": 71,
+    "title": "A2A 协议 与 MCP 协议的关系是怎样的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "大模型、AI、A2A、MCP"
+  },
+  {
+    "id": "medium-72",
+    "number": 72,
+    "title": "Computer Use 是什么？说说它的原理",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "medium-73",
+    "number": 73,
+    "title": "在大模型应用中，通常如何实现长短期记忆机制？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "medium-74",
+    "number": 74,
+    "title": "Copilot 模式和 Agent 模式的区别是什么？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、大模型"
+  },
+  {
+    "id": "medium-75",
+    "number": 75,
+    "title": "Agent智能体的工作过程是怎样的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "medium-76",
+    "number": 76,
+    "title": "LLM Agent 如何进行动态 API 调用？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "medium-77",
+    "number": 77,
+    "title": "什么是 A2A 协议，它的核心架构及主要组件有哪些？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "大模型、AI、A2A、系统架构"
+  },
+  {
+    "id": "medium-78",
+    "number": 78,
+    "title": "Agent 死循环问题有遇到过吗？如何解决？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "后端、AI、大模型、场景题"
+  },
+  {
+    "id": "medium-79",
+    "number": 79,
+    "title": "如何实现 AI 多轮对话功能？如何解决对话记忆持久化问题？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-80",
+    "number": 80,
+    "title": "（OpenClaw前置知识）解释「短期记忆」和「长期记忆」在 Agent 系统中的区别，分别适合怎么存储和检索？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-81",
+    "number": 81,
+    "title": "OpenClaw 的核心组件有哪些？请描述它们之间的关系",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-82",
+    "number": 82,
+    "title": "LLM 的 Context Window 有上限，长对话时如何保证 Agent 仍然能正常工作？OpenClaw 是怎么做的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-83",
+    "number": 83,
+    "title": "Agent 调用工具可能返回超大结果（比如代码搜索返回 50KB），这会带来什么问题？你会怎么处理？OpenClaw 是怎么做的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-84",
+    "number": 84,
+    "title": "当对话历史实在太长、裁剪也不够用时，还有什么办法？什么是 Compaction？OpenClaw 的 Compaction 策略是怎样的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-85",
+    "number": 85,
+    "title": "OpenClaw 把 Context 管理抽象成了可插拔的 Context Engine，为什么要做这层抽象？这个设计能支持哪些不同的策略？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-86",
+    "number": 86,
+    "title": "如何设计和管理 AI Agent 的 Skills 体系？在实际项目中有哪些挑战？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、大模型、Agent、Skills"
+  },
+  {
+    "id": "medium-87",
+    "number": 87,
+    "title": "同一个系统里可能有多个 Agent，不同渠道用户群组的消息需要路由到不同的 Agent。你会怎么设计这个路由？OpenClaw 的路由匹配优先级是怎样的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、Agent开发、AI应用开发"
+  },
+  {
+    "id": "medium-88",
+    "number": 88,
+    "title": "同一个用户在 Telegram 私聊和 Discord 群组里和 Agent 对话，应该共享会话还是隔离？OpenClaw 是怎么设计会话隔离粒度的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-89",
+    "number": 89,
+    "title": "同一个工具（比如「执行命令」）在不同场景下应该有不同的权限。你会怎么设计工具的权限控制？OpenClaw 的工具策略管道是怎么分层的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-90",
+    "number": 90,
+    "title": "不同的 LLM Provider 对 Tool Schema 的支持不完全一致，你会怎么处理这种差异？OpenClaw 是怎么做 Schema 适配的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发"
+  },
+  {
+    "id": "medium-91",
+    "number": 91,
+    "title": "Agent 系统中 Hook中间件模式有什么用？能举几个典型场景吗？OpenClaw 的 Hook 系统是怎么设计的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-92",
+    "number": 92,
+    "title": "什么场景下需要多 Agent 协作而不是单个 Agent 解决？OpenClaw 是怎么支持子 Agent（Subagent）的？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-93",
+    "number": 93,
+    "title": "父 Agent spawn 子 Agent 时，有哪些边界问题需要考虑？OpenClaw 做了哪些限制和保护？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-94",
+    "number": 94,
+    "title": "多 Agent 之间如何通信和协调？OpenClaw 的 Gateway 在其中扮演什么角色？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-95",
+    "number": 95,
+    "title": "OpenClaw 采用插件架构，第三方可以注册新渠道、工具、Hook。设计一个插件系统需要考虑哪些关键问题？OpenClaw 的插件 API 长什么样？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-96",
+    "number": 96,
+    "title": "OpenClaw 的 Gateway 对 Agent 请求做了幂等性处理。为什么 Agent 系统特别需要幂等性？工具已经产生副作用时怎么办？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-97",
+    "number": 97,
+    "title": "如果让你基于 OpenClaw 的设计理念从零搭建一个 Agent 框架，你会先做哪三个模块？为什么？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "4. Agent、协议与 OpenClaw（28 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "medium-98",
+    "number": 98,
+    "title": "LangChain 的核心组件有哪些？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "大模型、AI、Agent、LangChain"
+  },
+  {
+    "id": "medium-99",
+    "number": 99,
+    "title": "LangChain核心架构是什么样的",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "大模型、AI、Agent、LangChain"
+  },
+  {
+    "id": "medium-100",
+    "number": 100,
+    "title": "解释LangChain框架中的Chain和Agent概念，并举例说明各自的应用场景",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "medium-101",
+    "number": 101,
+    "title": "什么是工具调用 Tool Calling？如何利用 Spring AI 实现工具调用？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-102",
+    "number": 102,
+    "title": "什么是结构化输出？Spring AI 是怎么实现结构化输出的？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-103",
+    "number": 103,
+    "title": "什么是 Re-Reading？如何基于 Spring AI 实现 Re-Reading Advisor？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "medium-104",
+    "number": 104,
+    "title": "如何在 LangChain 中自定义 Tool 工具？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、Tool 工具"
+  },
+  {
+    "id": "medium-105",
+    "number": 105,
+    "title": "LangChain 的 Memory 组件有什么作用？常见的 Memory 类型有哪些？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、Memory 记忆机制"
+  },
+  {
+    "id": "medium-106",
+    "number": 106,
+    "title": "LangChain 中如何处理多模态数据？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、多模态"
+  },
+  {
+    "id": "medium-107",
+    "number": 107,
+    "title": "如何在 LangChain 中实现函数调用 Function Calling？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、Function Calling"
+  },
+  {
+    "id": "medium-108",
+    "number": 108,
+    "title": "LangChain 和 LlamaIndex 有什么区别？各自适合什么场景？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、LlamaIndex、框架对比"
+  },
+  {
+    "id": "medium-109",
+    "number": 109,
+    "title": "什么是 LangChain 中的 Agent？它和 Chain 有什么区别？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、Agent 智能体"
+  },
+  {
+    "id": "medium-110",
+    "number": 110,
+    "title": "LangChain 中如何实现对话历史的管理和持久化？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、对话历史管理"
+  },
+  {
+    "id": "medium-111",
+    "number": 111,
+    "title": "LangChain 中的 Callback 回调机制是什么？有什么用？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、Callback 回调"
+  },
+  {
+    "id": "medium-112",
+    "number": 112,
+    "title": "如何处理 LangChain 应用中的错误和异常？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、异常处理"
+  },
+  {
+    "id": "medium-113",
+    "number": 113,
+    "title": "LangChain 中的 LCEL 表达式语言是什么？有什么优势？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、LCEL"
+  },
+  {
+    "id": "medium-114",
+    "number": 114,
+    "title": "LangChain 中如何实现条件分支和动态路由？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、条件路由"
+  },
+  {
+    "id": "medium-115",
+    "number": 115,
+    "title": "LangChain 的未来发展趋势如何？有哪些值得关注的方向？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、技术趋势"
+  },
+  {
+    "id": "medium-116",
+    "number": 116,
+    "title": "在 LangChain 中如何实现流式输出？",
+    "level": "中等",
+    "category": "framework",
+    "sourceTopic": "5. LangChain、Spring AI 与框架开发（19 题）",
+    "tags": "LangChain、流式输出"
+  },
+  {
+    "id": "medium-117",
+    "number": 117,
+    "title": "PEFT 是什么？为什么需要 PEFT？",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、PEFT"
+  },
+  {
+    "id": "medium-118",
+    "number": 118,
+    "title": "参数高效微调（PEFT）的核心思路是什么？列举 3 种典型方法",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、PEFT"
+  },
+  {
+    "id": "medium-119",
+    "number": 119,
+    "title": "PEFT 和全量微调的区别？",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、PEFT"
+  },
+  {
+    "id": "medium-120",
+    "number": 120,
+    "title": "在进行 Fine-Tuning 时，如何选择适合的预训练模型？",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、预训练模型"
+  },
+  {
+    "id": "medium-121",
+    "number": 121,
+    "title": "微调中常用的优化器有哪些？",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、优化器"
+  },
+  {
+    "id": "medium-122",
+    "number": 122,
+    "title": "如何判断微调效果是否达到预期？",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、评估指标"
+  },
+  {
+    "id": "medium-123",
+    "number": 123,
+    "title": "介绍几种常见的微调策略的优缺点",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "6. 微调与训练优化（7 题）",
+    "tags": "大模型、AI、微调、训练策略"
+  },
+  {
+    "id": "medium-124",
+    "number": 124,
+    "title": "讲一下你对 Transformer 的 Encoder 模块的理解。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、Encoder"
+  },
+  {
+    "id": "medium-125",
+    "number": 125,
+    "title": "K 和 Q 可以使用同一个值通过对自身进行点乘得到吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-126",
+    "number": 126,
+    "title": "在进行多头注意力的时候需要对每个 head 进行降维吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、多头注意力机制"
+  },
+  {
+    "id": "medium-127",
+    "number": 127,
+    "title": "Transformer 中的\"残差连接\"可以缓解梯度消失问题吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、残差连接、梯度消失"
+  },
+  {
+    "id": "medium-128",
+    "number": 128,
+    "title": "Transformer 中的注意力遮蔽（Attention Masking）的工作原理是什么？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、注意力遮蔽"
+  },
+  {
+    "id": "medium-129",
+    "number": 129,
+    "title": "了解 ViT（Vision Transformer） 吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Vision Transformer"
+  },
+  {
+    "id": "medium-130",
+    "number": 130,
+    "title": "ViLT 模型是如何将 Transformer 应用于图像识别任务的",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "ViLT、图像识别"
+  },
+  {
+    "id": "medium-131",
+    "number": 131,
+    "title": "为什么 Transformer 采用多头注意力机制？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、自注意力机制、多头注意力机制"
+  },
+  {
+    "id": "medium-132",
+    "number": 132,
+    "title": "Transformer 中如何实现序列到序列的映射？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、编解码器"
+  },
+  {
+    "id": "medium-133",
+    "number": 133,
+    "title": "Transformer 中，如何处理大型数据集？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-134",
+    "number": 134,
+    "title": "chatGLM 和 GPT 在结构上有什么区别？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、语言模型"
+  },
+  {
+    "id": "medium-135",
+    "number": 135,
+    "title": "了解 LLaMA 中的旋转位置编码吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "自然语言处理（NLP）、大语言模型、旋转位置编码"
+  },
+  {
+    "id": "medium-136",
+    "number": 136,
+    "title": "了解 Transformer 模型训练中的梯度裁剪（Gradient Clipping）吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、梯度裁剪"
+  },
+  {
+    "id": "medium-137",
+    "number": 137,
+    "title": "在不考虑计算量的情况下，head 能否无限增多？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、多头注意力机制"
+  },
+  {
+    "id": "medium-138",
+    "number": 138,
+    "title": "Transformer 为什么采用 Layer Normalization 而不是 Batch Normalization",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、normalization"
+  },
+  {
+    "id": "medium-139",
+    "number": 139,
+    "title": "什么是注意力机制？它是如何改善 NLP 模型性能的？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "自然语言处理（NLP）、注意力机制"
+  },
+  {
+    "id": "medium-140",
+    "number": 140,
+    "title": "简述 LLaMA（Large Language Model Meta AI）的基本原理。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "自然语言处理（NLP）、大语言模型"
+  },
+  {
+    "id": "medium-141",
+    "number": 141,
+    "title": "聊一聊 Transformer 的架构和基本原理。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-142",
+    "number": 142,
+    "title": "什么是自回归属性（autoregressive property）？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、自回归属性"
+  },
+  {
+    "id": "medium-143",
+    "number": 143,
+    "title": "Transformer 模型的性能瓶颈在哪？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-144",
+    "number": 144,
+    "title": "Transformer 模型训练完成后，如何评估其性能和效果？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-145",
+    "number": 145,
+    "title": "Transformer 的哪个部分最占用显存？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-146",
+    "number": 146,
+    "title": "Transformer 在计算 attention 的时候使用的是点乘还是加法？请说明理由。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "medium-147",
+    "number": 147,
+    "title": "Transformer 中，Decoder 阶段的多头自注意力和 Encoder 阶段的多头自注意力是相同的吗？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "7. Transformer、注意力与多模态（24 题）",
+    "tags": "Transformer、Encoder、Decoder、多头自注意力机制"
+  },
+  {
+    "id": "medium-148",
+    "number": 148,
+    "title": "请解释 LSTM 和 GRU 网络在处理序列数据中的应用。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、LSTM、GRU"
+  },
+  {
+    "id": "medium-149",
+    "number": 149,
+    "title": "简述 Word Embedding 可以怎样运用于文本分类任务？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、文本分类、Word Embedding"
+  },
+  {
+    "id": "medium-150",
+    "number": 150,
+    "title": "LSTM 和 GRU 有什么区别？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、LSTM、GRU"
+  },
+  {
+    "id": "medium-151",
+    "number": 151,
+    "title": "解释一个 LSTM 单元（LSTM cell）的基本组成，以及它们各自的作用。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、LSTM"
+  },
+  {
+    "id": "medium-152",
+    "number": 152,
+    "title": "LSTM 中，隐藏状态（hidden state）和单元状态（cell state）有什么区别？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、LSTM"
+  },
+  {
+    "id": "medium-153",
+    "number": 153,
+    "title": "在文本分类任务中，如何处理样本（类别）不平衡的问题？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、文本分类"
+  },
+  {
+    "id": "medium-154",
+    "number": 154,
+    "title": "CBOW 和 Skip-gram 分别更适合哪些应用场景？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、CBOW、Skip-gram"
+  },
+  {
+    "id": "medium-155",
+    "number": 155,
+    "title": "Word2Vec 如何获取词向量？如何评估该训练得到的词向量的好坏？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、词嵌入、Word2Vec、词向量"
+  },
+  {
+    "id": "medium-156",
+    "number": 156,
+    "title": "在文本分类任务中，如何处理高维和稀疏数据？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、文本分类"
+  },
+  {
+    "id": "medium-157",
+    "number": 157,
+    "title": "Word2Vec 到 BERT 有怎样的改进？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、BERT、Word2Vec"
+  },
+  {
+    "id": "medium-158",
+    "number": 158,
+    "title": "请描述 BERT 模型的架构和应用场景。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、BERT"
+  },
+  {
+    "id": "medium-159",
+    "number": 159,
+    "title": "BERT 怎样进行 mask 相比 CBOW 有什么区别？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、BERT、CBOW"
+  },
+  {
+    "id": "medium-160",
+    "number": 160,
+    "title": "与循环神经网络（RNN）相比，LSTM 是如何解决梯度消失问题的？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、LSTM、RNN、梯度消失"
+  },
+  {
+    "id": "medium-161",
+    "number": 161,
+    "title": "BERT 是如何处理自然语言文本中不常见词或者罕见词的？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、BERT"
+  },
+  {
+    "id": "medium-162",
+    "number": 162,
+    "title": "现有文本分类算法在处理多语种文本数据时可能遭遇哪些挑战？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、文本分类"
+  },
+  {
+    "id": "medium-163",
+    "number": 163,
+    "title": "说一说负采样技术在 Word2Vec 中的运用。",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、词嵌入、Word2Vec、负采样"
+  },
+  {
+    "id": "medium-164",
+    "number": 164,
+    "title": "什么是词嵌入（Word Embedding）？有哪些常见的词嵌入方法？",
+    "level": "中等",
+    "category": "transformer",
+    "sourceTopic": "8. NLP、序列模型与词表示（17 题）",
+    "tags": "自然语言处理（NLP）、词嵌入、Word2Vec"
+  },
+  {
+    "id": "hard-1",
+    "number": 1,
+    "title": "什么是低秩适配（LoRA）技术？如何结合 LoRA 技术进行微调？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调、LoRA、PEFT"
+  },
+  {
+    "id": "hard-2",
+    "number": 2,
+    "title": "参数高效微调（PEFT）如何减少计算成本？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-3",
+    "number": 3,
+    "title": "冻结层在微调中的作用是什么？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-4",
+    "number": 4,
+    "title": "为什么需要混合精度训练？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-5",
+    "number": 5,
+    "title": "SFT 指令微调数据如何构建？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-6",
+    "number": 6,
+    "title": "指令微调的好处？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-7",
+    "number": 7,
+    "title": "微调的过拟合风险如何通过正则化缓解？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-8",
+    "number": 8,
+    "title": "请详细讨论微调时如何防止灾难性遗忘问题？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-9",
+    "number": 9,
+    "title": "在多模态微调（如图文生成）中，如何确保文本和图像数据的对齐质量？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调、多模"
+  },
+  {
+    "id": "hard-10",
+    "number": 10,
+    "title": "模型输出重复和幻觉如何微调解决？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "大模型、AI、微调"
+  },
+  {
+    "id": "hard-11",
+    "number": 11,
+    "title": "说说你是怎样有效地优化和微调 BERT，以应对你做过的一些特定的 NLP 任务的？",
+    "level": "困难",
+    "category": "finetune",
+    "sourceTopic": "1. 微调与训练优化（11 题）",
+    "tags": "自然语言处理（NLP）、BERT"
+  },
+  {
+    "id": "hard-12",
+    "number": 12,
+    "title": "LlamaIndex 如何与 LangChain 结合？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "大模型、AI、Agent、LangChain、LlamaIndex"
+  },
+  {
+    "id": "hard-13",
+    "number": 13,
+    "title": "如何让 LLM Agent 具备长期记忆能力？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "hard-14",
+    "number": 14,
+    "title": "LLM Agent 在多模态任务中如何执行推理？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "大模型、AI、Agent"
+  },
+  {
+    "id": "hard-15",
+    "number": 15,
+    "title": "AutoGPT 如何实现自主决策？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "大模型、AI、Agent、LangChain、AutoGPT"
+  },
+  {
+    "id": "hard-16",
+    "number": 16,
+    "title": "什么是 ReAct？如何基于 ReAct 模式构建具备自主规划能力的 AI 智能体？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "hard-17",
+    "number": 17,
+    "title": "什么是 OpenManus？它的实现原理是什么？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "hard-18",
+    "number": 18,
+    "title": "什么是 CoT 思维链？如何实现 CoT 思维链？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "后端、编程导航"
+  },
+  {
+    "id": "hard-19",
+    "number": 19,
+    "title": "什么是 CoT 思维链和 ReAct 模式？它们如何提高 AI 推理能力？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "通用、编程导航"
+  },
+  {
+    "id": "hard-20",
+    "number": 20,
+    "title": "在 OpenClaw 中，一条用户消息从进入系统到收到回复，完整链路是怎样的？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "hard-21",
+    "number": 21,
+    "title": "OpenClaw 的 Agent Runner 是如何工作的？一次 Agent 运行经历了哪些阶段？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "AI、OpenClaw、大模型应用开发、AI应用开发、Agent开发"
+  },
+  {
+    "id": "hard-22",
+    "number": 22,
+    "title": "LangChain 有哪些常见的性能瓶颈？如何优化？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "LangChain、性能瓶颈"
+  },
+  {
+    "id": "hard-23",
+    "number": 23,
+    "title": "在生产环境中使用 LangChain 需要注意哪些问题？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "LangChain、生产实践"
+  },
+  {
+    "id": "hard-24",
+    "number": 24,
+    "title": "如何保证 LangChain 应用的输出质量和一致性？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "LangChain、质量保证"
+  },
+  {
+    "id": "hard-25",
+    "number": 25,
+    "title": "如何优化 LangChain 应用的性能和成本？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "LangChain、性能优化"
+  },
+  {
+    "id": "hard-26",
+    "number": 26,
+    "title": "什么是思维树 Tree of Thoughts？它相比 CoT 有什么优势？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "Prompt、思维树"
+  },
+  {
+    "id": "hard-27",
+    "number": 27,
+    "title": "LangChain 的 Agent 执行流程是怎样的？",
+    "level": "困难",
+    "category": "agent",
+    "sourceTopic": "2. Agent、推理与框架（16 题）",
+    "tags": "LangChain、Agent 原理"
+  },
+  {
+    "id": "hard-28",
+    "number": 28,
+    "title": "如何优化 RAG 的检索效果？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "通用、编程导航"
+  },
+  {
+    "id": "hard-29",
+    "number": 29,
+    "title": "如何减少 RAG 系统的幻觉问题？有哪些实用方法？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "RAG、幻觉问题"
+  },
+  {
+    "id": "hard-30",
+    "number": 30,
+    "title": "RAG 为什么需要重排序 Reranking？如何实现？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "RAG、重排序"
+  },
+  {
+    "id": "hard-31",
+    "number": 31,
+    "title": "RAG 系统在生产环境中如何优化性能和降低成本？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "RAG、性能优化"
+  },
+  {
+    "id": "hard-32",
+    "number": 32,
+    "title": "如何结合 RAG 和 Fine-tuning 来提升提示词效果？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "Prompt、RAG、Fine-tuning"
+  },
+  {
+    "id": "hard-33",
+    "number": 33,
+    "title": "如何系统地评估和优化提示词的效果？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "Prompt、效果评估"
+  },
+  {
+    "id": "hard-34",
+    "number": 34,
+    "title": "如何处理提示词优化中的常见问题？比如输出不准确、不完整、格式错误",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "Prompt、问题诊断"
+  },
+  {
+    "id": "hard-35",
+    "number": 35,
+    "title": "在实际项目中如何进行提示词的 A/B 测试和迭代？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "Prompt、A/B 测试"
+  },
+  {
+    "id": "hard-36",
+    "number": 36,
+    "title": "RAG 中的查询重写 Query Rewriting 是什么？如何优化检索效果？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "RAG、查询重写"
+  },
+  {
+    "id": "hard-37",
+    "number": 37,
+    "title": "如何评估 LangChain RAG 应用的效果？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "LangChain、RAG 评估"
+  },
+  {
+    "id": "hard-38",
+    "number": 38,
+    "title": "提示词注入攻击是什么？如何防范？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "Prompt、安全防护"
+  },
+  {
+    "id": "hard-39",
+    "number": 39,
+    "title": "如何评估 RAG 系统的效果？检索和生成分别看哪些指标？",
+    "level": "困难",
+    "category": "rag",
+    "sourceTopic": "3. RAG 与 Prompt 优化（12 题）",
+    "tags": "RAG、效果评估"
+  },
+  {
+    "id": "hard-40",
+    "number": 40,
+    "title": "本地部署大模型和调用云端大模型各有什么优缺点？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "通用、编程导航"
+  },
+  {
+    "id": "hard-41",
+    "number": 41,
+    "title": "LLaMA 模型中，输入句子的长度理论上是否可以无限长？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、大语言模型"
+  },
+  {
+    "id": "hard-42",
+    "number": 42,
+    "title": "如果让 K 和 Q 变成同一个矩阵，你觉得对模型性能会带来怎样的影响？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "hard-43",
+    "number": 43,
+    "title": "聊一聊 ELMo 技术，它有哪些优缺点？可以做到一词多义吗？为什么？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、ELMo"
+  },
+  {
+    "id": "hard-44",
+    "number": 44,
+    "title": "了解 ViLT（Vision-and-Language Transformer）吗？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "ViLT"
+  },
+  {
+    "id": "hard-45",
+    "number": 45,
+    "title": "说说 GloVE 技术，怎样进行训练？有哪些应用场景？相比 Word2Vec 有哪些优缺点？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、Word2Vec、GloVE"
+  },
+  {
+    "id": "hard-46",
+    "number": 46,
+    "title": "说说 FastText 技术，是否比 Word2Vec 更优越？哪些情况下更适合使用 FastText",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、Word2Vec、FastText"
+  },
+  {
+    "id": "hard-47",
+    "number": 47,
+    "title": "解释 hierarchical softmax 的流程，以及它有什么优点？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、词嵌入、Word2Vec、hierarchical softmax"
+  },
+  {
+    "id": "hard-48",
+    "number": 48,
+    "title": "你觉得可以怎样缓解这个性能瓶颈？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "Transformer"
+  },
+  {
+    "id": "hard-49",
+    "number": 49,
+    "title": "Word2Vec 有哪些加速方法？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、词嵌入、Word2Vec"
+  },
+  {
+    "id": "hard-50",
+    "number": 50,
+    "title": "是否使用 Word2Vec 训练过数据？在这个过程中，如何获取语料？如何选择超参数？语料、词表和维度大小如何确定？怎样把握训练时长？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、词嵌入、Word2Vec"
+  },
+  {
+    "id": "hard-51",
+    "number": 51,
+    "title": "你有什么办法可以比较好地解决 BERT 输入长度的限制？",
+    "level": "困难",
+    "category": "transformer",
+    "sourceTopic": "4. 模型原理、NLP 与部署选型（12 题）",
+    "tags": "自然语言处理（NLP）、BERT"
+  },
+  {
+    "id": "hard-52",
+    "number": 52,
+    "title": "请举例说明假设在电商系统中，哪些功能适合直接使用大模型完成，哪些需要结合工程化手段？",
+    "level": "困难",
+    "category": "engineering",
+    "sourceTopic": "5. 场景化系统设计与评估（4 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "hard-53",
+    "number": 53,
+    "title": "假设请你设计一个医疗问诊系统，如何平衡 AI 幻觉带来的风险与效率提升？需要哪些技术手段？",
+    "level": "困难",
+    "category": "engineering",
+    "sourceTopic": "5. 场景化系统设计与评估（4 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "hard-54",
+    "number": 54,
+    "title": "设计智能客服系统时，如何通过知识库构建解决长尾问题？请描述具体实现步骤",
+    "level": "困难",
+    "category": "engineering",
+    "sourceTopic": "5. 场景化系统设计与评估（4 题）",
+    "tags": "大模型"
+  },
+  {
+    "id": "hard-55",
+    "number": 55,
+    "title": "如何进行 AI 应用的测试和效果评估？",
+    "level": "困难",
+    "category": "engineering",
+    "sourceTopic": "5. 场景化系统设计与评估（4 题）",
+    "tags": "通用、编程导航"
+  },
+  {
+    "id": "concept-context-engineering",
+    "number": 1,
+    "title": "上下文工程中的即时检索，如何与信息预加载配合？",
+    "level": "中等",
+    "category": "prompt",
+    "sourceTopic": "新概念研读",
+    "tags": "Context Engineering、即时检索、上下文预算、信息选择",
+    "source": {
+      "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+      "title": "Effective context engineering for AI agents",
+      "date": "2025-09-29",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-reasoningbank",
+    "number": 2,
+    "title": "ReasoningBank 与保存完整对话日志有什么不同？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "新概念研读",
+    "tags": "ReasoningBank、推理记忆、经验提炼、MaTTS",
+    "source": {
+      "url": "https://arxiv.org/abs/2509.25140",
+      "title": "ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory",
+      "date": "2025-09-29",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-agent-skills",
+    "number": 3,
+    "title": "Agent Skills 如何通过渐进式加载控制上下文成本？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "新概念研读",
+    "tags": "Agent Skills、渐进式加载、SKILL.md、可复用流程",
+    "source": {
+      "url": "https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills",
+      "title": "Equipping agents for the real world with Agent Skills",
+      "date": "2025-10-16",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-agent-harness",
+    "number": 4,
+    "title": "长时间运行的 Agent 为什么需要 Harness，而不只是上下文压缩？",
+    "level": "中等",
+    "category": "engineering",
+    "sourceTopic": "新概念研读",
+    "tags": "Agent Harness、环境初始化、进度交接、增量验证",
+    "source": {
+      "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+      "title": "Effective harnesses for long-running agents",
+      "date": "2025-11-26",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-agentic-rag",
+    "number": 5,
+    "title": "Agentic RAG 如何处理一次检索无法回答的多跳问题？",
+    "level": "中等",
+    "category": "rag",
+    "sourceTopic": "新概念研读",
+    "tags": "Agentic RAG、查询规划、跨库检索、证据充分性",
+    "source": {
+      "url": "https://research.google/blog/unlocking-dependable-responses-with-gemini-enterprise-agent-platforms-agentic-rag/",
+      "title": "Unlocking dependable responses with Gemini Enterprise Agent Platform’s Agentic RAG",
+      "date": "2026-06-05",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-agent-memory",
+    "number": 6,
+    "title": "为什么 Agent 记忆系统不能只设计写入和检索？",
+    "level": "中等",
+    "category": "agent",
+    "sourceTopic": "新概念研读",
+    "tags": "Agent Memory、记忆维护、记忆检索、遗忘与评估",
+    "source": {
+      "url": "https://arxiv.org/abs/2610.35089",
+      "title": "Learning to Remember: Advances in Memory Mechanisms for Large Language Models",
+      "date": "2026-10-26",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-sleep-framework",
+    "number": 7,
+    "title": "Sleep Framework 的离线巩固与普通外部记忆有什么区别？",
+    "level": "中等",
+    "category": "finetune",
+    "sourceTopic": "新概念研读",
+    "tags": "Sleep Framework、持续学习、记忆巩固、知识蒸馏",
+    "source": {
+      "url": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+      "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
+      "date": "2026-10-27",
+      "checkedAt": "2026-11-08"
+    }
+  },
+  {
+    "id": "concept-llm-as-rnn",
+    "number": 8,
+    "title": "LLM-as-RNN 怎样在不更新权重的情况下进行在线适应？",
+    "level": "中等",
+    "category": "llm",
+    "sourceTopic": "新概念研读",
+    "tags": "LLM-as-RNN、在线反馈、固定参数、有界记忆",
+    "source": {
+      "url": "https://aclanthology.org/2026.aacl-long.222/",
+      "title": "LLM-as-RNN: Feedback-Driven Memory Rewriting for Online Learning and Sequential Prediction",
+      "date": "2026-11",
+      "checkedAt": "2026-11-08"
+    }
+  }
+]
