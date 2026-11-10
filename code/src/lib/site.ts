@@ -6,7 +6,7 @@ export const languages: Lang[] = ["en", "zh"];
 export const defaultLanguage: Lang = "en";
 export const site = config;
 export const allowIndexing = process.env.ALLOW_INDEXING === "true";
-const configuredUrl = new URL(process.env.SITE_URL || "http://127.0.0.1:3000");
+const configuredUrl = new URL(process.env.SITE_URL || "http://127.0.0.1:3035");
 if (!["http:", "https:"].includes(configuredUrl.protocol) || configuredUrl.pathname !== "/" || configuredUrl.search || configuredUrl.hash || configuredUrl.username || configuredUrl.password) {
   throw new Error("SITE_URL 必须是完整的 HTTP(S) 站点根地址，不含路径、查询、片段或凭据。");
 }

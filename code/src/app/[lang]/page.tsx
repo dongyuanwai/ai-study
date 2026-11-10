@@ -1,3 +1,5 @@
+import { allContent } from "@/lib/server/content.mjs";
+export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import { isLang, site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
@@ -13,5 +15,6 @@ export async function generateMetadata({ params }: Props) {
 export default async function Page({ params }: Props) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
-  return <main id="main-content" className="zx-home"><StructuredData/><Home lang={lang}/></main>;
+  const questions = await allContent("knowledge");
+  return <main id="main-content" className="zx-home"><StructuredData/><Home lang={lang} questionIndex={questions}/></main>;
 }

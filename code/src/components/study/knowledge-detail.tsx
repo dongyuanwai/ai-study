@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { type Lang, pathFor } from "@/lib/site";
-import { difficultyName, questionIndex, text, topicName, type Question } from "@/lib/question-bank";
+import { difficultyName, text, topicName, type Question, type QuestionSummary } from "@/lib/question-bank";
 import { Markdown } from "./markdown";
 import { useStudy } from "./provider";
 import { Icon } from "./icon";
 
-export function KnowledgeDetail({ question, lang }: { question: Question; lang: Lang }) {
+export function KnowledgeDetail({ question, lang, questionIndex }: { question: Question; lang: Lang; questionIndex: QuestionSummary[] }) {
   const [tab, setTab] = useState<"core" | "oral" | "pitfalls">("core"), { learned, review, toggle } = useStudy();
   const group = questionIndex.filter(item => item.category === question.category), index = group.findIndex(item => item.id === question.id), count = group.filter(item => learned.includes(item.id)).length;
   const tabs = [{ id: "core", zh: "核心讲解", en: "Explanation" }, { id: "oral", zh: "口述练习", en: "Spoken answer" }, { id: "pitfalls", zh: "易错点", en: "Common pitfalls" }] as const;

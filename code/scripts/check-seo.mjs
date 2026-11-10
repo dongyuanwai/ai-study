@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
 
-const output = path.resolve("out");
+const output = path.resolve(process.env.CHECK_OUTPUT_DIR || "out");
 const allowIndexing = process.env.ALLOW_INDEXING === "true";
 const read = name => fs.readFileSync(path.join(output, name), "utf8");
 const attribute = (tag, name) => new RegExp(`(?:^|\\s)${name}="([^"]*)"`, "i").exec(tag)?.[1];

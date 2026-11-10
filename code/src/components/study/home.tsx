@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import type { QuestionSummary } from "@/lib/question-bank";
 import { useState } from "react";
 import { type Lang, pathFor } from "@/lib/site";
-import { questionIndex, text, topics, type TopicId } from "@/lib/question-bank";
+import { text, topics, type TopicId } from "@/lib/question-bank";
 import { useStudy } from "./provider";
 import { Icon } from "./icon";
 
@@ -21,14 +22,14 @@ function KnowledgeSphere({ lang }: { lang: Lang }) {
   return <div className="zx-universe"><svg aria-hidden="true" className="zx-sphere" viewBox="0 0 400 310"><defs><radialGradient id="knowledge-glow"><stop offset="0" stopColor="#648bdf" stopOpacity=".12"/><stop offset="1" stopColor="#648bdf" stopOpacity="0"/></radialGradient></defs><circle cx="207" cy="157" r="147" fill="url(#knowledge-glow)"/><g fill="none" stroke="#a5b5cf" strokeWidth=".6">{latitudes.map(lat => <path key={lat} d={path(Array.from({ length: 25 }, (_, index) => project(lat, index * 15)))} opacity=".52"/>)}{longitudes.map(lon => <path key={lon} d={path(Array.from({ length: 37 }, (_, index) => project(-90 + index * 5, lon)))} opacity=".38"/>)}</g>{points.map((point, index) => <circle key={index} cx={point.x.toFixed(3)} cy={point.y.toFixed(3)} r={point.z > 55 ? 1.3 : .8} fill="#6682af" opacity={(.18 + (point.z + 111) / 222 * .7).toFixed(4)}/>)}<ellipse cx="207" cy="157" rx="169" ry="42" transform="rotate(-27 207 157)" fill="none" stroke="#9aaecf" strokeWidth=".8" opacity=".38"/><circle cx="207" cy="157" r="4" fill="#7396d5"/></svg><Link className="zx-orbit-label zx-label-a" href={`${pathFor(lang, "knowledge")}?topic=llm`}>{text(lang, "大语言模型", "LLM")}<Icon name="diagonal"/></Link><Link className="zx-orbit-label zx-label-b" href={`${pathFor(lang, "knowledge")}?topic=rag`}>{text(lang, "RAG 检索增强", "RAG")}<Icon name="diagonal"/></Link><Link className="zx-orbit-label zx-label-c" href={`${pathFor(lang, "knowledge")}?topic=agent`}>AI Agent<Icon name="diagonal"/></Link></div>;
 }
 
-export function Home({ lang }: { lang: Lang }) {
+export function Home({ lang, questionIndex }: { lang: Lang; questionIndex: QuestionSummary[] }) {
   const [selected, setSelected] = useState<TopicId>("llm");
   const { learned } = useStudy();
   const topic = topics.find(item => item.id === selected)!;
   const group = questionIndex.filter(question => question.category === selected);
   const completed = group.filter(question => learned.includes(question.id)).length;
   const next = group.find(question => !learned.includes(question.id)) || group[0];
-  const percentage = Math.round(completed / group.length * 100);
+  const percentage = group.length ? Math.round(completed / group.length * 100) : 0;
   const learnedCount = questionIndex.filter(question => learned.includes(question.id)).length;
 
   return <>
@@ -37,7 +38,7 @@ export function Home({ lang }: { lang: Lang }) {
         <h1>{lang === "zh" ? <>理解 <em>AI</em>，<br/>从这里开始。</> : <>Understand <em>AI.</em><br/>Make it yours.</>}</h1>
         <p className="zx-hero-description">{text(lang, "学习核心概念，用题目检验理解。", "Learn the core concepts. Test what you understand.")}</p>
         <div className="zx-hero-actions">
-          <Link className="zx-primary" href={pathFor(lang, `knowledge/${next.id}`)}>{learnedCount ? text(lang, "继续学习", "Continue learning") : text(lang, "开始学习", "Start learning")}<Icon name="arrow"/></Link>
+          <Link className="zx-primary" href={pathFor(lang, next ? `knowledge/${next.id}` : "knowledge")}>{learnedCount ? text(lang, "继续学习", "Continue learning") : text(lang, "开始学习", "Start learning")}<Icon name="arrow"/></Link>
           <Link className="zx-text-action" href={pathFor(lang, "practice")}>{text(lang, "进入测试", "Take a test")}<Icon name="arrow"/></Link>
         </div>
         <dl className="zx-home-stats">
@@ -70,7 +71,7 @@ export function Home({ lang }: { lang: Lang }) {
           <div className="zx-topics" role="group" aria-label={text(lang, "学习专题", "Learning topics")}>
             {(["llm", "rag", "agent"] as const).map(id => <button key={id} type="button" onClick={() => setSelected(id)} aria-pressed={selected === id}>{id === "llm" ? text(lang, "大模型", "LLM") : id === "rag" ? "RAG" : "Agent"}</button>)}
           </div>
-          <Link className="zx-home-card-action" href={pathFor(lang, `knowledge/${next.id}`)}>{completed === group.length ? text(lang, "复习专题", "Review topic") : text(lang, "继续学习", "Continue learning")}<Icon name="arrow"/></Link>
+          <Link className="zx-home-card-action" href={pathFor(lang, next ? `knowledge/${next.id}` : "knowledge")}>{completed === group.length ? text(lang, "复习专题", "Review topic") : text(lang, "继续学习", "Continue learning")}<Icon name="arrow"/></Link>
         </div>
       </section>
 

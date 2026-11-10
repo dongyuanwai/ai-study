@@ -1,9 +1,10 @@
+import { allContent } from "@/lib/server/content.mjs";
+export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { isLang } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
 import { text } from "@/lib/question-bank";
-import { questions } from "@/lib/questions";
 import { Practice } from "@/components/study/practice";
 import { StructuredData } from "@/components/study/structured-data";
 
@@ -16,5 +17,6 @@ export async function generateMetadata({ params }: Props) {
 export default async function Page({ params }: Props) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  const questions = await allContent("knowledge");
   return <main id="main-content" className="zp-page"><StructuredData/><Suspense fallback={<div className="zp-pagehead"><h1>{text(lang, "能力测试", "AI practice")}</h1></div>}><Practice lang={lang} questions={questions}/></Suspense></main>;
 }

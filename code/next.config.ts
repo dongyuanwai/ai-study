@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
-
 const config: NextConfig = {
-  output: "export",
   turbopack: { root: process.cwd() },
   trailingSlash: true,
+  outputFileTracingIncludes: { "/*": ["./src/data/*.json"] },
   images: { unoptimized: true },
   poweredByHeader: false,
   experimental: { globalNotFound: true },

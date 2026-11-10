@@ -83,7 +83,7 @@
         "group": "项目追问",
         "topic": "路由 / Plan-Execute / Multi-Agent",
         "title": "如果用户一个 Query 里面同时包含多个任务，你们是怎么拆分的？",
-        "answer": "先识别用户目标、约束和交付物，再把任务拆成输入输出明确的子任务。每个子任务至少记录 task_id、目标、所需输入、依赖项、完成条件与执行预算。\n\n例如“查询产品价格并对比后生成建议”：多个产品查询可独立执行，对比依赖查询结果，建议依赖对比。计划可表示为有向无环图，由程序检查依赖是否存在、是否成环和是否缺少输入。\n\n有歧义时先澄清；任务拆分应以可验证的产出为单位，不要把每一句自然语言都机械拆成 Agent。",
+        "answer": "## 详细解答\n\n### 一、先判断“要不要拆”，而不是默认拆\n\n多任务 Query 第一步不是拆，而是**判定复杂度**。工程上常见做法是先用一次轻量 LLM 调用（或小模型、分类器）做意图路由：\n\n- 单意图、槽位完整的 → 直接走单任务链路，跳过规划器；\n- 单意图但槽位缺失 → 走澄清或槽位补全；\n- 多意图 / 有依赖 / 有先后关系 → 进入 Planner 拆分。\n\n**取舍**：默认拆分会导致延迟和 token 成本翻倍，而且把一个连贯问题拆碎后答案割裂。所以规划器最好输出一个 `need_decompose: false` 的出口，让模型自己判断“这其实是一件事”。例如“帮我写个视频脚本并配个标题”本质是一个创作任务，不应该拆成两个 agent 两次调用。\n\n### 二、拆分方式：结构化输出 + 校验\n\n用 Function Calling / JSON Schema 让模型输出结构化的子任务列表，而不是自由文本。关键字段：\n\n```json\n{\n  \"need_decompose\": true,\n  \"subtasks\": [\n    {\"id\": \"t1\", \"intent\": \"query_creator_rank\", \"args\": {\"days\": 7, \"metric\": \"follower_gain\"}, \"depends_on\": [], \"parallel_group\": 0},\n    {\"id\": \"t2\", \"intent\": \"generate_topic\", \"args\": {}, \"depends_on\": [\"t1\"], \"parallel_group\": 1},\n    {\"id\": \"t3\", \"intent\": \"write_script\", \"args\": {\"duration\": 60}, \"depends_on\": [\"t2\"], \"parallel_group\": 2}\n  ]\n}\n```\n\n拆分粒度原则：**按“可独立交付的结果”切，而不是按句子切**。一个子任务应大致对应一次工具调用或一组紧密相关的工具调用。经验上一个 Query 拆成 2~4 个子任务是合理区间，超过 5 个通常说明粒度太细或原始 Query 该走澄清。\n\n拆完必须做**程序化校验**：intent 是否在注册表内、args 是否符合工具 schema、depends_on 是否成环、子任务数量是否超限。校验失败走重试或降级为单 agent ReAct 循环，不要让错误的 plan 进入执行。\n\n### 三、依赖建模与调度\n\n拆分的本质产出是一张 **DAG**，不是列表。执行时按拓扑分层，同层可并行：\n\n```js\nfunction topoLayers(tasks) {\n  const indeg = new Map(tasks.map(t => [t.id, t.depends_on.length]));\n  const children = new Map(tasks.map(t => [t.id, []]));\n  for (const t of tasks) for (const d of t.depends_on) children.get(d).push(t.id);\n\n  const layers = [];\n  let frontier = tasks.filter(t => indeg.get(t.id) === 0).map(t => t.id);\n  let done = 0;\n  while (frontier.length) {\n    layers.push(frontier);\n    done += frontier.length;\n    const next = [];\n    for (const id of frontier) {\n      for (const c of children.get(id)) {\n        indeg.set(c, indeg.get(c) - 1);\n        if (indeg.get(c) === 0) next.push(c);\n      }\n    }\n    frontier = next;\n  }\n  if (done !== tasks.length) throw new Error(\"cyclic dependency\");\n  return layers; // 每层内部 Promise.all 并行\n}\n```\n\n时间复杂度 O(V+E)。边界：空任务列表返回 `[]`；自依赖/成环必须抛错并触发 replan。\n\n实际调度里要注意两点：\n\n1. **数据依赖要显式传递**。上游子任务的输出需要序列化后注入下游子任务的上下文（比如“根据上面的博主列表生成选题”），不能指望下游自己再去查一遍。\n2. **并行要有预算控制**。同层并发过高会打爆下游接口或触发限流，通常加信号量限流 + 单任务超时。\n\n### 四、上下文与指代消解\n\n多任务 Query 最容易翻车的地方是代词和隐式引用：“帮我查下这个视频的数据，然后按它的风格写个类似的”。拆分时必须把“这个视频”“它”绑定到具体实体，否则每个子 agent 独立解析会解析出不同对象。\n\n做法是在规划阶段先做一次实体抽取与指代消解，把解析结果固化到子任务的 args 里，而不是留给子 agent 自己猜。同时维护一个共享的 session 上下文（用户身份、当前对象、历史结果），子 agent 只读需要的切片。\n\n### 五、执行范式的取舍\n\n| 方案 | 适用 | 代价 |\n|---|---|---|\n| Plan-and-Execute（先全量规划） | 任务多、可并行、需要给用户展示计划 | plan 可能过时，需要 replan 机制；前期延迟高 |\n| ReAct（边想边做） | 任务少、路径不确定 | 无法提前并行，token 消耗随步数线性增长 |\n| Multi-Agent（专家分派） | 子任务领域差异大（数据查询 / 内容创作 / 代码执行），各自的工具集和 prompt 差异明显 | 通信开销、错误传播、调试复杂 |\n\n工程上更常见的是**混合**：外层用 Planner 做粗粒度拆分和图调度，每个子任务内部再用 ReAct 或固定 workflow 完成。子任务之间的“分派”不一定真的起独立 agent——如果两个子任务共用同一套工具，用一个 agent 顺序执行就够了，没必要上 Multi-Agent。**判断标准是工具集和 prompt 是否需要隔离**，而不是任务数量。\n\n### 六、结果聚合与失败处理\n\n- **聚合**：按依赖顺序组织成连贯回答，而不是把子结果平铺罗列。有冲突时（两个子任务结论矛盾）要显式说明，不能静默选一个。\n- **部分失败**：独立子任务失败不应阻塞其他任务，最终回答里明确标注哪部分没完成、能否重试，而不是整体报错或假装完成。\n- **流式**：独立分支谁先完成先推送，但有依赖的链路要等齐了再输出，避免语义顺序错乱。\n\n### 七、工程落地\n\n- **可观测性**：把 plan 本身、每个节点的输入输出、耗时、重试次数打进 trace。排查多任务问题时，80% 是拆分决策错了而不是执行错了。\n- **评估**：单独构造多任务 Query 评测集，指标包括：子任务数量是否合理、意图覆盖是否完整、槽位准确率、端到端任务完成率、相对单任务的额外延迟。只看最终答案的 LLM 打分是发现不了拆分问题的。\n- **降级链路**：Planner 超时/输出非法 → 降级为单 agent ReAct；子任务失败 → 局部重试（最多 1~2 次）→ 告知用户。\n\n### 八、常见坑\n\n1. 过度拆分，把一句话拆成 6 个子任务，延迟翻倍还答得支离破碎。\n2. 只输出线性列表、不建模依赖，导致“根据上面结果做下一步”时下游拿不到数据。\n3. 指代不消解，各子 agent 各自为政。\n4. 拆完不校验，intent 不在工具注册表里，执行到一半才报错。\n5. 为了架构好看强行上 Multi-Agent，实际收益不如单 agent 多工具。\n\n## 面试口述版\n\n结论是：我们不默认拆，先判断该不该拆，该拆才拆，而且拆出来的不是列表而是一张带依赖的 DAG。\n\n具体分几步。第一步是判定，用一次轻量调用做意图路由，单意图槽位齐全就直接走单任务链路，只有多意图或者有先后依赖的才进 Planner，不然延迟和成本都会翻倍。第二步是拆，用 Function Calling 让模型输出结构化的子任务，每个带 id、意图、参数、依赖关系，粒度上按“能独立交付的结果”切，一个子任务大致对应一次工具调用，经验上拆两到四个比较合理，拆到五六个通常说明粒度太细了。拆完一定要做程序化校验，意图在不在工具注册表里、参数符不符合 schema、依赖有没有成环，不合法的 plan 不能进执行。\n\n第三步是执行，按拓扑排序分层，同层并行、跨层串行，上游结果要显式注入下游上下文，不能指望下游自己再查一遍。这里最容易踩的坑是代词，比如“查这个视频的数据，再按它的风格写一个”，必须先把“它”消解成具体实体固化到参数里，否则每个子 agent 解析出来的对象都不一样。\n\n至于用 Plan-Execute 还是 Multi-Agent，我的取舍是：多任务可并行、需要给用户展示计划，就先全量规划再执行，但要留 replan 的出口；子任务领域差异大、工具集和 prompt 需要隔离，才值得上 Multi-Agent，如果两个子任务共用同一套工具，一个 agent 顺序做就够了，为了架构好看硬上多 agent 收益往往不如单 agent。\n\n最后是聚合和失败处理，结果要组织成连贯回答而不是平铺罗列，独立子任务失败不阻塞其他分支，但要在回答里明确标注哪块没完成。另外 plan 本身、每个节点的耗时和重试都要打 trace，因为多任务场景出问题，多数是拆分决策错了，不是执行错了。",
         "oral": "我会先识别用户要什么结果，再拆成有输入、输出和依赖的子任务。比如查询可以并行，对比必须等查询完成，计划生成后还要做程序校验。",
         "pitfalls": "- 不要把步骤列表误认为完整的可执行计划。\n- 每个子任务都应能判断成功、失败或需要澄清。"
       },
@@ -489,5 +489,478 @@
       }
     ],
     "answerNote": "以下为补充的参考答法，非面试者原答；项目细节和指标请按实际经历替换。"
+  },
+  {
+    "id": "pdd-agent-backend-five-rounds",
+    "company": "拼多多",
+    "companyEn": "PDD",
+    "role": "AI Agent 后端工程师",
+    "round": "5 轮（一面 / 二面 / 三面 / 部门面 / HR 面）",
+    "duration": "一面约 60 分钟、二面约 60–70 分钟、三面约 60 分钟、HR 面约 30 分钟",
+    "tags": [
+      "Agent 工程化",
+      "RAG",
+      "多 Agent 协作",
+      "上下文管理",
+      "系统设计",
+      "后端服务化"
+    ],
+    "summary": "5 轮面试以 Agent 项目为主线：一面深挖项目与 Agent 基础，二面追工程化与架构，三面考系统设计与业务落地，四面和 HR 面偏综合与动机。前两轮几乎没有传统八股，每道题都会被层层追问。",
+    "notes": [
+      "技术选型几乎都会被追问「为什么不用另一个方案」，效果优化要落到延迟、状态、恢复和可观测性等工程代价上。",
+      "上下文管理、多 Agent 冲突与断点恢复被反复追问；即使 Agent 岗也考 Java 并发、JVM、MySQL、Redis 与手撕算法。"
+    ],
+    "questions": [
+      {
+        "id": "pdd-agent-backend-01",
+        "number": 1,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "项目介绍 / Agent 边界",
+        "title": "自我介绍，重点讲一个你真正负责过的 Agent 项目。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-02",
+        "number": 2,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "项目介绍 / Agent 边界",
+        "title": "追问：你说这里需要 Agent，为什么固定 Workflow 做不了？边界在哪里？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-03",
+        "number": 3,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "项目介绍 / Agent 边界",
+        "title": "追问：那你怎么保证 Agent 不乱走？有没有状态机兜底？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-04",
+        "number": 4,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "项目介绍 / Agent 边界",
+        "title": "追问：那你项目里怎么做的、数据是多少、遇到什么问题？（概念题通用追问）",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-05",
+        "number": 5,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "Agent 基础",
+        "title": "Agent 和普通 LLM Chatbot 的本质区别是什么？核心模块有哪些？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-06",
+        "number": 6,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "Agent 基础",
+        "title": "追问：你的规划层是模型做的还是代码做的？哪些步骤是确定性的，哪些交给模型？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-07",
+        "number": 7,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "RAG",
+        "title": "RAG 的完整流程，离线做什么、在线做什么。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-08",
+        "number": 8,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "RAG",
+        "title": "追问：你项目里召回率从多少做到多少？怎么做到的？别说调 topK。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-09",
+        "number": 9,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "RAG",
+        "title": "追问：Rerank 之后延迟涨了多少？你怎么在效果和延迟之间做取舍？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-10",
+        "number": 10,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "上下文管理",
+        "title": "上下文压缩的时候，哪些能丢、哪些不能丢？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-11",
+        "number": 11,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "上下文管理",
+        "title": "追问：tool_call 和 tool_result 能不能只删一个？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-12",
+        "number": 12,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "Function Calling",
+        "title": "Function Calling 的原理：模型怎么决定调哪个工具、传什么参数？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-13",
+        "number": 13,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "Function Calling",
+        "title": "追问：工具数量多了怎么选？你最多一次给模型注入了多少个工具？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-14",
+        "number": 14,
+        "group": "一面：项目深挖 + Agent 基础",
+        "topic": "手撕算法",
+        "title": "手撕：合并区间（ACM 模式，输入输出要自己处理边界）。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-15",
+        "number": 15,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "整体架构 / 上下文管理",
+        "title": "你们 Agent 的整体架构画一下，规划、记忆、工具、执行各层怎么设计的。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-16",
+        "number": 16,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "整体架构 / 上下文管理",
+        "title": "追问：记忆层你用的什么？短期和长期怎么划分？超长对话上下文爆了怎么办？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-17",
+        "number": 17,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "整体架构 / 上下文管理",
+        "title": "追问：1M 的上下文窗口也不够怎么办？别说分块，我要听具体的工程方案。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-18",
+        "number": 18,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "整体架构 / 上下文管理",
+        "title": "追问：如果规模涨十倍你怎么改？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-19",
+        "number": 19,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "框架选型 / 断点恢复",
+        "title": "LangGraph 和 LangChain AgentExecutor 的区别，为什么复杂 Agent 要用 LangGraph？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-20",
+        "number": 20,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "框架选型 / 断点恢复",
+        "title": "追问：checkpointer 存在哪里？服务重启之后怎么恢复？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-21",
+        "number": 21,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "框架选型 / 断点恢复",
+        "title": "追问：恢复时状态一致性怎么保证？恢复失败怎么办？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-22",
+        "number": 22,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "多 Agent 协作",
+        "title": "多 Agent 协作的常见模式，你们用的哪种？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-23",
+        "number": 23,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "多 Agent 协作",
+        "title": "追问：多 Agent 同时改同一个资源怎么防冲突？有没有用分布式锁？锁的粒度是什么？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-24",
+        "number": 24,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "多 Agent 协作",
+        "title": "追问：锁超时、锁失效后的脑裂怎么处理？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-25",
+        "number": 25,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "容错与降级",
+        "title": "工具调用失败 / 模型输出非法时，你的重试和降级怎么设计？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-26",
+        "number": 26,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "容错与降级",
+        "title": "追问：仅靠提示词限制 Agent 输出为什么不够？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-27",
+        "number": 27,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "BadCase 定位",
+        "title": "线上 Agent 出 BadCase，你怎么定位？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-28",
+        "number": 28,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "手撕算法",
+        "title": "手撕：LRU Cache，get/put O(1)。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-29",
+        "number": 29,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "手撕算法",
+        "title": "追问：加过期时间怎么改？多线程怎么保证安全？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-30",
+        "number": 30,
+        "group": "二面：工程化 + 架构深挖",
+        "topic": "手撕算法",
+        "title": "追问：过期时间存哪里？synchronized 和 ReentrantLock 怎么选？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-31",
+        "number": 31,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "业务落地 / ROI",
+        "title": "如果让你在拼多多现有系统里引入 AI Agent 做智能客服，你会优先落地哪个场景？为什么？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-32",
+        "number": 32,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "大促 Agent 链路",
+        "title": "设计一个拼多多大促场景下的 Agent 链路：用户问「这个手机还有没有货、能不能再便宜点、什么时候能到」，你怎么设计？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-33",
+        "number": 33,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "大促 Agent 链路",
+        "title": "追问：大促峰值 QPS 是平时的几十倍，Agent 链路怎么扛？哪些环节可以缓存，哪些绝对不能缓存？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-34",
+        "number": 34,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "大促 Agent 链路",
+        "title": "追问：prompt caching、高频 query 的语义缓存命中率怎么保证？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-35",
+        "number": 35,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "分布式事务",
+        "title": "分布式事务 / 最终一致性在 Agent 写操作场景里怎么体现？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-36",
+        "number": 36,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "系统评估",
+        "title": "你平时怎么评估一个 Agent 系统的好坏？除了准确率还看什么？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-37",
+        "number": 37,
+        "group": "三面：系统设计 + 业务落地 + 交叉面",
+        "topic": "手撕算法",
+        "title": "手撕：二叉树层序遍历 / 或一道中等偏上的设计题。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-38",
+        "number": 38,
+        "group": "四面：部门面 / 交叉面",
+        "topic": "故障复盘",
+        "title": "你过去做过的系统里，最复杂的一次故障是什么？根因、处理、后续改进。",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-39",
+        "number": 39,
+        "group": "四面：部门面 / 交叉面",
+        "topic": "协作沟通",
+        "title": "你和算法同学 / 产品同学意见不一致时怎么推进？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-40",
+        "number": 40,
+        "group": "四面：部门面 / 交叉面",
+        "topic": "职业动机",
+        "title": "你怎么看拼多多的工作强度？为什么选择这个阶段来拼多多？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-41",
+        "number": 41,
+        "group": "四面：部门面 / 交叉面",
+        "topic": "职业规划",
+        "title": "你未来两年想成为什么样的工程师？是偏 Agent 应用，还是偏底层平台？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-42",
+        "number": 42,
+        "group": "HR 面：薪资、稳定性、动机",
+        "topic": "薪资与 offer",
+        "title": "当前薪资结构、期望薪资、其他 offer 进展？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-43",
+        "number": 43,
+        "group": "HR 面：薪资、稳定性、动机",
+        "topic": "求职动机",
+        "title": "为什么从上一家看机会，为什么是拼多多？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-44",
+        "number": 44,
+        "group": "HR 面：薪资、稳定性、动机",
+        "topic": "地点与节奏",
+        "title": "对工作地点（上海）和节奏的接受度？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      },
+      {
+        "id": "pdd-agent-backend-45",
+        "number": 45,
+        "group": "HR 面：薪资、稳定性、动机",
+        "topic": "到岗时间",
+        "title": "最早到岗时间？",
+        "answer": null,
+        "oral": null,
+        "pitfalls": null
+      }
+    ]
   }
 ]

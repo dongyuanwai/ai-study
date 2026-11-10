@@ -145,16 +145,20 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## AI 学习模块
 
-- 题目与答案由 scripts/import-questions.mjs 从 ../agent-docs 的原始 Markdown 和 ai-concepts-supplement.json 统一生成；新增联网研读内容维护在补充 JSON，保留来源、事件日期与核对日期，修改后重新导入，不手工维护生成题库。
+- 题目与答案由 scripts/import-questions.mjs 从 ../agent-docs 的原始 Markdown 和 ai-concepts-supplement.json 统一生成；新增联网研读内容维护在补充 JSON，保留来源、事件日期与核对日期，修改后重新导入，不手工维护生成题库。启用数据库后线上内容通过 API 维护；data:import 仅更新本地导入资料，不自动覆盖已有云端记录。
 - 题库原文为中文；保留中英文路由和界面。
 - 页面与组件遵循已确认的白色简洁设计，导航集中展示首页、知识库、AI 时间线、公司面试真题和能力测试。
 - 默认 ALLOW_INDEXING=false；没有明确授权，不启用索引、统计或发布。
 - 使用 Turbopack，不添加 --webpack 作为构建回退。
-- Vercel 使用 Next.js 预设，Root Directory 为 code，输出目录保持自动识别；静态导出的 out 不是适配器读取清单的目录，禁止将 Vercel outputDirectory 设为 out。部署说明见 README.md。
+- Vercel 使用 Next.js 预设，Root Directory 为 code，输出目录保持自动识别；out 不是当前服务端模式的构建目录，禁止将 Vercel outputDirectory 设为 out。部署说明见 README.md。
 - 界面文案精简：只保留帮助用户理解内容、状态或完成操作的信息；不擅自添加装饰性英文、空泛口号、重复宣传语或实现细节说明。
 - 页面布局紧凑：header 与正文保持适度间距，不因窗口增高而拉伸主视觉、产生大块顶部留白；首页在常见 PC 尺寸下尽量一屏完整展示，不通过隐藏或裁切内容强行消除滚动。
 - AI 时间线采用从 2023 年起的页面滚动驱动时间线，采用贯穿页面的中央纵向时间轴，知识节点按时间在左右两侧交错排列，滚动联动轴线进度、节点入场和全屏背景，并尊重减少动态效果偏好，知识点归入模型与推理、训练与对齐、检索与知识、智能体与应用四类，点击后展开详情。内容维护在 src/data/ai-timeline.json；新增节点须核对原始论文或官方公告，标明事件类型，避免将相关术语误记为同年诞生。
 
 - 持续知识更新记录在 docs/knowledge-updates.json；只收录核实过的一手来源，按稳定 ID 和概念去重，使用 questionIds 关联新增时间线与题目。官方解读使用 article 类型，不伪装成概念首发；日期精度不足时保留 YYYY-MM，不编造日期。定时执行由应用任务管理，文档本身不负责调度。
 
-- 公司面试真题独立维护在 src/data/company-interviews.json，只录入用户提供的真实面试资料，不加入模拟记录；按用户要求不保留来源信息。未提供且未要求补充的答案使用 null；用户要求补充时，逐题撰写并标明为参考答法，不冒充原面试者回答。算法题统一使用 JavaScript，代码须覆盖边界测试，维护方式见 README.md。
+- 公司面试真题未配置数据库时维护在 src/data/company-interviews.json；启用 Supabase 后以云端数据为准，本地 JSON 仅作初始导入。只录入用户提供的真实面试资料，不加入模拟记录；按用户要求不保留来源信息。未提供且未要求补充的答案使用 null；用户要求补充时，逐题撰写并标明为参考答法，不冒充原面试者回答。算法题统一使用 JavaScript，代码须覆盖边界测试，维护方式见 README.md。
+
+- 公司真题 AI 自带接口/Key/模型模式仅供个人查看；独立 AI_ACCESS_KEY 可调用默认模型，并确认替换已生成预览对应的公共答案。写入必须验证服务端签名、有效期和题目版本，不接受客户端直接提交的答案。默认模型与数据库配置统一放在 .env.local，用户临时 Key 仅当前页面内存持有，禁止进入缓存、日志、公开环境变量或 Git。本地默认配置编辑入口仅开发时显示；统一生成入口，移除独立维护按钮。访问密钥不能代替 ADMIN_API_TOKEN 执行通用 CRUD。维护说明见 README.md。
+
+- Supabase 接入知识库与公司真题，时间线暂保留 JSON。采用支持 Route Handlers 的 Next.js 服务端模式，不配置 output: export；所有数据库 Key 仅服务端使用，公开 GET、管理员鉴权写入，接口见 docs/data-api.md。迁移位于 supabase/migrations，配置、导入及验证入口见 README.md。配置数据库后故障不得静默回退写入 JSON；答案确认通过带版本检查的数据库事务保存，重复导入不得覆盖云端内容。

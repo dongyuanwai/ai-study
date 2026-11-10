@@ -11,3 +11,6 @@ out/
 .vercel/
 .codex/
 .agents/
+
+# 本地 AI 配置、密钥与答案备份
+.local-ai/
